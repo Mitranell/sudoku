@@ -40,6 +40,29 @@ void outputSliceCube(int*** cube, int k, int n) {
 		outputRow(cube, x, k, n);
 	}
 }
+int** cubeToSudoku(int*** cube, int l) {
+	int n = l*l;
+	int** array = new int*[n];
+	for (int i = 0; i < n; i++) {
+		array[i] = new int[n];
+	}
+	
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			int sum = 0;
+			for (int k = 0; k < n; k++) {
+				sum += cube[i][j][k];
+				if (cube[i][j][k] == 1) {
+					array[i][j] = k + 1;
+				}
+			}
+			if (sum != 1) {
+				return NULL;
+			}
+		}
+	}
+	return array;
+}
 
 int** readSudoku(int l) {
 	int n = l*l;
@@ -119,6 +142,7 @@ void setGrid(int*** cube, int i, int j, int k, int l) {
 }
 
 void updateCell(int*** cube, int i, int j, int k, int l) {
+	// [i][j][k] is supposed to be 1 
 	int n = l*l;
 	setRow(cube, i, j, k, n);
 	setColumn(cube, i, j, k, n);
@@ -138,6 +162,65 @@ void initCube(int** sudoku, int*** cube, int l) {
 	}
 }
 
+int checkRowColumnDepth(int*** cube, int l) {
+	int n = l*l;
+	int global_sum = 0;
+	//depth sum
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++){
+			int sum = 0;
+			int m = 0;
+			for (int k = 0; k < n; k++) {
+				sum += cube[i][j][k];
+				if (cube[i][j][k]) {
+					m = k;
+				}
+			}
+			global_sum += sum;
+			if (sum == 1) {
+				updateCell(cube,i,j,m,l);
+			}
+		}
+	}
+
+	//column sum
+	for (int i = 0; i < n; i++) {
+		for (int k = 0; k < n; k++) {
+			int sum = 0;
+			int m = 0;
+			for (int j = 0; j < n; j++) {
+				sum += cube[i][j][k];
+				if (cube[i][j][k]) {
+					m = j;
+				}
+			}
+			global_sum += sum;
+			if (sum == 1) {
+				updateCell(cube, i, m, k, l);
+			}
+		}
+	}
+
+	//row sum 
+	for (int k = 0; k < n; k++) {
+		for (int j = 0; j < n; j++) {
+			int sum = 0;
+			int m = 0;
+			for (int i = 0; i < n; i++) {
+				sum += cube[i][j][k];
+				if (cube[i][j][k]) {
+					m = i;
+				}
+			}
+			global_sum += sum;
+			if (sum == 1) {
+				updateCell(cube, m, j, k, l);
+			}
+		}
+	}
+
+	return global_sum;
+}
 
 int main(int argc, char *argv[]) {
 	//test();
@@ -154,7 +237,7 @@ int main(int argc, char *argv[]) {
 	//char lchar = *argv[1];
 	//int l = lchar - 48;
 	//cout << l;
-	int l = 2;
+	int l = 3;
 	int n = l*l;
 	int** sudoku = readSudoku(l);
 	outputSudoku(sudoku, n);
@@ -168,7 +251,25 @@ int main(int argc, char *argv[]) {
 	//outputColumn(cube, 0, 0, n);
 	//outputDepth(cube, 0, 0, n);
 	initCube(sudoku, cube, l);
-	outputSliceCube(cube, 3, n);
+	int foo = checkRowColumnDepth(cube, l);
+	cout << foo << endl;
+	while (foo > (foo = checkRowColumnDepth(cube, l))) {
+		cout << foo << endl;
+	}
+		
+
+	//for (int k = 0; k < n; k++) {
+	//	outputSliceCube(cube, k, n);
+	//	cout << endl;
+	//}
+	int** sudokuOutput = cubeToSudoku(cube, l);
+	if (NULL != sudokuOutput) {
+		outputSudoku(sudokuOutput, l*l);
+	}
+	else {
+		cout << "not solvable for me.";
+	}
+	
 
 	return 0;
 }
