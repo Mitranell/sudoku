@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <limits.h>
 
 
 using namespace std;
@@ -251,12 +252,17 @@ int main(int argc, char *argv[]) {
 	//outputColumn(cube, 0, 0, n);
 	//outputDepth(cube, 0, 0, n);
 	initCube(sudoku, cube, l);
-	int foo = checkRowColumnDepth(cube, l);
-	cout << foo << endl;
-	while (foo > (foo = checkRowColumnDepth(cube, l))) {
-		cout << foo << endl;
-	}
-		
+
+	int rating = INT_MAX;
+	int previous_rating;
+	do {
+		previous_rating = rating;
+		rating = checkRowColumnDepth(cube, l);
+		cout << rating << endl;
+	} while (rating < previous_rating);
+	
+
+
 
 	//for (int k = 0; k < n; k++) {
 	//	outputSliceCube(cube, k, n);
