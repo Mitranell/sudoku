@@ -10,7 +10,7 @@ void test() {
 		printf("test\n");
 	}
 }
- /* takes the 2d sudoku field and dimension @param n 
+ /* takes the 2d sudoku field and dimension @param n
  *  as input and displays all field
  */
 void outputSudoku(int** array, int n) {
@@ -31,7 +31,7 @@ void outputRow(int*** cube, int i, int k, int n) {
 	cout << endl;
 }
 
- /* dispays the column [ ][j][k] of the 3d cube 
+ /* dispays the column [ ][j][k] of the 3d cube
  */
 void outputColumn(int*** cube, int j, int k, int n) {
 	for (int i = 0; i < n; i++) {
@@ -59,7 +59,7 @@ void outputSliceCube(int*** cube, int k, int n) {
 
  /* tries to convert the 3d cube back to 2d sudoku form
   * by checking in which field a 1 appears, error if sum per
-  * depth is bigger than 1, in case of error NULL 
+  * depth is bigger than 1, in case of error NULL
   * will be returned
  */
 int** cubeToSudoku(int*** cube, int l) {
@@ -109,7 +109,7 @@ int** readSudoku(int l) {
 	return array;
 }
 
- /* creates the 3d cube with dimensions n*n*n and initializes 
+ /* creates the 3d cube with dimensions n*n*n and initializes
   * all the values with 1.
   */
 int*** createCubeWithOnes(int n) {
@@ -125,7 +125,7 @@ int*** createCubeWithOnes(int n) {
 	}
 	return cube;
 }
- /* gets for any cell in the form [i][j] the corresponding grid in the form 
+ /* gets for any cell in the form [i][j] the corresponding grid in the form
   * of an array; [x1, y1, x2, y2] where (x1,y1) shows the starting point
   * and (x2,y2) the end point that spreads up the cell
   */
@@ -137,9 +137,10 @@ int* getGrid(int i, int j, int l) {
 	// last field which is still in the grid is l-1 fields in x and y direction
 	int i2 = i1 + l-1;
 	int j2 = j1 + l-1;
-	int grid[] = { i1, j1, i2, j2};
+	int grid[] = {i1, j1, i2, j2};
+	int * gridPointer = grid;
 
-	return grid;
+	return gridPointer;
 }
 
  /* given the cell [i][j][k] sets all the cells in the same column to zero
@@ -195,7 +196,7 @@ void setGrid(int*** cube, int i, int j, int k, int l) {
 
  /* combines the previous commands as one, with a given cell, sets the rest of the row/column/depth/grid to zero*/
 void updateCell(int*** cube, int i, int j, int k, int l) {
-	// [i][j][k] is supposed to be 1 
+	// [i][j][k] is supposed to be 1
 	int n = l*l;
 	setRow(cube, i, j, k, n);
 	setColumn(cube, i, j, k, n);
@@ -218,9 +219,9 @@ void initCube(int** sudoku, int*** cube, int l) {
 	}
 }
 
- /* takes the cube and loops over row/column/depth to check if sum equals one for each, if thats 
+ /* takes the cube and loops over row/column/depth to check if sum equals one for each, if thats
   * the case the cell with the 1 has the right value and other cells in row/column/depth/grid will be set to zero.
-  * indicator to stop the loop forever is a sum over all rows/columns/depths, if this number doesnt decrease we 
+  * indicator to stop the loop forever is a sum over all rows/columns/depths, if this number doesnt decrease we
   * can stop
   */
 int checkRowColumnDepth(int*** cube, int l) {
@@ -265,7 +266,7 @@ int checkRowColumnDepth(int*** cube, int l) {
 		}
 	}
 
-	//row sum 
+	//row sum
 	for (int k = 0; k < n; k++) {
 		for (int j = 0; j < n; j++) {
 			int sum = 0;
@@ -296,7 +297,7 @@ int main(int argc, char *argv[]) {
 	//if (argc < 2) {
 	//	return 0;
 	//}
-	
+
 	//read l
 	//char lchar = *argv[1];
 	//int l = lchar - 48;
@@ -326,7 +327,7 @@ int main(int argc, char *argv[]) {
 		rating = checkRowColumnDepth(cube, l);
 		cout << rating << endl;
 	} while (rating < previous_rating);
-	
+
 
 
 
@@ -339,11 +340,9 @@ int main(int argc, char *argv[]) {
 		outputSudoku(sudokuOutput, l*l);
 	}
 	else {
-		cout << "not solvable for me.";
+		cout << "not solvable for me.\n";
 	}
-	
+
 
 	return 0;
 }
-
-
