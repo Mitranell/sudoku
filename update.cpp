@@ -36,15 +36,18 @@ void setGrid(int i, int j, int k) {
  * to zero, except the given cell
  */
 void setBar(int *i, int *j, int *k, int *direction) {
-    /* we update the bar n - 1 times
-     * because we do not want to change the given cell itself
+    int original = *direction;
+    /* we update the bar to 0, n times
+     * except when the value is the original value
      */
-    for (int x = 0; x < n - 1; x++) {
-        *direction = (*direction + 1) % n;
-        cube[*i][*j][*k]= 0;
+    for (int x = 0; x < n; x++) {
+        if (x != original) {
+            *direction = x;
+            cube[*i][*j][*k]= 0;
+        }
     }
     // to reset the variable to its original value
-    *direction = (*direction + 1) % n;
+    *direction = original;
 }
 
 /* set the row, column, possible values and grid for a cell to zero
