@@ -91,31 +91,9 @@ void cubeToSudoku() {
 }
 
 int main(int argc, char *argv[]) {
-    //test();
-    //for (int i = 0; i < argc; i++) {
-    //	printf(argv[i]);
-    //	printf("\n");
-    //}
-
-    //if (argc < 2) {
-    //	return 0;
-    //}
-
-    //read l
-    //char lchar = *argv[1];
-    //int l = lchar - 48;
-    //cout << l;
-
     readSudoku();
     outputSudoku();
-    //setRow(cube, 0, 0, 0, n);
-    //setColumn(cube, 0, 0, 0, n);
-    //setDepth(cube, 0, 0, 0, n);
 
-    //outputRow(cube, 0, 0, n);
-    //outputColumn(cube, 0, 0, n);
-    //outputDepth(cube, 0, 0, n);
-    //initCube();
 
     int rating = INT_MAX;
     int previous_rating;
@@ -127,12 +105,7 @@ int main(int argc, char *argv[]) {
         rating = checkCube();
         //cout << rating << " ";
     } while (rating < previous_rating);
-    //cout << endl << endl;
 
-    //for (int k = 0; k < n; k++) {
-    //	outputSliceCube(cube, k, n);
-    //	cout << endl;
-    //}
     cubeToSudoku();
     outputSudoku();
 
