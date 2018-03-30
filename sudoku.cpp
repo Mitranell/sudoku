@@ -4,7 +4,6 @@ int l;
 int n;
 int total_sum;
 int* grid;
-int** sudoku;
 int*** cube;
 
 #include <iostream>
@@ -41,35 +40,41 @@ void createCubeWithOnes() {
 
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
-void readSudoku() {
-    ifstream sudokuFile("sudoku.txt", ios::in);
+int** readSudoku() {
+    ifstream sudoku_file("sudoku.txt", ios::in);
 
-    sudokuFile >> l;
+    sudoku_file >> l;
     n = l*l;
 
     // since n is known, we create the cube here in order to run updateCell()
     createCubeWithOnes();
 
-    sudoku = new int*[n];
+    int** sudoku = new int*[n];
     for (int i = 0; i < n; i++) {
         sudoku[i] = new int[n];
     }
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            sudokuFile >> sudoku[i][j];
+            sudoku_file >> sudoku[i][j];
 
             if(sudoku[i][j] != 0) {
                 updateCell(i, j, sudoku[i][j] - 1);
             }
         }
     }
+    return sudoku;
 }
 
 /* converts the 3d cube to a 2d sudoku
  * fills in 0 when there is more than one possible value for a cell
  */
-void cubeToSudoku() {
+int** cubeToSudoku() {
+    int** sudoku = new int*[n];
+    for (int i = 0; i < n; i++) {
+        sudoku[i] = new int[n];
+    }
+
     //sum the depths of [i][j][*] whether it is 1
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -92,6 +97,8 @@ void cubeToSudoku() {
             }
         }
     }
+
+    return sudoku;
 }
 
 void solve() {
@@ -106,11 +113,9 @@ void solve() {
 }
 
 int main(int argc, char *argv[]) {
-    readSudoku();
-    outputSudoku();
+    outputSudoku(readSudoku());
     solve();
-    cubeToSudoku();
-    outputSudoku();
+    outputSudoku(cubeToSudoku());
 
     return 0;
 }

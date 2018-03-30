@@ -1,6 +1,6 @@
 /* outputs the sudoku
  */
-void outputSudoku() {
+void outputSudoku(int** sudoku) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             cout << sudoku[i][j] << " ";
