@@ -38,6 +38,15 @@ void createCubeWithOnes() {
     }
 }
 
+int** init_sudoku() {
+    int** sudoku = new int*[n];
+    for (int i = 0; i < n; i++) {
+        sudoku[i] = new int[n];
+    }
+
+    return sudoku;
+}
+
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
@@ -49,10 +58,7 @@ int** readSudoku() {
     // since n is known, we create the cube here in order to run updateCell()
     createCubeWithOnes();
 
-    int** sudoku = new int*[n];
-    for (int i = 0; i < n; i++) {
-        sudoku[i] = new int[n];
-    }
+    int** sudoku = init_sudoku();
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -70,10 +76,7 @@ int** readSudoku() {
  * fills in 0 when there is more than one possible value for a cell
  */
 int** cubeToSudoku() {
-    int** sudoku = new int*[n];
-    for (int i = 0; i < n; i++) {
-        sudoku[i] = new int[n];
-    }
+    int** sudoku = init_sudoku();
 
     //sum the depths of [i][j][*] whether it is 1
     for (int i = 0; i < n; i++) {
