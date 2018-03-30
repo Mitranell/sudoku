@@ -18,7 +18,7 @@ void checkRow() {
                 updateCell(p, j, k);
             }
 
-            global_sum += sum;
+            total_sum += sum;
         }
     }
 }
@@ -45,7 +45,7 @@ void checkColumn() {
                 updateCell(i, p, k);
             }
 
-            global_sum += sum;
+            total_sum += sum;
         }
     }
 }
@@ -72,7 +72,7 @@ void checkCell() {
                 updateCell(i,j,p);
             }
 
-            global_sum += sum;
+            total_sum += sum;
         }
     }
 }
@@ -107,7 +107,7 @@ void checkGrid() {
                     updateCell(p,q,k);
                 }
 
-                global_sum += sum;
+                total_sum += sum;
             }
         }
     }
@@ -118,10 +118,10 @@ void checkGrid() {
  * then the value for this cell is updated
  */
 int checkCube() {
-    global_sum = 0;
+    total_sum = 0;
     checkRow();
     checkColumn();
     checkCell();
     checkGrid();
-    return global_sum;
+    return total_sum;
 }
