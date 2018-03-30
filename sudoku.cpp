@@ -2,7 +2,7 @@ using namespace std;
 
 int l;
 int n;
-int global_sum;
+int total_sum;
 int* grid;
 int** sudoku;
 int*** cube;
@@ -99,11 +99,9 @@ int main(int argc, char *argv[]) {
     int previous_rating;
     do {
         previous_rating = rating;
-        /* returns the global_sum as rating
-         * when the global_sum is unchanged, the loop can stop
-         */
+        // returns the total_sum as rating
         rating = checkCube();
-        //cout << rating << " ";
+        // when the total_sum is unchanged, the loop can stop
     } while (rating < previous_rating);
 
     cubeToSudoku();
