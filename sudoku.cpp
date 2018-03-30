@@ -75,26 +75,26 @@ void cubeToSudoku() {
         for (int j = 0; j < n; j++) {
             int sum = 0;
             for (int k = 0; k < n; k++) {
-                sum += cube[i][j][k];
                 // check if cell is 1
                 if (cube[i][j][k] == 1) {
-                    // k + 1 equals the number in the sudoku field, k = 0 ... 8
-                    sudoku[i][j] = k + 1;
+                    if (sum == 0) {
+                        sum = 1;
+                        /* k + 1 equals the number in the sudoku field
+                         * k = 0 ... 8
+                         */
+                        sudoku[i][j] = k + 1;
+                    } else {
+                        // there are multiple possibilities
+                        sudoku[i][j] = 0;
+                        break;
+                    }
                 }
-            }
-            // there are multiple possibilities
-            if(sum > 1) {
-                sudoku[i][j] = 0;
             }
         }
     }
 }
 
-int main(int argc, char *argv[]) {
-    readSudoku();
-    outputSudoku();
-
-
+void solve() {
     int rating = INT_MAX;
     int previous_rating;
     do {
@@ -103,7 +103,12 @@ int main(int argc, char *argv[]) {
         rating = checkCube();
         // when the total_sum is unchanged, the loop can stop
     } while (rating < previous_rating);
+}
 
+int main(int argc, char *argv[]) {
+    readSudoku();
+    outputSudoku();
+    solve();
     cubeToSudoku();
     outputSudoku();
 
