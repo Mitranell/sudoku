@@ -11,6 +11,7 @@ int*** cube;
 #include <limits.h>
 //#include <time.h>
 #include <sys/time.h>
+#include <omp.h>
 // contains updateCell()
 #include "update.cpp"
 // contains output*()
