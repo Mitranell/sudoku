@@ -41,6 +41,26 @@ void createCubeWithOnes() {
     }
 }
 
+// PARALLEL
+// void createCubeWithOnes() {
+//     // creating as many threads as there are rows in the sudoku
+//     omp_set_num_threads(n);
+
+//     cube = new int**[n];
+
+//     #pragma omp parallel for 
+//     for (int i = 0; i < n; i++) {
+//         cube[i] = new int*[n];
+//         for (int j = 0; j < n; j++) {
+//             cube[i][j] = new int[n];
+//             for (int k = 0; k < n; k++) {
+//                 cube[i][j][k] = 1;
+//             }
+//         }
+//     }
+    
+// }
+
 int** init_sudoku() {
     int** sudoku = new int*[n];
     for (int i = 0; i < n; i++) {
