@@ -48,9 +48,9 @@ void createCubeWithOnes() {
 
     cube = new int**[n];
 
-    #pragma omp parallel for 
+    #pragma omp parallel for
     for (int i = 0; i < n; i++) {
-        
+
 
         cube[i] = new int*[n];
         for (int j = 0; j < n; j++) {
@@ -61,7 +61,7 @@ void createCubeWithOnes() {
         }
     }
 
-    
+
 }
 
 int** init_sudoku() {
@@ -144,12 +144,12 @@ void solve() {
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
 
-    
+
 
     struct timeval tv;
     gettimeofday(&tv,NULL);
     //tv.tv_sec // seconds
-    time_t startTime = tv.tv_usec; 
+    time_t startTime = tv.tv_usec;
     //  clock_t startTime = clock();
 
 
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
     // printf("%3.20f seconds taken\n", endTime - startTime);
     //printf("%d seconds taken\n", diffInMillies);
 
-    printf("%d microseconds taken\n", endTime - startTime);
+    printf("%ld microseconds taken\n", endTime - startTime);
 
 
     outputSudoku(cubeToSudoku());
