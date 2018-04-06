@@ -8,8 +8,8 @@ void checkRow() {
 
             // loop over the whole row
             for (int i = 0; i < n; i++) {
-                sum += cube[i][j][k];
-                if (cube[i][j][k]) {
+                sum += cubes[v][i][j][k];
+                if (cubes[v][i][j][k]) {
                     p = i;
                 }
             }
@@ -33,9 +33,9 @@ void checkColumn() {
 
             // loop over the whole column
             for (int j = 0; j < n; j++) {
-                sum += cube[i][j][k];
+                sum += cubes[v][i][j][k];
                 //save the right column
-                if (cube[i][j][k]) {
+                if (cubes[v][i][j][k]) {
                     p = j;
                 }
             }
@@ -60,9 +60,9 @@ void checkCell() {
 
             // loop over all the cell its possible values
             for (int k = 0; k < n; k++) {
-                sum += cube[i][j][k];
+                sum += cubes[v][i][j][k];
                 // save the right depth
-                if (cube[i][j][k]) {
+                if (cubes[v][i][j][k]) {
                     p = k;
                 }
             }
@@ -93,9 +93,9 @@ void checkGrid() {
                 // loop over the grid
                 for (int x = grid[0]; x <= grid[2]; x++) {
                     for (int y = grid[1]; y <= grid[3]; y++) {
-                        sum += cube[x][y][k];
+                        sum += cubes[v][x][y][k];
                         // save the right cell
-                        if (cube[x][y][k]) {
+                        if (cubes[v][x][y][k]) {
                             p = x;
                             q = y;
                         }
@@ -124,4 +124,52 @@ int checkCube() {
     checkCell();
     checkGrid();
     return total_sum;
+}
+
+/* Check if sudoku is solved
+*/
+bool isSolved(){
+    for (int k = 0; k < n; k++) {
+        for (int j = 0; j < n; j++) {
+            int sum = 0;
+            int p;
+
+            // loop over the whole row
+            for (int i = 0; i < n; i++) {
+                sum += cubes[v][i][j][k];
+                if (cubes[v][i][j][k]) {
+                    p = i;
+                }
+            }
+
+            if (sum != 1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+/* Check if cube just zeros => wrong didgit in bruteforcing
+*/
+bool isSolvable(){
+        for (int k = 0; k < n; k++) {
+        for (int j = 0; j < n; j++) {
+            int sum = 0;
+            int p;
+
+            // loop over the whole row
+            for (int i = 0; i < n; i++) {
+                sum += cubes[v][i][j][k];
+                if (cubes[v][i][j][k]) {
+                    p = i;
+                }
+            }
+
+            if (sum == 0) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

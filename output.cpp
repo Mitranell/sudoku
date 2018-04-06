@@ -14,7 +14,7 @@ void outputSudoku(int** sudoku) {
  */
 void outputRow(int i, int k) {
     for (int j = 0; j < n; j++) {
-        cout << cube[i][j][k]<< " ";
+        cout << cubes[v][i][j][k]<< " ";
     }
     cout << endl;
 }
@@ -23,7 +23,7 @@ void outputRow(int i, int k) {
  */
 void outputColumn(int j, int k) {
     for (int i = 0; i < n; i++) {
-        cout << cube[i][j][k] << endl;
+        cout << cubes[v][i][j][k] << endl;
     }
     cout << endl;
 }
@@ -32,7 +32,7 @@ void outputColumn(int j, int k) {
  */
 void outputDepth(int i, int j) {
     for (int k = 0; k < n; k++) {
-        cout << cube[i][j][k] << " ";
+        cout << cubes[v][i][j][k] << " ";
     }
     cout << endl;
 }

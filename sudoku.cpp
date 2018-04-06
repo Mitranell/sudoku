@@ -1,16 +1,28 @@
 using namespace std;
+#include <vector>
+
+typedef vector<int> v1d;
+typedef vector<v1d> v2d;
+typedef vector<v2d> v3d;
+typedef vector<v3d> v4d;
 
 int l;
 int n;
 int total_sum;
 int* grid;
-int*** cube;
+//int*** cube;
+v4d cubes;
+int v = 0;
+struct flag_struct{
+    int i,j,k;
+};
+vector<flag_struct> v_flag;
 
 #include <iostream>
 #include <fstream>
 #include <limits.h>
-#include <time.h>
-// #include <sys/time.h>
+// #include <time.h>
+#include <sys/time.h>
 #include <omp.h>
 // contains updateCell()
 #include "update.cpp"
@@ -18,6 +30,9 @@ int*** cube;
 #include "output.cpp"
 // contains check*()
 #include "check.cpp"
+#include "bruteforce.cpp"
+
+
 
 void test() {
     #pragma omp parallel
@@ -42,7 +57,7 @@ void test() {
 // }
 
 // PARALLEL
-void createCubeWithOnes() {
+/* void createCubeWithOnes() {
     // creating as many threads as there are rows in the sudoku
     omp_set_num_threads(n);
 
@@ -61,7 +76,14 @@ void createCubeWithOnes() {
         }
     }
 
-    
+  
+} */
+void createCubeWithOnes() {
+    v1d row(n, 1);
+	v2d plane(n, row);
+    v3d cube(n,plane);
+
+	cubes.push_back(cube);
 }
 
 int** init_sudoku() {
@@ -110,7 +132,7 @@ int** cubeToSudoku() {
             int sum = 0;
             for (int k = 0; k < n; k++) {
                 // check if cell is 1
-                if (cube[i][j][k] == 1) {
+                if (cubes[v][i][j][k] == 1) {
                     if (sum == 0) {
                         sum = 1;
                         /* k + 1 equals the number in the sudoku field
@@ -134,38 +156,55 @@ void solve() {
     int rating = INT_MAX;
     int previous_rating;
     do {
-        previous_rating = rating;
-        // returns the total_sum as rating
-        rating = checkCube();
-        // when the total_sum is unchanged, the loop can stop
-    } while (rating < previous_rating);
+        do {
+            previous_rating = rating;
+            // returns the total_sum as rating
+            rating = checkCube();
+            // when the total_sum is unchanged, the loop can stop
+        } while (rating < previous_rating);
+        if(!isSolvable){
+            v_flag[v].
+            v--;
+            previous_rating = INT_MAX;
+        }
+        if (!isSolved){
+            bruteforce();
+        }
+    } while(!isSolved());
+
+
+    cout << "rating: " << rating << endl;
+    cout << "isSolved: " << isSolved() << endl;
 }
 
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
 
-    
+    flag_struct intial = {0,0,0};
+    v_flag.push_back(intial);
 
-    // struct timeval tv;
-    // gettimeofday(&tv,NULL);
-    // //tv.tv_sec // seconds
-    // time_t startTime = tv.tv_usec; 
-     clock_t startTime = clock();
+    struct timeval begin, end;
+    gettimeofday(&begin,NULL);
+    //tv.tv_sec; // seconds
+    //time_t startTime = begin.tv_usec; 
+    // clock_t startTime = clock();
 
-
+    //cin.ignore();
     solve();
 
-    // gettimeofday(&tv,NULL);
-    //time_t endTime = tv.tv_usec;
+    gettimeofday(&end,NULL);
+    //time_t endTime = end.tv_usec;
 
 
-    clock_t endTime = clock();
+    double elapsed = (end.tv_sec - begin.tv_sec) + 
+              ((end.tv_usec - begin.tv_usec)/1000000.0);
+    // clock_t endTime = clock();
     //int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
 
-    printf("%3.20f seconds taken\n", endTime - startTime);
+    printf("%3.20f seconds taken\n", elapsed);
     //printf("%d seconds taken\n", diffInMillies);
 
-    //printf("%d microseconds taken\n", endTime - startTime);
+    //printf("%f milliseconds taken\n", elapsed);
 
 
     outputSudoku(cubeToSudoku());

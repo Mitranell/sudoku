@@ -26,7 +26,7 @@ void setGrid(int i, int j, int k) {
     for (int x = grid[0]; x <= grid[2]; x++) {
         for (int y = grid[1]; y <= grid[3]; y++) {
             if (i != x && j != y) {
-                cube[x][y][k] = 0;
+                cubes[v][x][y][k] = 0;
             }
         }
     }
@@ -43,7 +43,7 @@ void setBar(int *i, int *j, int *k, int *direction) {
     for (int x = 0; x < n; x++) {
         if (x != original) {
             *direction = x;
-            cube[*i][*j][*k]= 0;
+            cubes[v][*i][*j][*k]= 0;
         }
     }
     // to reset the variable to its original value
