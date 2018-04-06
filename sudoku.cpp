@@ -9,8 +9,8 @@ int*** cube;
 #include <iostream>
 #include <fstream>
 #include <limits.h>
-#include <time.h>
-// #include <sys/time.h>
+// #include <time.h>
+#include <sys/time.h>
 #include <omp.h>
 // contains updateCell()
 #include "update.cpp"
@@ -146,26 +146,26 @@ int main(int argc, char *argv[]) {
 
     
 
-    // struct timeval tv;
-    // gettimeofday(&tv,NULL);
-    // //tv.tv_sec // seconds
-    // time_t startTime = tv.tv_usec; 
-     clock_t startTime = clock();
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    //tv.tv_sec // seconds
+    time_t startTime = tv.tv_usec; 
+    //  clock_t startTime = clock();
 
 
     solve();
 
-    // gettimeofday(&tv,NULL);
-    //time_t endTime = tv.tv_usec;
+    gettimeofday(&tv,NULL);
+    time_t endTime = tv.tv_usec;
 
 
-    clock_t endTime = clock();
-    //int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
+    // clock_t endTime = clock();
+    // int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
 
-    printf("%3.20f seconds taken\n", endTime - startTime);
+    // printf("%3.20f seconds taken\n", endTime - startTime);
     //printf("%d seconds taken\n", diffInMillies);
 
-    //printf("%d microseconds taken\n", endTime - startTime);
+    printf("%d microseconds taken\n", endTime - startTime);
 
 
     outputSudoku(cubeToSudoku());
