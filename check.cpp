@@ -81,13 +81,13 @@ void checkCell() {
  */
 void checkGrid() {
     for (int k = 0; k < n; k++) {
-        int sum = 0;
         int p;
         int q;
 
         // increase indices with size of grid
         for (int i = 0; i < n; i += l) {
             for (int j = 0; j < n; j += l) {
+                int sum = 0;
                 grid = getGrid(i, j);
 
                 // loop over the grid
