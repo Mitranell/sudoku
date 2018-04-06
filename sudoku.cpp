@@ -9,8 +9,8 @@ int*** cube;
 #include <iostream>
 #include <fstream>
 #include <limits.h>
-//#include <time.h>
-#include <sys/time.h>
+#include <time.h>
+// #include <sys/time.h>
 #include <omp.h>
 // contains updateCell()
 #include "update.cpp"
@@ -28,27 +28,8 @@ void test() {
 
 /* creates 3d cube with dimensions n*n*n and initializes all the values to 1
  */
-void createCubeWithOnes() {
-    cube = new int**[n];
-    for (int i = 0; i < n; i++) {
-        cube[i] = new int*[n];
-        for (int j = 0; j < n; j++) {
-            cube[i][j] = new int[n];
-            for (int k = 0; k < n; k++) {
-                cube[i][j][k] = 1;
-            }
-        }
-    }
-}
-
-// PARALLEL
 // void createCubeWithOnes() {
-//     // creating as many threads as there are rows in the sudoku
-//     omp_set_num_threads(n);
-
 //     cube = new int**[n];
-
-//     #pragma omp parallel for 
 //     for (int i = 0; i < n; i++) {
 //         cube[i] = new int*[n];
 //         for (int j = 0; j < n; j++) {
@@ -58,8 +39,30 @@ void createCubeWithOnes() {
 //             }
 //         }
 //     }
-    
 // }
+
+// PARALLEL
+void createCubeWithOnes() {
+    // creating as many threads as there are rows in the sudoku
+    omp_set_num_threads(n);
+
+    cube = new int**[n];
+
+    #pragma omp parallel for 
+    for (int i = 0; i < n; i++) {
+        
+
+        cube[i] = new int*[n];
+        for (int j = 0; j < n; j++) {
+            cube[i][j] = new int[n];
+            for (int k = 0; k < n; k++) {
+                cube[i][j][k] = 1;
+            }
+        }
+    }
+
+    
+}
 
 int** init_sudoku() {
     int** sudoku = new int*[n];
@@ -73,7 +76,7 @@ int** init_sudoku() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
-    ifstream sudoku_file("sudoku.txt", ios::in);
+    ifstream sudoku_file("16x16.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -143,22 +146,26 @@ int main(int argc, char *argv[]) {
 
     
 
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-    //tv.tv_sec // seconds
-    time_t startTime = tv.tv_usec; 
-    
+    // struct timeval tv;
+    // gettimeofday(&tv,NULL);
+    // //tv.tv_sec // seconds
+    // time_t startTime = tv.tv_usec; 
+     clock_t startTime = clock();
+
+
     solve();
 
-    gettimeofday(&tv,NULL);
-    time_t endTime = tv.tv_usec;
-    //clock_t timeDiff = clock() - startTime;
+    // gettimeofday(&tv,NULL);
+    //time_t endTime = tv.tv_usec;
+
+
+    clock_t endTime = clock();
     //int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
 
-    //printf("%3.20f seconds taken\n", diffInMillies);
+    printf("%3.20f seconds taken\n", endTime - startTime);
     //printf("%d seconds taken\n", diffInMillies);
 
-    printf("%d microseconds taken\n", endTime - startTime);
+    //printf("%d microseconds taken\n", endTime - startTime);
 
 
     outputSudoku(cubeToSudoku());
