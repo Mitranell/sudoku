@@ -13,16 +13,17 @@ void bruteforceCell(int i, int j) {
     }
 
     if (sum > 1){
+        //TODO: check if this p was already was in a previous bruteforce iteration 
         //update cell mit v = v+1;
         cubes.push_back(cubes[v]);
         v++;
         updateCell(i,j,p);
         flag_struct tmp = { i,j,p };
         v_flag.push_back(tmp);
-        
     }
 }
 
+/* just started, so not correct*/
 void bruteforce(){
 
     for (int i = 0; i < n; i++) {

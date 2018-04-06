@@ -79,6 +79,7 @@ void test() {
   
 } */
 void createCubeWithOnes() {
+    //seems to be correct
     v1d row(n, 1);
 	v2d plane(n, row);
     v3d cube(n,plane);
@@ -155,6 +156,8 @@ int** cubeToSudoku() {
 void solve() {
     int rating = INT_MAX;
     int previous_rating;
+    
+    //START not tested, might be not correct
     do {
         do {
             previous_rating = rating;
@@ -171,7 +174,7 @@ void solve() {
             bruteforce();
         }
     } while(!isSolved());
-
+    //END not tested, might be not correct
 
     cout << "rating: " << rating << endl;
     cout << "isSolved: " << isSolved() << endl;
