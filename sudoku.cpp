@@ -24,6 +24,7 @@ double duration;
 #include "check.cpp"
 #include "main.cpp"
 
+
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
     timer(&solve);
