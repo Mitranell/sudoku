@@ -1,6 +1,8 @@
 /* for each row and column: check all possible cell values for uniqueness
  */
 void bruteforceCell(int i, int j) {
+    cout << "bruteforcing cell " << i << " " << j << endl;
+    outputDepth(i,j);
     int sum = 0;
     int p;
         // loop over all the cell its possible values
@@ -9,11 +11,14 @@ void bruteforceCell(int i, int j) {
         // save the right depth
         if (cubes[v][i][j][k]) {
             if (v_flag[v].i != i || v_flag[v].j != j ||  (v_flag[v].k !=k && v_flag[v].i == i && v_flag[v].j == j)){
+                cout << "setting cell k " << k << endl;
                 cubes.push_back(cubes[v]);
                 v++;
+                //crash at updatecell
                 updateCell(i,j,p);
                 flag_struct tmp = { i,j,p };
                 v_flag.push_back(tmp);
+                break;
             }
         }
     }
@@ -46,5 +51,13 @@ void bruteforce(){
         }
     }
 
+}
+
+void revertBruteforceStep(){
+    cout << "reverting bruteforce step " << v << endl;
+    v_flag.resize(v_flag.size()-1);
+    cubes[v].erase(cubes[v].begin());
+    v--;
+    
 }
 

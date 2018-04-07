@@ -63,9 +63,9 @@ void test() {
 
     cube = new int**[n];
 
-    #pragma omp parallel for 
+    #pragma omp parallel for
     for (int i = 0; i < n; i++) {
-        
+
 
         cube[i] = new int*[n];
         for (int j = 0; j < n; j++) {
@@ -76,7 +76,7 @@ void test() {
         }
     }
 
-  
+
 } */
 void createCubeWithOnes() {
     //seems to be correct
@@ -156,7 +156,7 @@ int** cubeToSudoku() {
 void solve() {
     int rating = INT_MAX;
     int previous_rating;
-    
+
     //START not tested, might be not correct
     do {
         do {
@@ -165,37 +165,33 @@ void solve() {
             // returns the total_sum as rating
             rating = checkCube();
             // when the total_sum is unchanged, the loop can stop
-        } while (rating < previous_rating);
-        cout << "next iteration" << endl;
-        if(!isSolvable){
-            v_flag.resize(v_flag.size()-1);
-            cubes[v].erase(cubes[v].begin());
-            v--;
+        } while (0 != rating && rating < previous_rating);
+        if (rating == 0){
+            // bruteforce was wrong, revert it 
+            revertBruteforceStep();
             previous_rating = INT_MAX;
         }
-        outputDepth(0,0);
-        cout << "isSolved: " << isSolved() << endl;
-        if (isSolved){
+        if (rating != 4*n*n){
             bruteforce();
             outputDepth(0,0);
         }
-    } while(!isSolved());
+    } while(rating != 4*n*n);
     //END not tested, might be not correct
 
-    cout << "rating: " << rating << endl;
-    cout << "isSolved: " << isSolved() << endl;
+    // cout << "rating: " << rating << endl;
+    // cout << "isSolved: " << isSolved() << endl;
 }
 
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
 
-    flag_struct intial = {0,0,0};
+    flag_struct intial = {-1,-1,-1};
     v_flag.push_back(intial);
 
     struct timeval begin, end;
     gettimeofday(&begin,NULL);
     //tv.tv_sec; // seconds
-    //time_t startTime = begin.tv_usec; 
+    //time_t startTime = begin.tv_usec;
     // clock_t startTime = clock();
 
     //cin.ignore();
@@ -205,7 +201,7 @@ int main(int argc, char *argv[]) {
     //time_t endTime = end.tv_usec;
 
 
-    double elapsed = (end.tv_sec - begin.tv_sec) + 
+    double elapsed = (end.tv_sec - begin.tv_sec) +
               ((end.tv_usec - begin.tv_usec)/1000000.0);
     // clock_t endTime = clock();
     //int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
