@@ -48,9 +48,9 @@ void createCubeWithOnes() {
 
     cube = new int**[n];
 
-    #pragma omp parallel for 
+    #pragma omp parallel for
     for (int i = 0; i < n; i++) {
-        
+
 
         cube[i] = new int*[n];
         for (int j = 0; j < n; j++) {
@@ -61,7 +61,7 @@ void createCubeWithOnes() {
         }
     }
 
-    
+
 }
 
 int** init_sudoku() {
@@ -144,20 +144,12 @@ void solve() {
 
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
-
-    // printf("\nMax no of threads: %d\n", omp_get_max_threads());
-
+    
     // initializing timer 
     clock_t t;
     t = clock();
 
     solve();
-
-    // computing the execution time of solve()
-    t = clock() - t;
-    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
- 
-    printf("solve() took %f seconds to execute. \n", time_taken);
     
     outputSudoku(cubeToSudoku());
 
