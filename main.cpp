@@ -22,7 +22,7 @@ int** init_sudoku() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
-    ifstream sudoku_file("16x16.txt", ios::in);
+    ifstream sudoku_file("9x9.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -90,21 +90,22 @@ void solve() {
 
     do {
         do {
-            cout << "rating: " << rating <<
-                " previous rating: " << previous_rating << endl;
             previous_rating = rating;
             // returns the total_sum as rating
             rating = checkCube();
+            cout << "Rating: " << rating << endl;
             // when the total_sum is unchanged, the loop can stop
         } while (0 != rating && rating < previous_rating);
-        break;
+        cout << endl;
         if (rating == 0) {
             // bruteforce was wrong, revert it
             revertBruteforceStep();
             previous_rating = INT_MAX;
         }
         if (rating != 4*n*n) {
+            outputSudoku(cubeToSudoku());
             bruteforce();
+            cout << endl;
         }
     } while(rating != 4*n*n);
 }
