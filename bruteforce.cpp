@@ -1,10 +1,15 @@
 // just checks if the k is a valid k
 bool rightDepth(int i, int j, int k){
-    if (cubes.size() == v + 1 ){
+    if (v_flag.size() == v + 1 ){
         return true;
     } else {
-        //checks if this k was selected on the last step
-        return v_flag[v+1].i != i || v_flag[v+1].j != j ||  (v_flag[v+1].k != k && v_flag[v+1].i == i && v_flag[v+1].j == j);
+        //checks if this k was selected in the last steps
+        bool result = true;
+        for (int m = v+1; m < v_flag.size() ; m++ ){
+            if ( v_flag[m].i != i || v_flag[m].j != j ) return result;
+            result = result && (v_flag[m].k != k && v_flag[m].i == i && v_flag[m].j == j);
+        }
+        return result;
     }
     
 }
@@ -12,8 +17,7 @@ bool rightDepth(int i, int j, int k){
 void bruteforceCell(int i, int j) {
     cout << "bruteforcing cell " << i << " " << j << endl;
     outputDepth(i,j);
-    int sum = 0;
-    int p;
+    int sum = 0;S
         // loop over all the cell its possible values
     for (int k = 0; k < n; k++) {
         sum += cubes[v][i][j][k];
@@ -36,7 +40,13 @@ void bruteforceCell(int i, int j) {
                 cout << "v: " << v << endl;
                 updateCell(i,j,k);
                 flag_struct tmp = { i,j,k };
-                v_flag.push_back(tmp);
+                if (v_flag.size() == v +1 ){
+                    v_flag.push_back(tmp);
+                } else {
+                     v_flag[v+1] = tmp;
+                    
+                }
+               
                 outputDepth(i,j);
                 break;
             }
@@ -72,7 +82,7 @@ int bruteforce(){
 
 void revertBruteforceStep(){
     cout << "reverting bruteforce step " << v << endl;
-    v_flag.resize(v_flag.size()-1);
+    //v_flag.resize(v_flag.size()-1);
     //cubes[v].erase(cubes[v].begin());
     v--;
     
