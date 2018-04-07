@@ -143,15 +143,22 @@ void solve() {
 
 
 int main(int argc, char *argv[]) {
+    
     outputSudoku(readSudoku());
     
     // initializing timer 
-    clock_t t;
-    t = clock();
+    clock_t timeStamp;
+    timeStamp = clock();
 
     solve();
-    
+
+    timeStamp = clock() - timeStamp;
+
+    double time_taken = ((double)timeStamp)/CLOCKS_PER_SEC; // in seconds
+ 
     outputSudoku(cubeToSudoku());
+
+    printf("solve() took %f seconds to execute \n", time_taken); 
 
     return 0;
 }
