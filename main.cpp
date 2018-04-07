@@ -121,7 +121,6 @@ int solve() {
         if (cube[backtrack.i][backtrack.j][k]) {
             int*** temp_cube = cube;
             updateCell(backtrack.i, backtrack.j, k);
-            cube = temp_cube;
 
             if (solve()) {
                 return 1;
