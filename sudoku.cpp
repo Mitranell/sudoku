@@ -9,8 +9,8 @@ int*** cube;
 #include <iostream>
 #include <fstream>
 #include <limits.h>
-// #include <time.h>
-#include <sys/time.h>
+#include <time.h>
+// #include <sys/time.h>
 #include <omp.h>
 // contains updateCell()
 #include "update.cpp"
@@ -141,33 +141,24 @@ void solve() {
     } while (rating < previous_rating);
 }
 
+
 int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
 
-    
+    // printf("\nMax no of threads: %d\n", omp_get_max_threads());
 
-    struct timeval tv;
-    gettimeofday(&tv,NULL);
-    //tv.tv_sec // seconds
-    time_t startTime = tv.tv_usec; 
-    //  clock_t startTime = clock();
-
+    // initializing timer 
+    clock_t t;
+    t = clock();
 
     solve();
 
-    gettimeofday(&tv,NULL);
-    time_t endTime = tv.tv_usec;
-
-
-    // clock_t endTime = clock();
-    // int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
-
-    // printf("%3.20f seconds taken\n", endTime - startTime);
-    //printf("%d seconds taken\n", diffInMillies);
-
-    printf("%d microseconds taken\n", endTime - startTime);
-
-
+    // computing the execution time of solve()
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+ 
+    printf("solve() took %f seconds to execute. \n", time_taken);
+    
     outputSudoku(cubeToSudoku());
 
     return 0;
