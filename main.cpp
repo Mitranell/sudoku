@@ -27,7 +27,7 @@ int** init_sudoku() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
-    ifstream sudoku_file("9x9.txt", ios::in);
+    ifstream sudoku_file("16x16.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -80,15 +80,23 @@ int** cubeToSudoku() {
     return sudoku;
 }
 
+void copyCube (int*** originalCube, int*** destinationCube) {
+    for (int i = 0; i < n; i++) {
+        destinationCube[i] = new int*[n];
+        for (int j = 0; j < n; j++) {
+            destinationCube[i][j] = new int[n];
+            for (int k = 0; k < n; k++) {
+                destinationCube[i][j][k] = originalCube[i][j][k];
+            }
+        }
+    }
+}
+
 /* this function times another given function
  */
 void timer(int (*function)()) {
     start = std::clock();
-    if ((*function)()) {
-        cout << "Solved!" << endl;
-    } else {
-        cout << "Not solved!" << endl;
-    }
+    (*function)();
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     cout << "Duration: "<< duration << endl << endl;
 }
@@ -104,13 +112,11 @@ int solve() {
 
     // the sudoku is solved
     if (rating == 4*n*n) {
-        cout << "rating = solved" << endl;
         return 1;
     }
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
-        cout << "rating = 0" << endl;
         return 0;
     }
 
@@ -118,15 +124,19 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        if (cube[backtrack.i][backtrack.j][k]) {
-            int*** temp_cube = cube;
+        static int i = backtrack.i;
+        static int j = backtrack.j;
+
+        if (cube[i][j][k]) {
+            int*** temp_cube = new int**[n];
+            copyCube(cube, temp_cube);
             updateCell(backtrack.i, backtrack.j, k);
 
             if (solve()) {
                 return 1;
             }
 
-            cube = temp_cube;
+            copyCube(temp_cube, cube);
         }
     }
 

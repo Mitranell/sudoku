@@ -59,28 +59,3 @@ void updateCell(int i, int j, int k) {
     setBar(&i, &j, &k, &k);
     setGrid(i, j, k);
 }
-
-/* void setBar2(int i, int j, int k, int direction) {
-	for (int x = 0; x < n; x++) {
-        switch (direction){
-            case 1:
-                if (i != x) cube[x][j][k] = 0;
-                break;
-            case 2:
-                if (j != x) cube[i][x][k] = 0;
-                break;
-            case 3:
-                if (k != x) cube[i][j][x] = 0;
-        }
-
-
-	}
-} */
-
-/* void updateCell2(int i, int j, int k) {
-    cout << "v: " << v << endl;
-    setBar2(i, j, k, 1);
-    setBar2(i, j, k, 2);
-    setBar2(i, j, k, 3);
-    setGrid(i, j, k);
-}  */
