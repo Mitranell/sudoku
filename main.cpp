@@ -80,18 +80,6 @@ int** cubeToSudoku() {
     return sudoku;
 }
 
-void copyCube (int*** originalCube, int*** destinationCube) {
-    for (int i = 0; i < n; i++) {
-        destinationCube[i] = new int*[n];
-        for (int j = 0; j < n; j++) {
-            destinationCube[i][j] = new int[n];
-            for (int k = 0; k < n; k++) {
-                destinationCube[i][j][k] = originalCube[i][j][k];
-            }
-        }
-    }
-}
-
 /* this function times another given function
  */
 void timer(int (*function)()) {
@@ -129,14 +117,32 @@ int solve() {
 
         if (cube[i][j][k]) {
             int*** temp_cube = new int**[n];
-            copyCube(cube, temp_cube);
+            for (int i = 0; i < n; i++) {
+                temp_cube[i] = new int*[n];
+                for (int j = 0; j < n; j++) {
+                    temp_cube[i][j] = new int[n];
+                    for (int k = 0; k < n; k++) {
+                        temp_cube[i][j][k] = cube[i][j][k];
+                    }
+                }
+            }
+
             updateCell(backtrack.i, backtrack.j, k);
 
             if (solve()) {
                 return 1;
             }
 
-            copyCube(temp_cube, cube);
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        cube[i][j][k] = temp_cube[i][j][k];
+                    }
+                    delete[] temp_cube[i][j];
+                }
+                delete[] temp_cube[i];
+            }
+            delete[] temp_cube;
         }
     }
 
