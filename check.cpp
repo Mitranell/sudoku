@@ -23,7 +23,7 @@ int checkRow() {
             if (sum == 1) {
                 updateCell(p, j, k);
             } else {
-                backtrack = {p, j, k};
+                backtrack = {p, j};
             }
 
             total_sum += sum;
@@ -58,7 +58,7 @@ int checkColumn() {
             if (sum == 1) {
                 updateCell(i, p, k);
             } else {
-                backtrack = {i, p, k};
+                backtrack = {i, p};
             }
 
             total_sum += sum;
@@ -93,7 +93,7 @@ int checkCell() {
             if (sum == 1) {
                 updateCell(i,j,p);
             } else {
-                backtrack = {i, j, p};
+                backtrack = {i, j};
             }
 
             total_sum += sum;
@@ -136,7 +136,7 @@ int checkGrid() {
                 if (sum == 1) {
                     updateCell(p,q,k);
                 } else {
-                    backtrack = {p, q, k};
+                    backtrack = {p, q};
                 }
 
                 total_sum += sum;

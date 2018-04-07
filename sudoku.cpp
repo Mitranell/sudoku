@@ -14,8 +14,8 @@ int n;
 int total_sum;
 int* grid;
 int*** cube;
-struct position { int i,j,k; };
-position backtrack;
+struct cell { int i,j; };
+cell backtrack;
 clock_t start;
 double duration;
 

@@ -27,7 +27,7 @@ int** init_sudoku() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
-    ifstream sudoku_file("16x16.txt", ios::in);
+    ifstream sudoku_file("9x9.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -84,7 +84,11 @@ int** cubeToSudoku() {
  */
 void timer(int (*function)()) {
     start = std::clock();
-    (*function)();
+    if ((*function)()) {
+        cout << "Solved!" << endl;
+    } else {
+        cout << "Not solved!" << endl;
+    }
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     cout << "Duration: "<< duration << endl << endl;
 }
@@ -100,21 +104,24 @@ int solve() {
 
     // the sudoku is solved
     if (rating == 4*n*n) {
+        cout << "rating = solved" << endl;
         return 1;
     }
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
+        cout << "rating = 0" << endl;
         return 0;
     }
 
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
      */
-    for (int i = 0; i < n; i++) {
-        if (cube[backtrack.i][backtrack.j][backtrack.k]) {
+    for (int k = 0; k < n; k++) {
+        if (cube[backtrack.i][backtrack.j][k]) {
             int*** temp_cube = cube;
-            updateCell(backtrack.i, backtrack.j, backtrack.k);
+            updateCell(backtrack.i, backtrack.j, k);
+            cube = temp_cube;
 
             if (solve()) {
                 return 1;
@@ -123,6 +130,7 @@ int solve() {
             cube = temp_cube;
         }
     }
-    cout << "Milan: this line should not be reachable." << endl;
+
+    // non of the values are possible, so trigger backtracking
     return 0;
 }
