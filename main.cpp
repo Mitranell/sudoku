@@ -81,7 +81,7 @@ void timer(void (*function)()) {
     start = std::clock();
     (*function)();
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-    cout<< "Duration: "<< duration << endl << endl;
+    cout << "Duration: "<< duration << endl << endl;
 }
 
 void solve() {
@@ -90,7 +90,8 @@ void solve() {
 
     do {
         do {
-            cout << "rating: " << rating << " previous rating: " << previous_rating << endl;
+            cout << "rating: " << rating <<
+                " previous rating: " << previous_rating << endl;
             previous_rating = rating;
             // returns the total_sum as rating
             rating = checkCube();

@@ -14,6 +14,12 @@ int checkRow() {
                 }
             }
 
+            // if the sum equals 0, there is no possibility
+            if (sum == 0) {
+                return 0;
+            }
+
+            // if the sum equals 1, then it was the only one
             if (sum == 1) {
                 updateCell(p, j, k);
             }
@@ -139,57 +145,10 @@ int checkGrid() {
  */
 int checkCube() {
     total_sum = 0;
+
     if(checkRow() && checkColumn() && checkCell() && checkGrid()) {
         return total_sum;
-    } else {
-        return 0;
     }
-}
 
-// /* Check if sudoku is solved
-// */
-// bool isSolved(){
-//     for (int k = 0; k < n; k++) {
-//         for (int j = 0; j < n; j++) {
-//             int sum = 0;
-//             int p;
-//
-//             // loop over the whole row
-//             for (int i = 0; i < n; i++) {
-//                 sum += cubes[v][i][j][k];
-//                 if (cubes[v][i][j][k]) {
-//                     p = i;
-//                 }
-//             }
-//
-//             if (sum != 1) {
-//                 return false;
-//             }
-//         }
-//     }
-//     return true;
-// }
-//
-// /* Check if cube just zeros => wrong didgit in bruteforcing
-// */
-// bool isSolvable(){
-//         for (int k = 0; k < n; k++) {
-//         for (int j = 0; j < n; j++) {
-//             int sum = 0;
-//             int p;
-//
-//             // loop over the whole row
-//             for (int i = 0; i < n; i++) {
-//                 sum += cubes[v][i][j][k];
-//                 if (cubes[v][i][j][k]) {
-//                     p = i;
-//                 }
-//             }
-//
-//             if (sum == 0) {
-//                 return false;
-//             }
-//         }
-//     }
-//     return true;
-// }
+    return 0;
+}
