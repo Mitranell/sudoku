@@ -1,5 +1,14 @@
-/* for each row and column: check all possible cell values for uniqueness
- */
+// just checks if the k is a valid k
+bool rightDepth(int i, int j, int k){
+    if (cubes.size() == v + 1 ){
+        return true;
+    } else {
+        //checks if this k was selected on the last step
+        return v_flag[v+1].i != i || v_flag[v+1].j != j ||  (v_flag[v+1].k != k && v_flag[v+1].i == i && v_flag[v+1].j == j);
+    }
+    
+}
+
 void bruteforceCell(int i, int j) {
     cout << "bruteforcing cell " << i << " " << j << endl;
     outputDepth(i,j);
@@ -10,28 +19,35 @@ void bruteforceCell(int i, int j) {
         sum += cubes[v][i][j][k];
         // save the right depth
         if (cubes[v][i][j][k]) {
-            if (v_flag[v].i != i || v_flag[v].j != j ||  (v_flag[v].k !=k && v_flag[v].i == i && v_flag[v].j == j)){
+            if (rightDepth(i,j,k)){
                 cout << "setting cell k " << k << endl;
-                cubes.push_back(cubes[v]);
+                cout << "v_flag[v].k: " << v_flag[v].k << endl;
+                //v_flag.resize(v_flag.size()-1);
+                if (cubes.size() == v +1 ){
+                    cubes.push_back(cubes[v]);
+                } else {
+                    cubes[v+1] = cubes[v];
+                    cin.ignore();
+                }
+                
                 v++;
                 //crash at updatecell
-                updateCell(i,j,p);
-                flag_struct tmp = { i,j,p };
+                //cout << cubes[v][i][j][k];
+                cout << "v: " << v << endl;
+                updateCell(i,j,k);
+                flag_struct tmp = { i,j,k };
                 v_flag.push_back(tmp);
+                outputDepth(i,j);
                 break;
             }
         }
     }
-
-    if (sum > 1){
-        //TODO: check if this p was already was in a previous bruteforce iteration 
-        //update cell mit v = v+1;
-
-    }
 }
 
+
+
 /* just started, so not correct*/
-void bruteforce(){
+int bruteforce(){
     cout << "bruteforce started" << endl;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -46,6 +62,7 @@ void bruteforce(){
             // if the sum equals 1, then it was the only one
             if (sum > 1) {
                 bruteforceCell(i,j);
+                return 0;
             }
 
         }
@@ -56,7 +73,7 @@ void bruteforce(){
 void revertBruteforceStep(){
     cout << "reverting bruteforce step " << v << endl;
     v_flag.resize(v_flag.size()-1);
-    cubes[v].erase(cubes[v].begin());
+    //cubes[v].erase(cubes[v].begin());
     v--;
     
 }

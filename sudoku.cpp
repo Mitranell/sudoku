@@ -173,7 +173,7 @@ void solve() {
         }
         if (rating != 4*n*n){
             bruteforce();
-            outputDepth(0,0);
+            //outputDepth(0,0);
         }
     } while(rating != 4*n*n);
     //END not tested, might be not correct
