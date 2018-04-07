@@ -35,6 +35,7 @@ double duration;
 #include "bruteforce.cpp"
 #include "main.cpp"
 
+
 int main(int argc, char *argv[]) {
     // TODO: comment
     v_flag.push_back(intial);

@@ -84,6 +84,20 @@ void timer(void (*function)()) {
     cout << "Duration: "<< duration << endl << endl;
 }
 
+bool algoLoop(v3d cube){
+    int rating = INT_MAX;
+    int previous_rating;
+    do {
+            cout << "rating: " << rating << " previous rating: " << previous_rating << endl;
+            previous_rating = rating;
+            // returns the total_sum as rating
+            rating = checkCube();
+            // when the total_sum is unchanged, the loop can stop
+    } while (0 != rating && rating < previous_rating);
+    //returns if solved
+    return rating == 4*n*n;
+}
+
 void solve() {
     int rating = INT_MAX;
     int previous_rating;
