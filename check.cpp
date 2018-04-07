@@ -8,8 +8,8 @@ int checkRow() {
 
             // loop over the whole row
             for (int i = 0; i < n; i++) {
-                sum += cubes[v][i][j][k];
-                if (cubes[v][i][j][k]) {
+                sum += cube[i][j][k];
+                if (cube[i][j][k]) {
                     p = i;
                 }
             }
@@ -22,6 +22,8 @@ int checkRow() {
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
                 updateCell(p, j, k);
+            } else {
+                backtrack = {p, j, k};
             }
 
             total_sum += sum;
@@ -40,9 +42,9 @@ int checkColumn() {
 
             // loop over the whole column
             for (int j = 0; j < n; j++) {
-                sum += cubes[v][i][j][k];
+                sum += cube[i][j][k];
                 //save the right column
-                if (cubes[v][i][j][k]) {
+                if (cube[i][j][k]) {
                     p = j;
                 }
             }
@@ -55,6 +57,8 @@ int checkColumn() {
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
                 updateCell(i, p, k);
+            } else {
+                backtrack = {i, p, k};
             }
 
             total_sum += sum;
@@ -73,9 +77,9 @@ int checkCell() {
 
             // loop over all the cell its possible values
             for (int k = 0; k < n; k++) {
-                sum += cubes[v][i][j][k];
+                sum += cube[i][j][k];
                 // save the right depth
-                if (cubes[v][i][j][k]) {
+                if (cube[i][j][k]) {
                     p = k;
                 }
             }
@@ -88,6 +92,8 @@ int checkCell() {
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
                 updateCell(i,j,p);
+            } else {
+                backtrack = {i, j, p};
             }
 
             total_sum += sum;
@@ -112,9 +118,9 @@ int checkGrid() {
                 // loop over the grid
                 for (int x = grid[0]; x <= grid[2]; x++) {
                     for (int y = grid[1]; y <= grid[3]; y++) {
-                        sum += cubes[v][x][y][k];
+                        sum += cube[x][y][k];
                         // save the right cell
-                        if (cubes[v][x][y][k]) {
+                        if (cube[x][y][k]) {
                             p = x;
                             q = y;
                         }
@@ -129,6 +135,8 @@ int checkGrid() {
                 // if the sum equals 1, then it was the only one
                 if (sum == 1) {
                     updateCell(p,q,k);
+                } else {
+                    backtrack = {p, q, k};
                 }
 
                 total_sum += sum;

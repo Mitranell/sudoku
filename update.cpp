@@ -26,7 +26,7 @@ void setGrid(int i, int j, int k) {
     for (int x = grid[0]; x <= grid[2]; x++) {
         for (int y = grid[1]; y <= grid[3]; y++) {
             if (i != x && j != y) {
-                cubes[v][x][y][k] = 0;
+                cube[x][y][k] = 0;
             }
         }
     }
@@ -43,7 +43,7 @@ void setBar(int *i, int *j, int *k, int *direction) {
     for (int x = 0; x < n; x++) {
         if (x != original) {
             *direction = x;
-            cubes[v][*i][*j][*k]= 0;
+            cube[*i][*j][*k]= 0;
         }
     }
     // to reset the variable to its original value
@@ -64,23 +64,23 @@ void updateCell(int i, int j, int k) {
 	for (int x = 0; x < n; x++) {
         switch (direction){
             case 1:
-                if (i != x) cubes[v][x][j][k] = 0;
+                if (i != x) cube[x][j][k] = 0;
                 break;
             case 2:
-                if (j != x) cubes[v][i][x][k] = 0;
+                if (j != x) cube[i][x][k] = 0;
                 break;
             case 3:
-                if (k != x) cubes[v][i][j][x] = 0;
+                if (k != x) cube[i][j][x] = 0;
         }
-			
-		
+
+
 	}
 } */
 
 /* void updateCell2(int i, int j, int k) {
-    cout << "v: " << v << endl; 
+    cout << "v: " << v << endl;
     setBar2(i, j, k, 1);
     setBar2(i, j, k, 2);
     setBar2(i, j, k, 3);
     setGrid(i, j, k);
-}  */  
+}  */

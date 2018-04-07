@@ -1,11 +1,16 @@
-/* create a three dimesional vector of size n-n-n filled with only ones
+/* creates 3d cube with dimensions n*n*n and initializes all the values to 1
  */
 void createCubeWithOnes() {
-    v1d row(n, 1);
-    v2d plane(n, row);
-    v3d cube(n,plane);
-
-    cubes.push_back(cube);
+    cube = new int**[n];
+    for (int i = 0; i < n; i++) {
+        cube[i] = new int*[n];
+        for (int j = 0; j < n; j++) {
+            cube[i][j] = new int[n];
+            for (int k = 0; k < n; k++) {
+                cube[i][j][k] = 1;
+            }
+        }
+    }
 }
 
 /* create an two dimensional array of size n-n
@@ -22,7 +27,7 @@ int** init_sudoku() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 int** readSudoku() {
-    ifstream sudoku_file("9x9.txt", ios::in);
+    ifstream sudoku_file("16x16.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -56,7 +61,7 @@ int** cubeToSudoku() {
             int sum = 0;
             for (int k = 0; k < n; k++) {
                 // check if cell is 1
-                if (cubes[v][i][j][k] == 1) {
+                if (cube[i][j][k] == 1) {
                     if (sum == 0) {
                         sum = 1;
                         /* k + 1 equals the number in the sudoku field
@@ -77,35 +82,47 @@ int** cubeToSudoku() {
 
 /* this function times another given function
  */
-void timer(void (*function)()) {
+void timer(int (*function)()) {
     start = std::clock();
     (*function)();
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     cout << "Duration: "<< duration << endl << endl;
 }
 
-void solve() {
+int solve() {
     int rating = INT_MAX;
     int previous_rating;
 
     do {
-        do {
-            previous_rating = rating;
-            // returns the total_sum as rating
-            rating = checkCube();
-            cout << "Rating: " << rating << endl;
-            // when the total_sum is unchanged, the loop can stop
-        } while (0 != rating && rating < previous_rating);
-        cout << endl;
-        if (rating == 0) {
-            // bruteforce was wrong, revert it
-            revertBruteforceStep();
-            previous_rating = INT_MAX;
+        previous_rating = rating;
+        rating = checkCube();
+    } while (0 != rating && rating < previous_rating);
+
+    // the sudoku is solved
+    if (rating == 4*n*n) {
+        return 1;
+    }
+
+    // the sudoku is not solvable, so trigger backtracking
+    if (rating == 0) {
+        return 0;
+    }
+
+    /* the sudoku is not solved yet
+     * we try a value and recursively call the same function
+     */
+    for (int i = 0; i < n; i++) {
+        if (cube[backtrack.i][backtrack.j][backtrack.k]) {
+            int*** temp_cube = cube;
+            updateCell(backtrack.i, backtrack.j, backtrack.k);
+
+            if (solve()) {
+                return 1;
+            }
+
+            cube = temp_cube;
         }
-        if (rating != 4*n*n) {
-            outputSudoku(cubeToSudoku());
-            bruteforce();
-            cout << endl;
-        }
-    } while(rating != 4*n*n);
+    }
+    cout << "Milan: this line should not be reachable." << endl;
+    return 0;
 }
