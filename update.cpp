@@ -26,6 +26,7 @@ void setGrid(int i, int j, int k) {
     for (int x = grid[0]; x <= grid[2]; x++) {
         for (int y = grid[1]; y <= grid[3]; y++) {
             if (i != x && j != y) {
+                #pragma omp critical
                 cube[x][y][k] = 0;
             }
         }
@@ -43,6 +44,7 @@ void setBar(int *i, int *j, int *k, int *direction) {
     for (int x = 0; x < n; x++) {
         if (x != original) {
             *direction = x;
+            #pragma omp critical
             cube[*i][*j][*k]= 0;
         }
     }

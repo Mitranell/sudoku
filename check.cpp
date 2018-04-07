@@ -15,9 +15,10 @@ void checkRow() {
             }
 
             if (sum == 1) {
+                // #pragma omp critical
                 updateCell(p, j, k);
             }
-
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -42,9 +43,10 @@ void checkColumn() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
+                // #pragma omp critical
                 updateCell(i, p, k);
             }
-
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -69,9 +71,10 @@ void checkCell() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
+                // #pragma omp critical
                 updateCell(i,j,p);
             }
-
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -104,9 +107,10 @@ void checkGrid() {
 
                 // if the sum equals 1, then it was the only one
                 if (sum == 1) {
+                    // #pragma omp critical
                     updateCell(p,q,k);
                 }
-
+                #pragma omp atomic
                 total_sum += sum;
             }
         }
@@ -119,9 +123,24 @@ void checkGrid() {
  */
 int checkCube() {
     total_sum = 0;
-    checkRow();
-    checkColumn();
-    checkCell();
-    checkGrid();
+
+    // TODO parallelize this part with critical section or atomic ops (editing the cube)
+
+    #pragma omp parallel 
+    {
+        // printf("%s\n", "hereeee");
+        checkRow();
+        checkColumn();
+        checkCell();
+        checkGrid();
+    }
+
+    // checkRow();
+    // checkColumn();
+    // checkCell();
+    // checkGrid();
+
+    //#pragma omp barrier
+    
     return total_sum;
 }
