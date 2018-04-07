@@ -160,18 +160,24 @@ void solve() {
     //START not tested, might be not correct
     do {
         do {
+            cout << "rating: " << rating << " previous rating: " << previous_rating << endl;
             previous_rating = rating;
             // returns the total_sum as rating
             rating = checkCube();
             // when the total_sum is unchanged, the loop can stop
         } while (rating < previous_rating);
+        cout << "next iteration" << endl;
         if(!isSolvable){
-            v_flag[v].
+            v_flag.resize(v_flag.size()-1);
+            cubes[v].erase(cubes[v].begin());
             v--;
             previous_rating = INT_MAX;
         }
-        if (!isSolved){
+        outputDepth(0,0);
+        cout << "isSolved: " << isSolved() << endl;
+        if (isSolved){
             bruteforce();
+            outputDepth(0,0);
         }
     } while(!isSolved());
     //END not tested, might be not correct
