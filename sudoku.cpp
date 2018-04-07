@@ -1,5 +1,13 @@
 using namespace std;
+
 #include <vector>
+#include <cstdio>
+#include <ctime>
+#include <iostream>
+#include <fstream>
+#include <limits.h>
+#include <sys/time.h>
+#include <omp.h>
 
 typedef vector<int> v1d;
 typedef vector<v1d> v2d;
@@ -10,83 +18,34 @@ int l;
 int n;
 int total_sum;
 int* grid;
-//int*** cube;
 v4d cubes;
 int v = 0;
-struct flag_struct{
+struct flag_struct {
     int i,j,k;
 };
 vector<flag_struct> v_flag;
+// TODO: comment
+flag_struct intial = {-1,-1,-1};
+clock_t start;
+double duration;
 
-#include <iostream>
-#include <fstream>
-#include <limits.h>
-// #include <time.h>
-#include <sys/time.h>
-#include <omp.h>
-// contains updateCell()
 #include "update.cpp"
-// contains output*()
 #include "output.cpp"
-// contains check*()
 #include "check.cpp"
 #include "bruteforce.cpp"
 
-
-
-void test() {
-    #pragma omp parallel
-    {
-        printf("test\n");
-    }
-}
-
-/* creates 3d cube with dimensions n*n*n and initializes all the values to 1
+/* create a three dimesional vector of size n-n-n filled with only ones
  */
-// void createCubeWithOnes() {
-//     cube = new int**[n];
-//     for (int i = 0; i < n; i++) {
-//         cube[i] = new int*[n];
-//         for (int j = 0; j < n; j++) {
-//             cube[i][j] = new int[n];
-//             for (int k = 0; k < n; k++) {
-//                 cube[i][j][k] = 1;
-//             }
-//         }
-//     }
-// }
-
-// PARALLEL
-/* void createCubeWithOnes() {
-    // creating as many threads as there are rows in the sudoku
-    omp_set_num_threads(n);
-
-    cube = new int**[n];
-
-    #pragma omp parallel for
-    for (int i = 0; i < n; i++) {
-
-
-        cube[i] = new int*[n];
-        for (int j = 0; j < n; j++) {
-            cube[i][j] = new int[n];
-            for (int k = 0; k < n; k++) {
-                cube[i][j][k] = 1;
-            }
-        }
-    }
-
-
-} */
 void createCubeWithOnes() {
-    //seems to be correct
     v1d row(n, 1);
-	v2d plane(n, row);
+    v2d plane(n, row);
     v3d cube(n,plane);
 
-	cubes.push_back(cube);
+    cubes.push_back(cube);
 }
 
+/* create an two dimensional array of size n-n
+ */
 int** init_sudoku() {
     int** sudoku = new int*[n];
     for (int i = 0; i < n; i++) {
@@ -149,8 +108,16 @@ int** cubeToSudoku() {
             }
         }
     }
-
     return sudoku;
+}
+
+/* this function times another given function
+ */
+void timer(void (*function)()) {
+    start = std::clock();
+    (*function)();
+    duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+    cout<< "Duration: "<< duration << endl << endl;
 }
 
 void solve() {
@@ -166,12 +133,13 @@ void solve() {
             rating = checkCube();
             // when the total_sum is unchanged, the loop can stop
         } while (0 != rating && rating < previous_rating);
-        if (rating == 0){
-            // bruteforce was wrong, revert it 
+        break;
+        if (rating == 0) {
+            // bruteforce was wrong, revert it
             revertBruteforceStep();
             previous_rating = INT_MAX;
         }
-        if (rating != 4*n*n){
+        if (rating != 4*n*n) {
             bruteforce();
             //outputDepth(0,0);
         }
@@ -183,35 +151,11 @@ void solve() {
 }
 
 int main(int argc, char *argv[]) {
-    outputSudoku(readSudoku());
-
-    flag_struct intial = {-1,-1,-1};
+    // TODO: comment
     v_flag.push_back(intial);
 
-    struct timeval begin, end;
-    gettimeofday(&begin,NULL);
-    //tv.tv_sec; // seconds
-    //time_t startTime = begin.tv_usec;
-    // clock_t startTime = clock();
-
-    //cin.ignore();
-    solve();
-
-    gettimeofday(&end,NULL);
-    //time_t endTime = end.tv_usec;
-
-
-    double elapsed = (end.tv_sec - begin.tv_sec) +
-              ((end.tv_usec - begin.tv_usec)/1000000.0);
-    // clock_t endTime = clock();
-    //int diffInMillies = timeDiff * 1000 / CLOCKS_PER_SEC;
-
-    printf("%3.20f seconds taken\n", elapsed);
-    //printf("%d seconds taken\n", diffInMillies);
-
-    //printf("%f milliseconds taken\n", elapsed);
-
-
+    outputSudoku(readSudoku());
+    timer(&solve);
     outputSudoku(cubeToSudoku());
 
     return 0;
