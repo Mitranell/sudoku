@@ -16,7 +16,7 @@ void createCubeWithOnes() {
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 void readSudoku() {
-    ifstream sudoku_file("16x16.txt", ios::in);
+    ifstream sudoku_file("4x4.txt", ios::in);
 
     sudoku_file >> l;
     n = l*l;
@@ -74,7 +74,7 @@ int timer(int (*function)()) {
     start = std::clock();
     int result = (*function)();
     if (result == 0) {
-        printf("Not solution")
+        printf("Not solution");
     }
     //duration = duration + (std::clock() - start) / (double) CLOCKS_PER_SEC;
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
