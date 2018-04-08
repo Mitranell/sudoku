@@ -122,6 +122,8 @@ int checkGrid() {
         for (int i = 0; i < n; i += l) {
             for (int j = 0; j < n; j += l) {
                 int sum = 0;
+
+                #pragma omp critical
                 getGrid(i, j);
 
                 // loop over the grid
@@ -167,8 +169,9 @@ int checkCube() {
     total_sum = 0;
     int checkR, checkCo, checkCe, checkG;
 
+    // #pragma omp parallel shared(cube) private(i,j, current, level)
     #pragma omp parallel num_threads(4)
-    {   
+    {
         // if(checkRow() && checkColumn() && checkCell() && checkGrid()) {
         //     return total_sum;
         // }
