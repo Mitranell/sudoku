@@ -73,6 +73,9 @@ int** cubeToSudoku() {
 int timer(int (*function)()) {
     start = std::clock();
     int result = (*function)();
+    if (result == 0) {
+        printf("Not solution")
+    }
     //duration = duration + (std::clock() - start) / (double) CLOCKS_PER_SEC;
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     //cout << "Duration: "<< duration << endl << endl;
@@ -82,14 +85,6 @@ int timer(int (*function)()) {
 int count = 0;
 
 int solve() {
-    count += 1;
-    //cout << count << endl;
-    if (count % 1000 == 0) {
-        cout << string( 100, '\n' );
-        cout << count << endl;
-        cubeToSudoku();
-        outputSudoku();
-    }
     int rating = INT_MAX;
     int previous_rating;
 
@@ -113,10 +108,7 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        static int i = backtrack.i;
-        static int j = backtrack.j;
-
-        if (cube[i][j][k]) {
+        if (cube[backtrack.i][backtrack.j][k]) {
             int*** temp_cube = new int**[n];
             for (int i = 0; i < n; i++) {
                 temp_cube[i] = new int*[n];
