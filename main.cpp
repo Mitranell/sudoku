@@ -15,18 +15,18 @@ void createCubeWithOnes() {
 
 /* create an two dimensional array of size n-n
  */
-int** init_sudoku() {
-    int** sudoku = new int*[n];
-    for (int i = 0; i < n; i++) {
-        sudoku[i] = new int[n];
-    }
-
-    return sudoku;
-}
+// int** init_sudoku() {
+//     int** sudoku = new int*[n];
+//     for (int i = 0; i < n; i++) {
+//         sudoku[i] = new int[n];
+//     }
+//
+//     return sudoku;
+// }
 
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
-int** readSudoku() {
+void readSudoku() {
     ifstream sudoku_file("16x16.txt", ios::in);
 
     sudoku_file >> l;
@@ -35,7 +35,10 @@ int** readSudoku() {
     // since n is known, we create the cube here in order to run updateCell()
     createCubeWithOnes();
 
-    int** sudoku = init_sudoku();
+    sudoku = new int*[n];
+    for (int i = 0; i < n; i++) {
+        sudoku[i] = new int[n];
+    }
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -46,15 +49,12 @@ int** readSudoku() {
             }
         }
     }
-    return sudoku;
 }
 
 /* converts the 3d cube to a 2d sudoku
  * fills in 0 when there is more than one possible value for a cell
  */
 int** cubeToSudoku() {
-    int** sudoku = init_sudoku();
-
     //sum the depths of [i][j][*] whether it is 1
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -77,7 +77,6 @@ int** cubeToSudoku() {
             }
         }
     }
-    return sudoku;
 }
 
 /* this function times another given function
@@ -89,7 +88,17 @@ void timer(int (*function)()) {
     cout << "Duration: "<< duration << endl << endl;
 }
 
+int count = 0;
+
 int solve() {
+    count += 1;
+    //cout << count << endl;
+    if (count % 1000 == 0) {
+        cout << string( 100, '\n' );
+        cout << count << endl;
+        cubeToSudoku();
+        outputSudoku();
+    }
     int rating = INT_MAX;
     int previous_rating;
 

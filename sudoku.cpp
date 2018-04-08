@@ -8,11 +8,13 @@ using namespace std;
 #include <limits.h>
 #include <sys/time.h>
 #include <omp.h>
+#include <stdexcept>
 
 int l;
 int n;
 int total_sum;
 int* grid = new int[4];
+int** sudoku;
 int*** cube;
 struct cell { int i,j; };
 cell backtrack;
@@ -26,9 +28,11 @@ double duration;
 
 
 int main(int argc, char *argv[]) {
-    outputSudoku(readSudoku());
+    readSudoku();
+    outputSudoku();
     timer(&solve);
-    outputSudoku(cubeToSudoku());
+    cubeToSudoku();
+    outputSudoku();
 
     return 0;
 }
