@@ -1,3 +1,11 @@
+/**
+    Parallel and Distributed Computing
+    Purpose: Create a parallel version of sudoku.
+
+    @author 
+    @version 1.1 04/08/18
+*/
+
 using namespace std;
 
 #include <vector>
