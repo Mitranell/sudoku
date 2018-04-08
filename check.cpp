@@ -124,7 +124,7 @@ int checkGrid() {
                 int sum = 0;
 
                 #pragma omp critical
-                grid = getGrid(i, j);
+                getGrid(i, j);
 
                 // loop over the grid
                 for (int x = grid[0]; x <= grid[2]; x++) {

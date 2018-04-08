@@ -12,7 +12,7 @@ using namespace std;
 int l;
 int n;
 int total_sum;
-int* grid;
+int* grid = new int[4];
 int*** cube;
 struct cell { int i,j; };
 cell backtrack;
@@ -31,6 +31,6 @@ int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
     timer(&solve);
     outputSudoku(cubeToSudoku());
-    
+
     return 0;
 }

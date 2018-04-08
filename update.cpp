@@ -1,24 +1,24 @@
 /* gets the coordinates [x1, y1, x2, y2] of the grid where cell [i][j] lies in
  * (x1,y1) upper left cell and (x2,y2) the lower right cell
  */
-int* getGrid(int i, int j) {
+void getGrid(int i, int j) {
     // integer calculation cuts off the fractional part
     int i1 = (i / l) * l;
     int j1 = (j / l) * l;
     // last field which is still in the grid are the l-1 fields
     int i2 = i1 + l - 1;
     int j2 = j1 + l - 1;
-    int grid[] = {i1, j1, i2, j2};
-    int * gridPointer = grid;
-
-    return gridPointer;
+    grid[0] = i1;
+    grid[1] = j1;
+    grid[2] = i2;
+    grid[3] = j2;
 }
 
 /* takes the cell [i][j][k] and sets all the cells in the same grid to zero
  * except the given cell
  */
 void setGrid(int i, int j, int k) {
-    grid = getGrid(i, j);
+    getGrid(i, j);
 
     /* loop over the whole grid
      * set everything to 0 except when the indices align with the given cell
