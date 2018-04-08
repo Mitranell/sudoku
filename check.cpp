@@ -19,13 +19,16 @@ int checkRow() {
                 return 0;
             }
 
+            #
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
+                #pragma omp critical
                 updateCell(p, j, k);
             } else {
+                #pragma omp critical
                 backtrack = {p, j};
             }
-
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -56,11 +59,14 @@ int checkColumn() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
+                #pragma omp critical
                 updateCell(i, p, k);
             } else {
+                #pragma omp critical
                 backtrack = {i, p};
             }
 
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -91,11 +97,14 @@ int checkCell() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
+                #pragma omp critical
                 updateCell(i,j,p);
             } else {
+                #pragma omp critical
                 backtrack = {i, j};
             }
 
+            #pragma omp atomic
             total_sum += sum;
         }
     }
@@ -134,11 +143,14 @@ int checkGrid() {
 
                 // if the sum equals 1, then it was the only one
                 if (sum == 1) {
+                    #pragma omp critical
                     updateCell(p,q,k);
                 } else {
+                    #pragma omp critical
                     backtrack = {p, q};
                 }
 
+                #pragma omp atomic
                 total_sum += sum;
             }
         }
@@ -153,10 +165,25 @@ int checkGrid() {
  */
 int checkCube() {
     total_sum = 0;
+    int checkR, checkCo, checkCe, checkG;
 
-    if(checkRow() && checkColumn() && checkCell() && checkGrid()) {
+    #pragma omp parallel num_threads(4)
+    {   
+        // if(checkRow() && checkColumn() && checkCell() && checkGrid()) {
+        //     return total_sum;
+        // }
+
+        checkR = checkRow();
+        checkCo = checkColumn();
+        checkCe = checkCell();
+        checkG = checkGrid();
+    }
+
+    if(checkR && checkCo && checkCe && checkG) {
         return total_sum;
     }
+
+     //#pragma omp barrier
 
     return 0;
 }

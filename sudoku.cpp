@@ -31,8 +31,6 @@ int main(int argc, char *argv[]) {
     outputSudoku(readSudoku());
     timer(&solve);
     outputSudoku(cubeToSudoku());
-
-    printf("solve() took %f seconds to execute \n", time_taken); 
-
+    
     return 0;
 }
