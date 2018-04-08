@@ -31,8 +31,9 @@ int main(int argc, char *argv[]) {
     readSudoku();
     outputSudoku();
     timer(&solve);
+    //solve();
     cubeToSudoku();
     outputSudoku();
-
+    cout << "Duration: "<< duration << endl << endl;
     return 0;
 }
