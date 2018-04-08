@@ -94,8 +94,7 @@ int count = 0;
 
 int solve() {
     count += 1;
-    //cout << count << endl;
-    if (count % 1000 == 0) {
+    if (count % 10000 == 0) {
         cout << string( 100, '\n' );
         cout << count << endl;
         cubeToSudoku();
@@ -120,13 +119,13 @@ int solve() {
         return 0;
     }
 
+    int i = backtrack.i;
+    int j = backtrack.j;
+
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        static int i = backtrack.i;
-        static int j = backtrack.j;
-
         if (cube[i][j][k]) {
             int*** temp_cube = new int**[n];
             for (int i = 0; i < n; i++) {
@@ -139,7 +138,7 @@ int solve() {
                 }
             }
 
-            updateCell(backtrack.i, backtrack.j, k);
+            updateCell(i, j, k);
 
             if (solve()) {
                 return 1;
