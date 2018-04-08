@@ -81,11 +81,12 @@ int** cubeToSudoku() {
 
 /* this function times another given function
  */
-void timer(int (*function)()) {
+int timer(int (*function)()) {
     start = std::clock();
-    (*function)();
+    int result = (*function)();
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     cout << "Duration: "<< duration << endl << endl;
+    return result;
 }
 
 int count = 0;
@@ -104,7 +105,8 @@ int solve() {
 
     do {
         previous_rating = rating;
-        rating = checkCube();
+        rating = timer(&checkCube);
+        //rating = checkCube();
     } while (0 != rating && rating < previous_rating);
 
     // the sudoku is solved
