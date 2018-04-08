@@ -113,7 +113,7 @@ int checkGrid() {
         for (int i = 0; i < n; i += l) {
             for (int j = 0; j < n; j += l) {
                 int sum = 0;
-                grid = getGrid(i, j);
+                getGrid(i, j);
 
                 // loop over the grid
                 for (int x = grid[0]; x <= grid[2]; x++) {
