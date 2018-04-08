@@ -13,17 +13,6 @@ void createCubeWithOnes() {
     }
 }
 
-/* create an two dimensional array of size n-n
- */
-// int** init_sudoku() {
-//     int** sudoku = new int*[n];
-//     for (int i = 0; i < n; i++) {
-//         sudoku[i] = new int[n];
-//     }
-//
-//     return sudoku;
-// }
-
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
 void readSudoku() {
