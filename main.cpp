@@ -79,6 +79,21 @@ int** cubeToSudoku() {
     }
 }
 
+cell findEmptyCell(){
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int sum = 0;
+            for (int k = 0; k < n; k++) {
+                sum += cube[i][j][k];
+
+                if (sum == 2) {
+                    return {i, j};
+                }
+            }
+        }
+    }
+}
+
 /* this function times another given function
  */
 int timer(int (*function)()) {
@@ -93,7 +108,6 @@ int timer(int (*function)()) {
 int counter = 0;
 
 int solve() {
-    counter += 1;
     int rating = INT_MAX;
     int previous_rating;
 
@@ -103,13 +117,6 @@ int solve() {
         rating = checkCube();
     } while (0 != rating && rating < previous_rating);
 
-    /* show sudoku results after heuristics */
-    /*cout << "heuristics result: " << endl;
-    cubeToSudoku();
-    outputSudoku();*/
-
-    int i = backtrack.i;
-    int j = backtrack.j;
 
     // the sudoku is solved
     if (rating == 4*n*n) {
@@ -119,14 +126,17 @@ int solve() {
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
         return 0;
-        //return 1;
     }
+
+    cell backtrackCell = findEmptyCell();
+    int i = backtrackCell.i;
+    int j = backtrackCell.j;
 
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        if (cube[i][backtrack.j][k]) {
+        if (cube[i][j][k]) {
             int*** temp_cube = new int**[n];
             for (int i = 0; i < n; i++) {
                 temp_cube[i] = new int*[n];
@@ -138,15 +148,7 @@ int solve() {
                 }
             }
 
-            cubeToSudoku();
-            outputSudoku();
-            cout << "setting " << k +1 << " in " << j << "," << i << endl;
             updateCell(i, j, k);
-
-            /* to stop after 1 backtracking step*/
-           /* if (counter == 1)
-                return 0; */
-
 
             if (solve()) {
                 return 1;
