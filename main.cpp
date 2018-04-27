@@ -85,13 +85,15 @@ int timer(int (*function)()) {
     start = std::clock();
     int result = (*function)();
     if (result == 0) {
-        printf("No solution");
+         cout << "No solution" << endl;
     }
     duration = (std::clock() - start) / (double) CLOCKS_PER_SEC;
     return result;
 }
+int counter = 0;
 
 int solve() {
+    counter += 1;
     int rating = INT_MAX;
     int previous_rating;
 
@@ -101,6 +103,14 @@ int solve() {
         rating = checkCube();
     } while (0 != rating && rating < previous_rating);
 
+    /* show sudoku results after heuristics */
+    /*cout << "heuristics result: " << endl;
+    cubeToSudoku();
+    outputSudoku();*/
+
+    int i = backtrack.i;
+    int j = backtrack.j;
+
     // the sudoku is solved
     if (rating == 4*n*n) {
         return 1;
@@ -109,13 +119,14 @@ int solve() {
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
         return 0;
+        //return 1;
     }
 
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        if (cube[backtrack.i][backtrack.j][k]) {
+        if (cube[i][backtrack.j][k]) {
             int*** temp_cube = new int**[n];
             for (int i = 0; i < n; i++) {
                 temp_cube[i] = new int*[n];
@@ -127,7 +138,15 @@ int solve() {
                 }
             }
 
-            updateCell(backtrack.i, backtrack.j, k);
+            cubeToSudoku();
+            outputSudoku();
+            cout << "setting " << k +1 << " in " << j << "," << i << endl;
+            updateCell(i, j, k);
+
+            /* to stop after 1 backtracking step*/
+           /* if (counter == 1)
+                return 0; */
+
 
             if (solve()) {
                 return 1;
