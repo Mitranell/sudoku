@@ -134,7 +134,7 @@ int solve(int rank) {
 
     if(once) {
         cell backtrackCell = findEmptyCell();
-        updateCell(backtrack.i, backtrack.j, rank + 1);
+        updateCell(backtracCell.i, backtrackCell.j, rank + 1);
 
         once = 0;
     }
