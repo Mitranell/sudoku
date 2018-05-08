@@ -132,7 +132,7 @@ int solve() {
 
     if(once) {
         cell backtrackCell = findEmptyCell();
-        updateCell(backtrackCell.i, backtrackCell.j, rank + 1);
+        updateCell(backtrackCell.i, backtrackCell.j, thread_rank + 1);
 
         once = 0;
     }

@@ -11,7 +11,7 @@ using namespace std;
 #include <mpi.h>
 
 int once = 1;
-int rank;
+int thread_rank;
 int l;
 int n;
 int total_sum;
@@ -28,12 +28,12 @@ double duration;
 #include "check.cpp"
 #include "main.cpp"
 
-int getMPIRank() {
-    int rank;
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-    return rank;
-}
+// int getMPIId() {
+//     int thread_rank;
+//     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+//
+//     return thread_rank;
+// }
 
 
 int main(int argc, char *argv[]) {
@@ -46,13 +46,13 @@ int main(int argc, char *argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
     // get rank
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    printf("Hi from node %d of %d\n", rank, nprocs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+    printf("Hi from node %d of %d\n", thread_rank, nprocs);
 
     timer(&solve());
     //solve();
 
-    if (rank == 0) {
+    if (thread_rank == 0) {
         cubeToSudoku();
         outputSudoku();
         cout << "Duration: "<< duration << endl << endl;
