@@ -44,18 +44,21 @@ int main(int argc, char *argv[]) {
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
-    // get PID
-    int me;
-    MPI_Comm_rank(MPI_COMM_WORLD, &me);
-    printf("Hi from node %d of %d\n", me, nprocs);
+    // get rank
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    printf("Hi from node %d of %d\n", rank, nprocs);
     
-    timer(&solve);
+    timer(&solve(rank));
     //solve();
+
+    if (rank == 0) {
+        cubeToSudoku();
+        outputSudoku();
+        cout << "Duration: "<< duration << endl << endl;
+    }
 
     MPI_Finalize();
 
-    cubeToSudoku();
-    outputSudoku();
-    cout << "Duration: "<< duration << endl << endl;
     return 0;
 }
