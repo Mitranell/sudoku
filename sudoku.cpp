@@ -11,6 +11,8 @@ using namespace std;
 #include <stdexcept>
 #include <mpi.h>
 
+int once = 1;
+int rank;
 int l;
 int n;
 int total_sum;
@@ -45,11 +47,10 @@ int main(int argc, char *argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
     // get rank
-    int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     printf("Hi from node %d of %d\n", rank, nprocs);
-    
-    timer(&solve(rank));
+
+    timer(&solve());
     //solve();
 
     if (rank == 0) {

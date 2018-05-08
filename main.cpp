@@ -1,5 +1,3 @@
-int once = 1;
-
 /* creates 3d cube with dimensions n*n*n and initializes all the values to 1
  */
 void createCubeWithOnes() {
@@ -109,7 +107,7 @@ int timer(int (*function)()) {
 }
 int counter = 0;
 
-int solve(int rank) {
+int solve() {
 
 
     int rating = INT_MAX;
@@ -134,7 +132,7 @@ int solve(int rank) {
 
     if(once) {
         cell backtrackCell = findEmptyCell();
-        updateCell(backtracCell.i, backtrackCell.j, rank + 1);
+        updateCell(backtrackCell.i, backtrackCell.j, rank + 1);
 
         once = 0;
     }
@@ -147,7 +145,6 @@ int solve(int rank) {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        onFirstRound = false;
         if (cube[i][j][k]) {
             int*** temp_cube = new int**[n];
             for (int i = 0; i < n; i++) {
