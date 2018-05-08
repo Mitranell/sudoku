@@ -1,9 +1,11 @@
 /* creates 3d cube with dimensions n*n*n and initializes all the values to 1
  */
 void createCubeWithOnes() {
-    cube[n][n][n];
+    cube = (int***)malloc(n*sizeof(int**));
     for (int i = 0; i < n; i++) {
+        cube[i] = (int**)malloc(n*sizeof(int*));
         for (int j = 0; j < n; j++) {
+            cube[i][j] = (int*)malloc(n*sizeof(int));
             for (int k = 0; k < n; k++) {
                 cube[i][j][k] = 1;
             }
@@ -23,9 +25,10 @@ void readSudoku() {
     // since n is known, we create the cube here in order to run updateCell()
     createCubeWithOnes();
 
-    sudoku[n][n];
+    sudoku = (int**)malloc(n*sizeof(int*));
 
     for (int i = 0; i < n; i++) {
+        sudoku[i] = (int*)malloc(n*sizeof(int));
         for (int j = 0; j < n; j++) {
             fscanf(sudoku_file, "%d", &sudoku[i][j]);
 
@@ -34,6 +37,8 @@ void readSudoku() {
             }
         }
     }
+
+    fclose(sudoku_file);
 }
 
 /* converts the 3d cube to a 2d sudoku
@@ -85,14 +90,15 @@ int timer(int (*function)()) {
     start = clock();
     int result = (*function)();
     if (result == 0) {
-         printf("No solution");
+         printf("No solution\n\n");
     }
     duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     return result;
 }
-int counter = 0;
+int counter = 1;
 
 int solve() {
+    counter++;
     int rating = INT_MAX;
     int previous_rating;
 
@@ -102,7 +108,6 @@ int solve() {
         rating = checkCube();
     } while (0 != rating && rating < previous_rating);
 
-
     // the sudoku is solved
     if (rating == 4*n*n) {
         return 1;
@@ -110,6 +115,7 @@ int solve() {
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
+        counter--;
         return 0;
     }
 
@@ -122,7 +128,7 @@ int solve() {
      */
     for (int k = 0; k < n; k++) {
         if (cube[i][j][k]) {
-            int*** temp_cube[n][n][n];
+            int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     for (int k = 0; k < n; k++) {
@@ -137,7 +143,13 @@ int solve() {
                 return 1;
             }
 
-            free(temp_cube);
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        cube[i][j][k] = temp_cube[i][j][k];
+                    }
+                }
+            }
         }
     }
 
