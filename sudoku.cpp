@@ -52,11 +52,13 @@ int main(int argc, char *argv[]) {
     timer(&solve);
     //solve();
 
-    if (thread_rank == 0) {
-        cubeToSudoku();
-        outputSudoku();
-        cout << "Duration: "<< duration << endl << endl;
-    }
+
+    cubeToSudoku();
+    outputSudoku();
+    cout << "Duration: "<< duration << endl << endl;   
+
+    MPI_Abort(MPI_COMM_WORLD);
+
 
     MPI_Finalize();
 
