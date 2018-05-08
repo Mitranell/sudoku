@@ -160,7 +160,7 @@ int solve() {
 
             updateCell(i, j, k);
 
-            if (solve(rank)) {
+            if (solve()) {
                 return 1;
             }
 

@@ -1,6 +1,5 @@
 using namespace std;
 
-#include <vector>
 #include <cstdio>
 #include <ctime>
 #include <iostream>
