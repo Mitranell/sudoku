@@ -110,7 +110,7 @@ int timer(int (*function)()) {
 int counter = 0;
 
 int solve(int rank) {
-    
+
 
     int rating = INT_MAX;
     int previous_rating;
@@ -134,7 +134,7 @@ int solve(int rank) {
 
     if(once) {
         cell backtrackCell = findEmptyCell();
-        updateCell(i,j,rank + 1);
+        updateCell(backtrack.i, backtrack.j, rank + 1);
 
         once = 0;
     }
