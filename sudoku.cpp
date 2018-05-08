@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
     printf("Hi from node %d of %d\n", thread_rank, nprocs);
 
-    timer(&solve());
+    timer(&solve);
     //solve();
 
     if (thread_rank == 0) {
