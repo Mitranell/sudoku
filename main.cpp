@@ -122,6 +122,7 @@ int solve() {
 
     // the sudoku is solved
     if (rating == 4*n*n) {
+        solved = true;
         return 1;
     }
 

@@ -14,6 +14,22 @@ void outputSudoku() {
     cout << endl;
 }
 
+/* outputs the sudoku
+ */
+void outputSudoku(int** sudoku) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if(sudoku[i][j] > n) {
+                cout << sudoku[i][j] << endl;
+                throw invalid_argument("To large number");
+            }
+            cout << sudoku[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
 /* outputs the row [i][*][k] of the 3d cube
  */
 void outputRow(int i, int k) {
