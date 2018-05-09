@@ -13,6 +13,7 @@ void outputSudoku() {
 /* outputs the sudoku
  */
 void outputSudokuWithParam(int sudoku[n][n]) {
+    printf("sudoku of other thread: \n");
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             printf("%d ",sudoku[i][j]);
