@@ -9,6 +9,12 @@
 #include <stdlib.h>
 #include <mpi.h>
 
+#define SOLUTION_FOUND 1
+#define SOLUTION_NOT_FOUND 0
+
+MPI_Request request;
+MPI_Status status;
+
 int once = 1;
 int thread_rank;
 int l;
@@ -20,6 +26,8 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
+
+bool solved = false;
 
 #include "update.c"
 #include "output.c"
