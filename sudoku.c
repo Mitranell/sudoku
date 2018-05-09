@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
         i_am_root = 1;
         printf("Duration: %f\n\n", duration);
     }
-    maybe_root = (i_am_root ? rank : 0);
+    maybe_root = (i_am_root ? thread_rank : 0);
     MPI_Allreduce(&maybe_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     MPI_Bcast(&solved, 1, MPI_INT, root, MPI_COMM_WORLD);
 
