@@ -10,6 +10,18 @@ void outputSudoku() {
     printf("\n");
 }
 
+/* outputs the sudoku
+ */
+void outputSudoku(int ** sudoku) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ",sudoku[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
 /* outputs the row [i][*][k] of the 3d cube
  */
 void outputRow(int i, int k) {
