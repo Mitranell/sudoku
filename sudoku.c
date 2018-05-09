@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
         MPI_Send(&(sudoku[0][0]), n*n, MPI_INT, 0, SOLUTION_FOUND, MPI_COMM_WORLD);
     } else if(thread_rank == 0){
         MPI_Wait(&request, &status); 
-        outputSudoku(&sudokuOtherThreads);
+        outputSudoku(sudokuOtherThreads);
     }
 
     MPI_Finalize();
