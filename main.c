@@ -95,10 +95,8 @@ int timer(int (*function)()) {
     duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     return result;
 }
-int counter = 1;
 
 int solve() {
-    counter++;
     int rating = INT_MAX;
     int previous_rating;
 
@@ -117,6 +115,13 @@ int solve() {
     if (rating == 0) {
         counter--;
         return 0;
+    }
+
+    if(once) {
+        struct cell backtrackCell = findEmptyCell();
+        updateCell(backtrackCell.i, backtrackCell.j, thread_rank + 1);
+
+        once = 0;
     }
 
     struct cell backtrackCell = findEmptyCell();

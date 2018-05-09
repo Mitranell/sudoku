@@ -8,6 +8,8 @@
 // #include <stdexcept>
 #include <stdlib.h>
 
+int once = 1;
+int thread_rank;
 int l;
 int n;
 int total_sum;
@@ -27,10 +29,26 @@ double duration;
 int main(int argc, char *argv[]) {
     readSudoku();
     outputSudoku();
+
+    // init MPI
+    int nprocs;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
+
+    // get rank
+    MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+    printf("Hi from node %d of %d\n", thread_rank, nprocs);
+
     timer(&solve);
     //solve();
-    cubeToSudoku();
-    outputSudoku();
-    printf("Duration: %f\n\n", duration);
+
+    if (thread_rank == 0) {
+        cubeToSudoku();
+        outputSudoku();
+        printf("Duration: %f\n\n", duration);
+    }
+
+    MPI_Finalize();
+
     return 0;
 }
