@@ -27,7 +27,7 @@ struct cell { int i,j; };
 clock_t start;
 double duration;
 
-bool solved = false;
+int solved = 0;
 
 #include "update.c"
 #include "output.c"

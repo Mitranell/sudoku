@@ -108,6 +108,7 @@ int solve() {
 
     // the sudoku is solved
     if (rating == 4*n*n) {
+        solved = 1;
         return 1;
     }
 
