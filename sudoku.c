@@ -42,10 +42,7 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
-    timer(&solve);
-    //solve();
-
-    if (thread_rank == 0) {
+    if (timer(&solve)) {
         cubeToSudoku();
         outputSudoku();
         printf("Duration: %f\n\n", duration);
