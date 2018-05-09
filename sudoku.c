@@ -7,6 +7,7 @@
 // #include <omp.h>
 // #include <stdexcept>
 #include <stdlib.h>
+#include <mpi.h>
 
 int once = 1;
 int thread_rank;
