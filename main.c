@@ -113,7 +113,6 @@ int solve() {
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
-        counter--;
         return 0;
     }
 
