@@ -37,20 +37,19 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
     printf("Hi from node %d of %d\n", thread_rank + 1, nprocs);
 
+    readSudoku();
     if (thread_rank == 0) {
-        readSudoku();
         outputSudoku();
     }
 
     timer(&solve);
     //solve();
 
-    // if (thread_rank == 0) {
-        printf("Thread: %d\n\n", thread_rank + 1);
+    if (thread_rank == 0) {
         cubeToSudoku();
         outputSudoku();
         printf("Duration: %f\n\n", duration);
-    //}
+    }
 
     MPI_Finalize();
 

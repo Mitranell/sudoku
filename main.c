@@ -90,7 +90,7 @@ int timer(int (*function)()) {
     start = clock();
     int result = (*function)();
     if (result == 0) {
-         printf("No solution\n\n");
+         printf("Thread %d: No solution\n\n", thread_rank + 1);
     }
     duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     return result;
