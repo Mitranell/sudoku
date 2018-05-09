@@ -12,7 +12,7 @@ void outputSudoku() {
 
 /* outputs the sudoku
  */
-void outputSudoku(int[][] sudoku) {
+void outputSudoku(int sudoku[][]) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             printf("%d ",sudoku[i][j]);
