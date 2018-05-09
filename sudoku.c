@@ -38,14 +38,27 @@ int main(int argc, char *argv[]) {
     printf("Hi from node %d of %d\n", thread_rank + 1, nprocs);
 
     readSudoku();
-    if (thread_rank == 0) {
+    /*if (thread_rank == 0) {
         outputSudoku();
+    }*/
+    // thread 0 listens with irecv for solutions
+    if (thread_rank == 0 ){
+        int[][] sudokuOtherThreads = new int[n][n];
+        MPI_Irecv(sudokuOtherThreads, n*n, MPI_INT, MPI_ANY_SOURCE, SOLUTION_FOUND, MPI_COMM_WORLD, &request);
+        outputSudoku(sudokuOtherThreads);
     }
 
     if (timer(&solve)) {
         cubeToSudoku();
-        outputSudoku();
+        //outputSudoku();
         printf("Duration: %f\n\n", duration);
+    }
+
+    // if thread != 0 and found solution, send to thread 0
+    if (thread_rank != 0 && solved){
+        MPI_send(sudoku, n*n, MPI_INT, 0, SOLUTION_FOUND, MPI_COMM_WORLD);
+    } else {
+        outputSudoku(sudoku);
     }
 
     MPI_Finalize();
