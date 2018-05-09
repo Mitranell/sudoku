@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     int sudokuOtherThreads[n][n];
     // thread 0 listens with irecv for solutions
     if (thread_rank == 0 ){
-        MPI_Irecv(sudokuOtherThreads, n*n, MPI_INT, MPI_ANY_SOURCE, SOLUTION_FOUND, MPI_COMM_WORLD, &request);
+        MPI_recv(sudokuOtherThreads, n*n, MPI_INT, MPI_ANY_SOURCE, SOLUTION_FOUND, MPI_COMM_WORLD, &request);
         //outputSudoku(sudokuOtherThreads);
     }
 
