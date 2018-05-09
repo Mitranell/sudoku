@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
     if (thread_rank != 0 && solved){
         MPI_Send(sudoku, n*n, MPI_INT, 0, SOLUTION_FOUND, MPI_COMM_WORLD);
     } else {
-        outputSudoku(sudoku);
+        //outputSudoku(sudoku);
     }
 
     MPI_Finalize();
