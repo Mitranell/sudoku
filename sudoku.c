@@ -28,8 +28,10 @@ double duration;
 
 
 int main(int argc, char *argv[]) {
-    readSudoku();
-    outputSudoku();
+    if (thread_rank == 0) {
+        readSudoku();
+        outputSudoku();
+    }
 
     // init MPI
     int nprocs;
