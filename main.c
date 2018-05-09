@@ -118,7 +118,7 @@ int solve() {
 
     if(once) {
         struct cell backtrackCell = findEmptyCell();
-        updateCell(backtrackCell.i, backtrackCell.j, thread_rank + 1);
+        updateCell(backtrackCell.i, backtrackCell.j, thread_rank);
         printf("thread: %d i: %d j: %d \n", thread_rank + 1, backtrackCell.i, backtrackCell.j);
         cubeToSudoku();
         outputSudoku();
