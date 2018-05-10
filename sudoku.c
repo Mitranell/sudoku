@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
 
-        if (solve())) {
+        if (solve()) {
             solved = 1;
             possible_root = thread_rank;
             break;
