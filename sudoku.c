@@ -8,7 +8,7 @@
 int once = 1;
 int root;
 int thread_rank;
-int solved = 0;
+int solved;
 
 // serial
 int l;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     }
 
     // set possible_root to the current rank if the sudoku is solved
-    int possible_root = -1;
+    int possible_root;
     if (timer(&solve)) {
         solved = 1;
         possible_root = thread_rank;
@@ -54,8 +54,7 @@ int main(int argc, char *argv[]) {
 
     // only the choosen root outputs the sudoku
     if (thread_rank == root){
-        // if there is a solution, these variables are the same
-        if (possible_root == thread_rank) {
+        if (solved == 1) {
             cubeToSudoku();
             outputSudoku();
             printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
