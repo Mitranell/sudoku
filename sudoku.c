@@ -44,9 +44,18 @@ int main(int argc, char *argv[]) {
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
-    if (timer(&solve)) {
-        solved = 1;
-        possible_root = thread_rank;
+    for (int i = thread_rank, i < nprocs, i += thread_rank + 1) {
+        readSudoku();
+        struct cell backtrackCell = findEmptyCell();
+        updateCell(backtrackCell.i, backtrackCell.j, i);
+        printf("Thread: %d\nValue: %d\n\n", thread_rank, i);
+        outputSudoku();
+
+        if (timer(&solve)) {
+            solved = 1;
+            possible_root = thread_rank;
+            break;
+        }
     }
 
     // take the maximal rank of possible roots
