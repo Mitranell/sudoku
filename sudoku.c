@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
         readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
-        printf("Thread: %d\nValue: %d\n\n", thread_rank, i);
+        printf("Thread: %d\nValue: %d\n\n", thread_rank, i + 1);
         outputSudoku();
 
         if (timer(&solve)) {
