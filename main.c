@@ -89,9 +89,9 @@ struct cell findEmptyCell(){
 int timer(int (*function)()) {
     start = clock();
     int result = (*function)();
-    if (result == 0) {
-         printf("Thread %d: No solution\n\n", thread_rank);
-    }
+    // if (result == 0) {
+    //      printf("Thread %d: No solution\n\n", thread_rank);
+    // }
     duration = (clock() - start) / (double) CLOCKS_PER_SEC;
     return result;
 }
@@ -120,7 +120,7 @@ int solve() {
     if(once) {
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, thread_rank -1);
-        
+
         once = 0;
     }
 

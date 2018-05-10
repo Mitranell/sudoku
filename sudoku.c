@@ -35,7 +35,7 @@ int solved = 0;
 #include "main.c"
 
 int root, maybe_root;
-int i_am_root=0;
+int i_am_root = 0;
 
 
 int main(int argc, char *argv[]) {
@@ -46,42 +46,21 @@ int main(int argc, char *argv[]) {
 
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
-    printf("Hi from node %d of %d\n", thread_rank, nprocs);
 
     readSudoku();
-    /*if (thread_rank == 0) {
-        outputSudoku();
-    }*/
-    //int sudokuOtherThreads[n][n];
-    // thread 0 listens with irecv for solutions
-    /*if (thread_rank == 0 ){
-        MPI_Recv(sudokuOtherThreads, n*n, MPI_INT, MPI_ANY_SOURCE, SOLUTION_FOUND, MPI_COMM_WORLD, &request);
-        //outputSudoku(sudokuOtherThreads);
-    }*/
 
     if (timer(&solve)) {
         cubeToSudoku();
         i_am_root = 1;
-        printf("Duration: %f\n\n", duration);
     }
     maybe_root = (i_am_root ? thread_rank : 0);
     MPI_Allreduce(&maybe_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     MPI_Bcast(&solved, 1, MPI_INT, root, MPI_COMM_WORLD);
 
-    if (root == thread_rank){
+    if (thread_rank == root){
         outputSudoku();
+        printf("Thread: %d \n Duration: %f\n\n", thread_rank, duration);
     }
-
-    // if thread != 0 and found solution, send to thread 0
-    /*if (thread_rank != 0 && solved){
-        outputSudoku();
-        MPI_Send(&(sudoku[0][0]), n*n, MPI_INT, 0, SOLUTION_FOUND, MPI_COMM_WORLD);
-    } else if(thread_rank == 0){
-        MPI_Wait(&request, &status); 
-        outputSudokuWithParam(sudokuOtherThreads);
-    }*/
-
-
 
     MPI_Finalize();
 
