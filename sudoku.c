@@ -51,10 +51,9 @@ int main(int argc, char *argv[]) {
     if (timer(&solve)) {
         solved = 1;
         possible_root = thread_rank;
-        solvedByOtherThread=1;
-        MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        MPI_Allreduce(&solvedByOtherThread, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
+    MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     // take the maximal rank of possible roots
     //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
