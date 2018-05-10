@@ -4,11 +4,15 @@
 #include <stdlib.h>
 #include <mpi.h>
 
-MPI_Request request;
-MPI_Status status;
+// MPI_Request request;
+// MPI_Status status;
 
+// mpi
 int once = 1;
+int root;
 int thread_rank;
+
+// serial
 int l;
 int n;
 int total_sum;
@@ -19,15 +23,10 @@ struct cell { int i,j; };
 clock_t start;
 double duration;
 
-int solved = 0;
-
 #include "update.c"
 #include "output.c"
 #include "check.c"
 #include "main.c"
-
-int root, maybe_root;
-int found_solution = 0;
 
 
 int main(int argc, char *argv[]) {
@@ -46,14 +45,13 @@ int main(int argc, char *argv[]) {
     }
 
     if (timer(&solve)) {
-        cubeToSudoku();
-        found_solution = thread_rank;
+        MPI_Allreduce(&thread_rank, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    } else {
+        MPI_Allreduce(0, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
 
-    MPI_Allreduce(&found_solution, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    //MPI_Bcast(&solved, 1, MPI_INT, root, MPI_COMM_WORLD);
-
     if (thread_rank == root){
+        cubeToSudoku();
         outputSudoku();
         printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
     }
