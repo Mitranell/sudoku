@@ -4,9 +4,6 @@
 #include <stdlib.h>
 #include <mpi.h>
 
-MPI_Request request;
-MPI_Status status;
-
 // mpi
 int once = 1;
 int root;
@@ -44,12 +41,12 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
-    int send = 0;
+    int possible_root = 0;
     if (timer(&solve)) {
-        send = thread_rank;
+        possible_root = thread_rank;
     }
 
-    MPI_Allreduce(&send, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     if (thread_rank == root){
         cubeToSudoku();
