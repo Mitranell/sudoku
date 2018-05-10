@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
-    for (int i = thread_rank, i < nprocs, i += thread_rank + 1) {
+    for (int i = thread_rank; i < nprocs; i += thread_rank + 1) {
         readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
