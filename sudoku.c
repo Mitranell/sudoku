@@ -49,8 +49,6 @@ int main(int argc, char *argv[]) {
         readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
-        printf("Thread: %d\nValue: %d\n\n", thread_rank, i + 1);
-        outputSudoku();
 
         if (timer(&solve)) {
             solved = 1;
@@ -65,9 +63,9 @@ int main(int argc, char *argv[]) {
     // only the choosen root outputs the sudoku
     if (thread_rank == root){
         if (solved == 1) {
+            printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
-            printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
         } else {
             printf("No solution\n");
         }
