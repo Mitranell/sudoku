@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    printf("%d\n%d\n\n", thread_rank, nprocs)
+    printf("%d\n%d\n\n", thread_rank, nprocs);
 
     // take the maximal rank of possible roots
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
