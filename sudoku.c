@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
         possible_root = thread_rank;
         solvedByOtherThread=1;
         MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        MPI_Allreduce(&solvedByOtherThread, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+        MPI_Allreduce(&solvedByOtherThread, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
 
     // take the maximal rank of possible roots
