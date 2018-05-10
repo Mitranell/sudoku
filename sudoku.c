@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <mpi.h>
 
-// MPI_Request request;
-// MPI_Status status;
+MPI_Request request;
+MPI_Status status;
 
 // mpi
 int once = 1;
