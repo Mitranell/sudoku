@@ -116,12 +116,12 @@ int solve() {
         return 0;
     }
 
-    if(once) {
-        struct cell backtrackCell = findEmptyCell();
-        updateCell(backtrackCell.i, backtrackCell.j, thread_rank -1);
-
-        once = 0;
-    }
+    // if(once) {
+    //     struct cell backtrackCell = findEmptyCell();
+    //     updateCell(backtrackCell.i, backtrackCell.j, thread_rank -1);
+    //
+    //     once = 0;
+    // }
 
     struct cell backtrackCell = findEmptyCell();
     int i = backtrackCell.i;
