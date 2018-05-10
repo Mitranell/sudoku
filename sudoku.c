@@ -1,16 +1,8 @@
 #include <stdio.h>
 #include <time.h>
-// #include <iostream>
-// #include <fstream>
 #include <limits.h>
-// #include <sys/time.h>
-// #include <omp.h>
-// #include <stdexcept>
 #include <stdlib.h>
 #include <mpi.h>
-
-#define SOLUTION_FOUND 1
-#define SOLUTION_NOT_FOUND 0
 
 MPI_Request request;
 MPI_Status status;
@@ -35,7 +27,7 @@ int solved = 0;
 #include "main.c"
 
 int root, maybe_root;
-int i_am_root = 0;
+int found_solution = 0;
 
 
 int main(int argc, char *argv[]) {
@@ -47,19 +39,23 @@ int main(int argc, char *argv[]) {
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
 
+    // all threads read the sudoku and only on thread outputs it
     readSudoku();
+    if (thread_rank == 0) {
+        outputSudoku();
+    }
 
     if (timer(&solve)) {
         cubeToSudoku();
-        i_am_root = 1;
+        found_solution = thread_rank;
     }
-    maybe_root = (i_am_root ? thread_rank : 0);
-    MPI_Allreduce(&maybe_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    MPI_Bcast(&solved, 1, MPI_INT, root, MPI_COMM_WORLD);
+
+    MPI_Allreduce(&found_solution, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    //MPI_Bcast(&solved, 1, MPI_INT, root, MPI_COMM_WORLD);
 
     if (thread_rank == root){
         outputSudoku();
-        printf("Thread: %d \n Duration: %f\n\n", thread_rank, duration);
+        printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
     }
 
     MPI_Finalize();
