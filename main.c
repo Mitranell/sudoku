@@ -97,6 +97,8 @@ int timer(int (*function)()) {
 }
 
 int solve() {
+    if(solvedByOtherThread)
+        return 0;
     int rating = INT_MAX;
     int previous_rating;
 

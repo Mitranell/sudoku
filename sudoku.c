@@ -21,6 +21,8 @@ struct cell { int i,j; };
 clock_t start;
 double duration;
 
+int solvedByOtherThread = 0;
+
 #include "update.c"
 #include "output.c"
 #include "check.c"
@@ -42,15 +44,20 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
+    //listener for solutions
+    int solvedByOtherThread = 0;
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
     if (timer(&solve)) {
         solved = 1;
         possible_root = thread_rank;
+        solvedByOtherThread=1;
+        MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+        MPI_Allreduce(&solvedByOtherThread, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
 
     // take the maximal rank of possible roots
-    MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+    //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     // only the choosen root outputs the sudoku
     if (thread_rank == root){
