@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
-    for (int i = thread_rank; i < nprocs; i += thread_rank + 1) {
+    for (int i = thread_rank; i < nprocs; i += nprocs) {
         readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
@@ -57,7 +57,6 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    printf("%d\n%d\n\n", thread_rank, nprocs);
 
     // take the maximal rank of possible roots
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
