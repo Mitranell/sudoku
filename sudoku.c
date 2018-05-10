@@ -28,6 +28,7 @@ double duration;
 
 
 int main(int argc, char *argv[]) {
+    start = clock();
     // init MPI
     int nprocs;
     MPI_Init(&argc, &argv);
@@ -50,7 +51,7 @@ int main(int argc, char *argv[]) {
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
 
-        if (timer(&solve)) {
+        if (solve())) {
             solved = 1;
             possible_root = thread_rank;
             break;
@@ -63,6 +64,7 @@ int main(int argc, char *argv[]) {
     // only the choosen root outputs the sudoku
     if (thread_rank == root){
         if (solved == 1) {
+            duration = (clock() - start) / (double) CLOCKS_PER_SEC;
             printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
