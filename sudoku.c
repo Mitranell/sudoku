@@ -44,11 +44,12 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
+    int send = 0;
     if (timer(&solve)) {
-        MPI_Allreduce(&thread_rank, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    } else {
-        MPI_Allreduce(0, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+        send = thread_rank;
     }
+
+    MPI_Allreduce(&send, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     if (thread_rank == root){
         cubeToSudoku();
