@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
     if (thread_rank == 0) {
+        printf("Initial sudoku:\n");
         outputSudoku();
     }
 
