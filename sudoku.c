@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root;
-    printf(%d, possible_root);
+    printf("%d", possible_root);
     if (timer(&solve)) {
         solved = 1;
         possible_root = thread_rank;
