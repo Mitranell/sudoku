@@ -8,6 +8,7 @@
 int once = 1;
 int root;
 int thread_rank;
+int solved = 0;
 
 // serial
 int l;
@@ -41,17 +42,27 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
-    int possible_root = 0;
+    // set possible_root to the current rank if the sudoku is solved
+    int possible_root;
+    printf(%d, possible_root);
     if (timer(&solve)) {
+        solved = 1;
         possible_root = thread_rank;
     }
 
+    // take the maximal rank of possible roots
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
+    // only the choosen root outputs the sudoku
     if (thread_rank == root){
-        cubeToSudoku();
-        outputSudoku();
-        printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
+        // if there is a solution, these variables are the same
+        if (possible_root == thread_rank) {
+            cubeToSudoku();
+            outputSudoku();
+            printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
+        } else {
+            printf("No solution");
+        }
     }
 
     MPI_Finalize();
