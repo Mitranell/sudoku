@@ -30,6 +30,7 @@ int solvedByOtherThread = 0;
 
 
 int main(int argc, char *argv[]) {
+    start = clock();
     // init MPI
     int nprocs;
     MPI_Init(&argc, &argv);
@@ -41,6 +42,7 @@ int main(int argc, char *argv[]) {
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
     if (thread_rank == 0) {
+        printf("Initial sudoku:\n");
         outputSudoku();
     }
 
@@ -48,9 +50,16 @@ int main(int argc, char *argv[]) {
     int solvedByOtherThread = 0;
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
-    if (timer(&solve)) {
-        solved = 1;
-        possible_root = thread_rank;
+    for (int i = thread_rank; i < n; i += nprocs) {
+        readSudoku();
+        struct cell backtrackCell = findEmptyCell();
+        updateCell(backtrackCell.i, backtrackCell.j, i);
+
+        if (solve()) {
+            solved = 1;
+            possible_root = thread_rank;
+            break;
+        }
     }
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
@@ -61,9 +70,10 @@ int main(int argc, char *argv[]) {
     // only the choosen root outputs the sudoku
     if (thread_rank == root){
         if (solved == 1) {
+            duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+            printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
-            printf("Thread: %d \nDuration: %f\n\n", thread_rank, duration);
         } else {
             printf("No solution\n");
         }
