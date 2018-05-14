@@ -2,7 +2,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <mpi.h>
+//#include <mpi.h>
 
 // mpi
 int once = 1;
