@@ -18,6 +18,7 @@ int grid[4];
 int **sudoku;
 int ***cube;
 struct cell { int i,j; };
+struct freeCells { int length, cell *arr};
 struct dualCell { int i1,j1,i2,j2; };
 clock_t start;
 double duration;
@@ -27,6 +28,10 @@ double duration;
 #include "check.c"
 #include "main.c"
 
+
+int logx (int x, int base) {
+    return floor(log(x) / log(base));
+}
 
 int main(int argc, char *argv[]) {
     start = clock();
@@ -48,7 +53,7 @@ int main(int argc, char *argv[]) {
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
 
-    // The grid has more cells then. Adding 2nd level.
+    // The grid has more cells then. Adding further levels.
     if (nprocs > n) {
         for (int i = thread_rank; i < n; i += nprocs) {
             for (int j = thread_rank; j < n; j += nprocs) {
@@ -65,16 +70,28 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
-        for (int i = thread_rank; i < n; i += nprocs) {
-            readSudoku();
-            struct cell backtrackCell = findEmptyCell();
-            updateCell(backtrackCell.i, backtrackCell.j, i);
+        int depth = n * logx(nprocs, n); // IS IT TIMES N???????????????????
 
-            if (solve()) {
-                solved = 1;
-                possible_root = thread_rank;
-                break;
-            }
+        for (int i = thread_rank; i < n; i += nprocs) {
+                readSudoku();
+
+                cell *emptyCells = findVariableAmountOfEmptyCells(depth * n);
+
+                int noOfEmptyCells = 
+                for ()
+
+                for (int j = 0; j < depth; j++) {
+
+                    updateCell(backtrackCell.i, backtrackCell.j, i);
+
+              
+                    
+                    if (solve()) {
+                        solved = 1;
+                        possible_root = thread_rank;
+                        break;
+                    }
+                }
         }
     }
 

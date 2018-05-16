@@ -22,7 +22,7 @@ void readSudoku() {
     fscanf(sudoku_file, "%d", &l);
     n = l*l;
 
-    // since n is known, we create the cube here in order to run updateCell()
+    // since n is known, we create the cube here in order to run update()
     createCubeWithOnes();
 
     sudoku = (int**)malloc(n*sizeof(int*));
@@ -33,7 +33,7 @@ void readSudoku() {
             fscanf(sudoku_file, "%d", &sudoku[i][j]);
 
             if(sudoku[i][j] != 0) {
-                updateCell(i, j, sudoku[i][j] - 1);
+                update(i, j, sudoku[i][j] - 1);
             }
         }
     }
@@ -42,7 +42,7 @@ void readSudoku() {
 }
 
 /* converts the 3d cube to a 2d sudoku
- * fills in 0 when there is more than one possible value for a cell
+ * fills in 0 when there is more than one possible value for a 
  */
 int** cubeToSudoku() {
     //sum the depths of [i][j][*] whether it is 1
@@ -50,7 +50,7 @@ int** cubeToSudoku() {
         for (int j = 0; j < n; j++) {
             int sum = 0;
             for (int k = 0; k < n; k++) {
-                // check if cell is 1
+                // check if  is 1
                 if (cube[i][j][k] == 1) {
                     if (sum == 0) {
                         sum = 1;
@@ -69,7 +69,7 @@ int** cubeToSudoku() {
     }
 }
 
-struct cell findEmptyCell(){
+struct  findEmpty(){
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             int sum = 0;
@@ -77,14 +77,47 @@ struct cell findEmptyCell(){
                 sum += cube[i][j][k];
 
                 if (sum == 2) {
-                    return (struct cell){i, j};
+                    return (struct ){i, j};
                 }
             }
         }
     }
 }
 
-struct dualCell findEmptyCells(){
+// Returns an array of as many empty cells as 'elementsRequired'
+struct  findVariableAmountOfEmptyCells(int elementsRequired){
+    int counter = 0;
+
+    // init array and alloc memory
+    cell *(result[elementsRequired]);
+    for (int i = 0; i < elementsRequired; i++) {
+        result[i] = (cell *)malloc(sizeof(cell));
+    }
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int sum = 0;
+            for (int k = 0; k < n; k++) {
+                sum += cube[i][j][k];
+
+                if (sum == 2 && counter < elementsRequired) {
+                    result[counter].i = i;
+                    result[counter].j = j;
+
+                    counter++;
+
+                    if (counter == elementsRequired) {
+                        return (struct FreeCells){counter, result};
+                    }
+                }
+            }
+        }
+    }
+
+    return (struct FreeCells){counter, result};
+}
+
+struct dual findEmptys(){
     int i1, j1;
     int isSecond = 0;
 
@@ -96,7 +129,7 @@ struct dualCell findEmptyCells(){
 
                 if (sum == 2) {
                     if (isSecond) {
-                        return (struct dualCell){i1, j1, i, j};
+                        return (struct dual){i1, j1, i, j};
                     } else {
                         i1 = i;
                         j1 = j;
@@ -141,15 +174,15 @@ int solve() {
     }
 
     // if(once) {
-    //     struct cell backtrackCell = findEmptyCell();
-    //     updateCell(backtrackCell.i, backtrackCell.j, thread_rank -1);
+    //     struct  backtrack = findEmpty();
+    //     update(backtrack.i, backtrack.j, thread_rank -1);
     //
     //     once = 0;
     // }
 
-    struct cell backtrackCell = findEmptyCell();
-    int i = backtrackCell.i;
-    int j = backtrackCell.j;
+    struct  backtrack = findEmpty();
+    int i = backtrack.i;
+    int j = backtrack.j;
 
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
@@ -165,7 +198,7 @@ int solve() {
                 }
             }
 
-            updateCell(i, j, k);
+            update(i, j, k);
 
             if (solve()) {
                 return 1;
