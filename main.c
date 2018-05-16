@@ -138,7 +138,7 @@ void MPI_check(){
             // let the source know that we have read it
             // TODO: set buffer to sharing node
             buffer = 0;
-            MPI_Isend(&buffer, 1, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD);
+            MPI_Isend(&buffer, 1, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
     }
 }

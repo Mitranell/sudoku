@@ -15,6 +15,7 @@ int root;
 int thread_rank;
 int solved = 0;
 MPI_Status status;
+MPI_Request request;
 int iprobe_flag;
 int buffer;
 int data;
@@ -93,7 +94,7 @@ int main(int argc, char *argv[]) {
             if (thread_rank != i) {
                 // asking for search space
                 buffer = 0;
-                MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD);
+                MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
             }
         }
 
