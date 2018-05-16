@@ -30,20 +30,6 @@ int solvedByOtherThread = 0;
 #include "main.c"
 
 int main(int argc, char *argv[]) {
-    if( argc == 2 ) {
-        file = argv[1];
-        if (!file) {
-            printf("File does not exist or cannot be opened.");
-            return 0;
-        }
-    } else if( argc > 2 ) {
-        printf("Too many arguments supplied.\n");
-        return 0;
-    } else {
-        printf("Please enter the name of the sudoku file.\n");
-        return 0;
-    }
-
     start = clock();
     // init MPI
     int nprocs;
@@ -52,6 +38,27 @@ int main(int argc, char *argv[]) {
 
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+
+    // read arguments command line
+    if( argc == 2 ) {
+        file = argv[1];
+        if (!file) {
+            if (thread_rank == 0){
+                printf("File does not exist or cannot be opened.");
+            }
+            return 0;
+        }
+    } else if( argc > 2 ) {
+        if (thread_rank == 0){
+            printf("Too many arguments supplied.\n");
+        }
+        return 0;
+    } else {
+        if (thread_rank == 0){
+            printf("Please enter the name of the sudoku file.\n");
+        }
+        return 0;
+    }
 
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
