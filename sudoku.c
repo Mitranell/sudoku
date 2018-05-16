@@ -18,6 +18,7 @@ int grid[4];
 int **sudoku;
 int ***cube;
 struct cell { int i,j; };
+struct dualCell { int i1,j1,i2,j2; };
 clock_t start;
 double duration;
 
@@ -46,15 +47,34 @@ int main(int argc, char *argv[]) {
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
-    for (int i = thread_rank; i < n; i += nprocs) {
-        readSudoku();
-        struct cell backtrackCell = findEmptyCell();
-        updateCell(backtrackCell.i, backtrackCell.j, i);
 
-        if (solve()) {
-            solved = 1;
-            possible_root = thread_rank;
-            break;
+    // The grid has more cells then. Adding 2nd level.
+    if (nprocs > n) {
+        for (int i = thread_rank; i < n; i += nprocs) {
+            for (int j = thread_rank; j < n; j += nprocs) {
+                readSudoku();
+                struct dualCell backtrackCell = findEmptyCells();
+                updateCell(backtrackCell.i1, backtrackCell.j1, i);
+                updateCell(backtrackCell.i2, backtrackCell.j2, j);
+
+                if (solve()) {
+                    solved = 1;
+                    possible_root = thread_rank;
+                    break;
+                }
+            }
+        }
+    } else {
+        for (int i = thread_rank; i < n; i += nprocs) {
+            readSudoku();
+            struct cell backtrackCell = findEmptyCell();
+            updateCell(backtrackCell.i, backtrackCell.j, i);
+
+            if (solve()) {
+                solved = 1;
+                possible_root = thread_rank;
+                break;
+            }
         }
     }
 

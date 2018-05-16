@@ -84,6 +84,30 @@ struct cell findEmptyCell(){
     }
 }
 
+struct dualCell findEmptyCells(){
+    int i1, j1;
+    int isSecond = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            int sum = 0;
+            for (int k = 0; k < n; k++) {
+                sum += cube[i][j][k];
+
+                if (sum == 2) {
+                    if (isSecond) {
+                        return (struct cell){i1, j1, i, j};
+                    } else {
+                        i1 = i;
+                        j1 = j;
+                        isSecond = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
 /* this function times another given function
  */
 int timer(int (*function)()) {
