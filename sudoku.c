@@ -53,21 +53,23 @@ int main(int argc, char *argv[]) {
     int solvedByOtherThread = 0;
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        readSudoku();
-        struct cell backtrackCell = findEmptyCell();
-        updateCell(backtrackCell.i, backtrackCell.j, i);
+        if(!solvedByOtherThread){
+            readSudoku();
+            struct cell backtrackCell = findEmptyCell();
+            updateCell(backtrackCell.i, backtrackCell.j, i);
 
-        if (solve()) {
-            solved = 1;
-            possible_root = thread_rank;
+            if (solve()) {
+                solved = 1;
+                possible_root = thread_rank;
 
-            //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-            //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+                //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+                //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
-            break;
+                break;
+            }
+            MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+            MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
         }
-        MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
 
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
