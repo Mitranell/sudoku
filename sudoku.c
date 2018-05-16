@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
+        printf("Broadcast by thread %d", thread_rank);
         int buf = 0;
         MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
