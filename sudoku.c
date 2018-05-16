@@ -30,7 +30,7 @@ int solvedByOtherThread = 0;
 #include "main.c"
 
 int main(int argc, char *argv[]) {
-    printf("char: %s\n\n", argv[1]);
+    sudoku_file = fopen("16x16.txt", "r");
     // if( argc == 2 ) {
     //     sudoku_file = fopen(argv[1], "r");
     //     if (!sudoku_file) {
