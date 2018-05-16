@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     int solvedByOtherThread = 0;
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        readSudoku();
+        readSudoku("16x16.txt");
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
 
