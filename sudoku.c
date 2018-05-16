@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
             if (thread_rank != i) {
                 // asking for search space
                 buffer = 0;
-                MPI_ISend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD);
+                MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD);
             }
         }
 
