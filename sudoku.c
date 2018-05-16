@@ -20,7 +20,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
-MPI_File *sudoku_file;
+MPI_File sudoku_file;
 
 int solvedByOtherThread = 0;
 
