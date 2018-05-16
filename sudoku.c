@@ -30,7 +30,6 @@ int solvedByOtherThread = 0;
 #include "main.c"
 
 int main(int argc, char *argv[]) {
-    sudoku_file = fopen("16x16.txt", "r");
     // if( argc == 2 ) {
     //     sudoku_file = fopen(argv[1], "r");
     //     if (!sudoku_file) {
@@ -55,6 +54,7 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
 
     // all threads read the sudoku and only on thread outputs it
+    sudoku_file = fopen("16x16.txt", "r");
     readSudoku();
     if (thread_rank == 0) {
         printf("Initial sudoku:\n");
