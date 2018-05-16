@@ -87,7 +87,11 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        MPI_Send(&buf, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        for (int i = 0; i < n; i++) {
+            if (thread_rank != i) {
+                MPI_Send(&buf, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+            }
+        }
     }
 
     // take the maximal rank of possible roots
