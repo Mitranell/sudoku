@@ -30,6 +30,12 @@ int solvedByOtherThread = 0;
 #include "main.c"
 
 int main(int argc, char *argv[]) {
+    start = clock();
+    // init MPI
+    int nprocs;
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
+
     if( argc == 2 ) {
         sudoku_file = fopen(argv[1], "r");
         if (!sudoku_file) {
@@ -43,12 +49,6 @@ int main(int argc, char *argv[]) {
         printf("Please enter the name of the sudoku file.\n");
         return 0;
     }
-
-    start = clock();
-    // init MPI
-    int nprocs;
-    MPI_Init(&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
