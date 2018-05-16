@@ -20,6 +20,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
+FILE *sudoku_file;
 
 int solvedByOtherThread = 0;
 
@@ -28,8 +29,21 @@ int solvedByOtherThread = 0;
 #include "check.c"
 #include "main.c"
 
-
 int main(int argc, char *argv[]) {
+    if( argc == 2 ) {
+        sudoku_file = fopen(argv[1], "r");
+        if (!sudoku_file) {
+            printf("File does not exist or cannot be opened.");
+            return 0;
+        }
+    } else if( argc > 2 ) {
+        printf("Too many arguments supplied.\n");
+        return 0;
+    } else {
+        printf("Please enter the name of the sudoku file.\n");
+        return 0;
+    }
+
     start = clock();
     // init MPI
     int nprocs;
