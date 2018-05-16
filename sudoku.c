@@ -45,12 +45,14 @@ int main(int argc, char *argv[]) {
         printf("Initial sudoku:\n");
         outputSudoku();
     }
-
+    /* receiver on thread 0 */
+    /*if (thread_rank == 0){
+        MPI_Irecv();
+    }*/
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
      */
-    int solvedByOtherThread = 0;
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
         if(solvedByOtherThread)
