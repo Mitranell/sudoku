@@ -38,22 +38,20 @@ int main(int argc, char *argv[]) {
 
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
-    // 
-    // if( thread_rank == 0){
-    //     if( argc == 2 ) {
-    //         sudoku_file = fopen(argv[1], "r");
-    //         if (!sudoku_file) {
-    //             printf("File does not exist or cannot be opened.");
-    //             return 0;
-    //         }
-    //     } else if( argc > 2 ) {
-    //         printf("Too many arguments supplied.\n");
-    //         return 0;
-    //     } else {
-    //         printf("Please enter the name of the sudoku file.\n");
-    //         return 0;
-    //     }
-    // }
+
+        if( argc == 2 ) {
+            sudoku_file = fopen(argv[1], "r");
+            if (!sudoku_file) {
+                printf("File does not exist or cannot be opened.");
+                return 0;
+            }
+        } else if( argc > 2 ) {
+            printf("Too many arguments supplied.\n");
+            return 0;
+        } else {
+            printf("Please enter the name of the sudoku file.\n");
+            return 0;
+        }
 
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
