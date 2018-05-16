@@ -96,7 +96,7 @@ struct dualCell findEmptyCells(){
 
                 if (sum == 2) {
                     if (isSecond) {
-                        return (struct cell){i1, j1, i, j};
+                        return (struct dualCell){i1, j1, i, j};
                     } else {
                         i1 = i;
                         j1 = j;
