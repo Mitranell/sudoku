@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 
                 //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
                 //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-                MPI_Isend(&solved, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+                MPI_Isend(&solved, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD,&request);
                 break;
             }
             //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
