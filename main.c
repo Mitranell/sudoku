@@ -15,8 +15,8 @@ void createCubeWithOnes() {
 
 /* reads 2d sudoku from "sudoku.txt" in same folder
  */
-void readSudoku(char file[]) {
-    // sudoku_file is opened in main
+void readSudoku() {
+    FILE *sudoku_file;
     sudoku_file = fopen(file, "r");
     fscanf(sudoku_file, "%d", &l);
     n = l*l;

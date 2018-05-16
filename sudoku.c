@@ -20,7 +20,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
-FILE *sudoku_file;
+char file[];
 
 int solvedByOtherThread = 0;
 
@@ -30,19 +30,19 @@ int solvedByOtherThread = 0;
 #include "main.c"
 
 int main(int argc, char *argv[]) {
-    // if( argc == 2 ) {
-    //     sudoku_file = fopen(argv[1], "r");
-    //     if (!sudoku_file) {
-    //         printf("File does not exist or cannot be opened.");
-    //         return 0;
-    //     }
-    // } else if( argc > 2 ) {
-    //     printf("Too many arguments supplied.\n");
-    //     return 0;
-    // } else {
-    //     printf("Please enter the name of the sudoku file.\n");
-    //     return 0;
-    // }
+    if( argc == 2 ) {
+        file = argv[1];
+        if (!sudoku_file) {
+            printf("File does not exist or cannot be opened.");
+            return 0;
+        }
+    } else if( argc > 2 ) {
+        printf("Too many arguments supplied.\n");
+        return 0;
+    } else {
+        printf("Please enter the name of the sudoku file.\n");
+        return 0;
+    }
 
     start = clock();
     // init MPI
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
 
     // all threads read the sudoku and only on thread outputs it
-    readSudoku("16x16.txt");
+    readSudoku();
     if (thread_rank == 0) {
         printf("Initial sudoku:\n");
         outputSudoku();
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     int solvedByOtherThread = 0;
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        readSudoku("16x16.txt");
+        readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
 
