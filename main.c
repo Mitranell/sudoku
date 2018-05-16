@@ -120,7 +120,6 @@ int timer(int (*function)()) {
     return result;
 }
 
-int count;
 int solve() {
     int rating = INT_MAX;
     int previous_rating;

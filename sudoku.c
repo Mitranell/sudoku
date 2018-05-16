@@ -74,7 +74,6 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
-        int buf = 1;
         MPI_Send(&buf, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
         for (int i = thread_rank; i < n; i += nprocs) {
             readSudoku();
@@ -87,7 +86,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        MPI_Send(&buf, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+        MPI_Bcast(0, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
 
     // take the maximal rank of possible roots
