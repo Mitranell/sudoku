@@ -148,7 +148,7 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        //MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
+        MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
         if (iprobe_flag) {
             count++;
             printf("Thread: %d\nSource: %d\nCount: %d\n\n", thread_rank, status.MPI_SOURCE, count);
