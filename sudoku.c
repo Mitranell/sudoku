@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 
     // only the choosen root outputs the sudoku
     //if (thread_rank == root){
-        if (solved == 1) {
+        if (solved == 1 && !solvedByOtherThread) {
             duration = (clock() - start) / (double) CLOCKS_PER_SEC;
             printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
