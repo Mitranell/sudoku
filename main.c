@@ -17,7 +17,8 @@ void createCubeWithOnes() {
  */
 void readSudoku() {
     FILE *sudoku_file;
-    printf("file: %s", file);
+    printf("rank: %d\n\n",thread_rank);
+    printf("file: %s\n\n", file);
     sudoku_file = fopen(file, "r");
 
     fscanf(sudoku_file, "%d", &l);
