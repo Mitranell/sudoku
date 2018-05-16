@@ -149,7 +149,7 @@ int solve() {
     for (int k = 0; k < n; k++) {
         MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
         if (iprobe_flag) {
-            printf("dit mag niet gebeuren");
+            printf("there is a message");
         }
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
