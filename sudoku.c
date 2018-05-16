@@ -44,7 +44,10 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
-    // set possible_root to the current rank if the sudoku is solved
+    /* try several possible values for the first empty cell
+     * example thread 2 and 5 processors: 2, 7, 12, 17, ...
+     * set possible_root to the current rank if the sudoku is solved
+     */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
         readSudoku();
