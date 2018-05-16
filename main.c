@@ -36,7 +36,7 @@ void readSudoku() {
         }
     }
 
-    fclose(sudoku_file);
+    //fclose(sudoku_file);
 }
 
 /* converts the 3d cube to a 2d sudoku
