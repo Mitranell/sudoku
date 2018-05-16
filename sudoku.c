@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
             printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
-            MPI_Abort(MPI_COMM_WORLD, 0);
+            MPI_Abort(MPI_COMM_WORLD,MPI_SUCCESS);
         } /*else {
             printf("No solution\n");
         }*/
