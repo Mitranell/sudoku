@@ -11,9 +11,9 @@ int thread_rank;
 int solved = 0;
 //int solvedByOtherThread = 0;
 struct Solution {
-    int solvedByOtherThread = 0;
-    int thread = 0;
-} solution;
+    int solvedByOtherThread;
+    int thread;
+} solution={0,0};
 // serial
 int l;
 int n;
