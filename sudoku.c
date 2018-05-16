@@ -79,8 +79,6 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        if(solvedByOtherThread)
-            break;
         readSudoku();
         struct cell backtrackCell = findEmptyCell();
         updateCell(backtrackCell.i, backtrackCell.j, i);
@@ -105,17 +103,17 @@ int main(int argc, char *argv[]) {
    // MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     // only the choosen root outputs the sudoku
-    if (thread_rank == root){
+    //if (thread_rank == root){
         if (solved == 1) {
             duration = (clock() - start) / (double) CLOCKS_PER_SEC;
             printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
             MPI_Abort(MPI_COMM_WORLD, 0);
-        } else {
+        } /*else {
             printf("No solution\n");
-        }
-    }
+        }*/
+    //}
    
     MPI_Finalize();
 
