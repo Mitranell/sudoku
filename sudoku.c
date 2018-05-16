@@ -32,6 +32,7 @@ int solvedByOtherThread = 0;
 int main(int argc, char *argv[]) {
     if( argc == 2 ) {
         sudoku_file = fopen(argv[1], "r");
+        printf(sudoku_file);
         if (!sudoku_file) {
             printf("File does not exist or cannot be opened.");
             return 0;
