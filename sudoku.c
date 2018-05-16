@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
 
     // all threads read the sudoku and only on thread outputs it
-    sudoku_file = fopen("16x16.txt", "r");
+    MPI_File_open(MPI_COMM_WORLD, "16x16.txt", MPI_MODE_RDONLY, MPI_INFO_NULL, &sudoku_file);
     readSudoku();
     if (thread_rank == 0) {
         printf("Initial sudoku:\n");
