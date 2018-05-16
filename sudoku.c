@@ -36,6 +36,10 @@ int main(int argc, char *argv[]) {
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
+    // get rank
+    MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+
+    if( thread_rank == 0){}
     if( argc == 2 ) {
         sudoku_file = fopen(argv[1], "r");
         if (!sudoku_file) {
@@ -49,9 +53,7 @@ int main(int argc, char *argv[]) {
         printf("Please enter the name of the sudoku file.\n");
         return 0;
     }
-
-    // get rank
-    MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+}
 
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
