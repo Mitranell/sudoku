@@ -111,11 +111,12 @@ int main(int argc, char *argv[]) {
             printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
+            MPI_Abort(MPI_COMM_WORLD, 0);
         } else {
             printf("No solution\n");
         }
     }
-    MPI_Abort(MPI_COMM_WORLD, 0);
+   
     MPI_Finalize();
 
     return 0;
