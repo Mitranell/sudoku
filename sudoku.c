@@ -20,7 +20,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
-char file[];
+char *file;
 
 int solvedByOtherThread = 0;
 
@@ -32,7 +32,7 @@ int solvedByOtherThread = 0;
 int main(int argc, char *argv[]) {
     if( argc == 2 ) {
         file = argv[1];
-        if (!sudoku_file) {
+        if (!file) {
             printf("File does not exist or cannot be opened.");
             return 0;
         }
