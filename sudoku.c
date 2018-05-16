@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
     // read arguments command line
     if( argc == 2 ) {
         file = argv[1];
-        printf("file: %c", file);
         if (!file) {
             if (thread_rank == 0) {
                 printf("File does not exist or cannot be opened.");
