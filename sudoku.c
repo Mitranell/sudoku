@@ -85,7 +85,8 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        MPI_Bcast(0, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        int buf = 0;
+        MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
 
     // take the maximal rank of possible roots
