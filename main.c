@@ -120,6 +120,29 @@ int timer(int (*function)()) {
     return result;
 }
 
+void MPI_check(){
+    // check for messages
+    MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
+
+    // there is a message
+    if (iprobe_flag) {
+        // reading message
+        MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+
+        // a thread confirms to have received the response
+        if (status.MPI_TAG == 0) {
+            //TODO: set quit_node
+        }
+        // a thread asks for search space
+        else {
+            // let the source know that we have read it
+            // TODO: set buffer to sharing node
+            buffer = 0;
+            MPI_ISend(&buffer, 1, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD);
+        }
+    }
+}
+
 int solve() {
     int rating = INT_MAX;
     int previous_rating;
@@ -147,11 +170,7 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
-        if (iprobe_flag) {
-            count++;
-            printf("Thread: %d\nSource: %d\nCount: %d\n\n", thread_rank, status.MPI_SOURCE, count);
-        }
+        MPI_check();
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {

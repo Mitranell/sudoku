@@ -14,9 +14,11 @@ int once = 1;
 int root;
 int thread_rank;
 int solved = 0;
-int count = 0;
 MPI_Status status;
 int iprobe_flag;
+int buffer;
+int data;
+int tag = 0;
 
 // serial
 int l;
@@ -86,12 +88,20 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        int buffer;
-        for (int i = 0; i < n; i++) {
+        tag++;
+        for (int i = 0; i < nprocs; i++) {
             if (thread_rank != i) {
-                MPI_Send(&buffer, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+                // asking for search space
+                buffer = 0;
+                MPI_ISend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD);
             }
         }
+
+        // a thread has responded to the request for search space
+        MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
+        // let the thread know that we have accepted the request
+        buffer = data;
+        MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
     }
 
     // take the maximal rank of possible roots
