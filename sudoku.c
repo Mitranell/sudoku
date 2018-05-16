@@ -72,9 +72,6 @@ int main(int argc, char *argv[]) {
                     break;
                 }
             }
-            printf("Broadcast by thread %d\n", thread_rank);
-            int buf = 0;
-            MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
         }
     } else {
         for (int i = thread_rank; i < n; i += nprocs) {
@@ -88,9 +85,13 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("Broadcast by thread %d\n", thread_rank);
-        int buf = 0;
-        MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+        int buffer;
+        for (int i = 0; i < n; i++) {
+            if (thread_rank != i) {
+                MPI_Send(&buffer, 1, MPI_INT, i, 0, MPI_COMM_WORLD);
+            }
+        }
     }
 
     // take the maximal rank of possible roots
