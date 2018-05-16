@@ -43,20 +43,23 @@ int main(int argc, char *argv[]) {
     if( argc == 2 ) {
         file = argv[1];
         if (!file) {
-            if (thread_rank == 0){
+            if (thread_rank == 0) {
                 printf("File does not exist or cannot be opened.");
             }
+            MPI_Finalize();
             return 0;
         }
     } else if( argc > 2 ) {
-        if (thread_rank == 0){
+        if (thread_rank == 0) {
             printf("Too many arguments supplied.\n");
         }
+        MPI_Finalize();
         return 0;
     } else {
-        if (thread_rank == 0){
+        if (thread_rank == 0) {
             printf("Please enter the name of the sudoku file.\n");
         }
+        MPI_Finalize();
         return 0;
     }
 
