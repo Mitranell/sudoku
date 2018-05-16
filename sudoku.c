@@ -9,6 +9,7 @@ int once = 1;
 int root;
 int thread_rank;
 int solved = 0;
+int solvedByOtherThread = 0;
 
 // serial
 int l;
@@ -20,8 +21,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
-
-int solvedByOtherThread = 0;
+char *file;
 
 #include "update.c"
 #include "output.c"
@@ -38,6 +38,30 @@ int main(int argc, char *argv[]) {
 
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
+
+    // read arguments command line
+    if( argc == 2 ) {
+        file = argv[1];
+        if (!file) {
+            if (thread_rank == 0) {
+                printf("File does not exist or cannot be opened.");
+            }
+            MPI_Finalize();
+            return 0;
+        }
+    } else if( argc > 2 ) {
+        if (thread_rank == 0) {
+            printf("Too many arguments supplied.\n");
+        }
+        MPI_Finalize();
+        return 0;
+    } else {
+        if (thread_rank == 0) {
+            printf("Please enter the name of the sudoku file.\n");
+        }
+        MPI_Finalize();
+        return 0;
+    }
 
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
@@ -72,7 +96,7 @@ int main(int argc, char *argv[]) {
         }
         MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
         MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        
+
     }
 
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
