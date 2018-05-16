@@ -84,18 +84,6 @@ struct cell findEmptyCell(){
     }
 }
 
-/* this function times another given function
- */
-int timer(int (*function)()) {
-    start = clock();
-    int result = (*function)();
-    // if (result == 0) {
-    //      printf("Thread %d: No solution\n\n", thread_rank);
-    // }
-    duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-    return result;
-}
-
 int solve() {
     int rating = INT_MAX;
     int previous_rating;
