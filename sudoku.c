@@ -20,7 +20,7 @@ int ***cube;
 struct cell { int i,j; };
 clock_t start;
 double duration;
-MPI_File sudoku_file;
+FILE *sudoku_file;
 
 int solvedByOtherThread = 0;
 
@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
 
     // all threads read the sudoku and only on thread outputs it
-    MPI_File_open(MPI_COMM_WORLD, "16x16.txt", MPI_MODE_RDONLY, MPI_INFO_NULL, &sudoku_file);
     readSudoku();
     if (thread_rank == 0) {
         printf("Initial sudoku:\n");
