@@ -4,11 +4,19 @@
 #include <stdlib.h>
 #include <mpi.h>
 
+/* the number of values need to be guessed by backtracking before we listen
+ * to the left neighbor to see if it needs search space
+ */
+#define CHECK 10;
+
 // mpi
 int once = 1;
 int root;
 int thread_rank;
 int solved = 0;
+int count = 0;
+MPI_Status status;
+int iprobe_flag;
 
 // serial
 int l;
@@ -30,6 +38,7 @@ double duration;
 
 int main(int argc, char *argv[]) {
     start = clock();
+
     // init MPI
     int nprocs;
     MPI_Init(&argc, &argv);

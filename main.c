@@ -126,7 +126,6 @@ int solve() {
 
     do {
         previous_rating = rating;
-        //rating = timer(&checkCube);
         rating = checkCube();
     } while (0 != rating && rating < previous_rating);
 
@@ -140,13 +139,6 @@ int solve() {
         return 0;
     }
 
-    // if(once) {
-    //     struct cell backtrackCell = findEmptyCell();
-    //     updateCell(backtrackCell.i, backtrackCell.j, thread_rank -1);
-    //
-    //     once = 0;
-    // }
-
     struct cell backtrackCell = findEmptyCell();
     int i = backtrackCell.i;
     int j = backtrackCell.j;
@@ -155,6 +147,10 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
+        MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, *iprobe_flag, *status)
+        if (iprobe_flag) {
+            prinft("dit mag niet gebeuren");
+        }
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {
