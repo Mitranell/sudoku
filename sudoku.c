@@ -18,7 +18,7 @@ int grid[4];
 int **sudoku;
 int ***cube;
 struct cell { int i,j; };
-struct freeCells { int length, cell *arr};
+struct FreeCells { int length, cell *arr};
 struct dualCell { int i1,j1,i2,j2; };
 clock_t start;
 double duration;
@@ -56,11 +56,17 @@ int main(int argc, char *argv[]) {
     // The grid has more cells then. Adding further levels.
     if (nprocs > n) {
         for (int i = thread_rank; i < n; i += nprocs) {
+            readSudoku();
+            struct FreeCells res = findEmptyCells();
+
+            if(res.length < depth) {
+                // in case there's not enough empty cells for all the levels:
+                depth = floor(res.length / n);
+            }
+
             for (int j = thread_rank; j < n; j += nprocs) {
-                readSudoku();
-                struct dualCell backtrackCell = findEmptyCells();
+
                 updateCell(backtrackCell.i1, backtrackCell.j1, i);
-                updateCell(backtrackCell.i2, backtrackCell.j2, j);
 
                 if (solve()) {
                     solved = 1;
