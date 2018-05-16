@@ -74,6 +74,8 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
+        int buf = 1;
+        MPI_Send(&buf, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
         for (int i = thread_rank; i < n; i += nprocs) {
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
