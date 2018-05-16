@@ -108,6 +108,7 @@ int main(int argc, char *argv[]) {
 
     }
 
+    MPI_Bcast(&solution, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     // take the maximal rank of possible roots
