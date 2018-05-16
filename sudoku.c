@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
             if (thread_rank == 0) {
                 printf("File does not exist or cannot be opened.");
             }
+            printf("fout: %d", thread_rank);
             MPI_Finalize();
             return 0;
         }
@@ -53,12 +54,14 @@ int main(int argc, char *argv[]) {
         if (thread_rank == 0) {
             printf("Too many arguments supplied.\n");
         }
+        printf("fout2: %d", thread_rank);
         MPI_Finalize();
         return 0;
     } else {
         if (thread_rank == 0) {
             printf("Please enter the name of the sudoku file.\n");
         }
+        printf("fout3: %d", thread_rank);
         MPI_Finalize();
         return 0;
     }
