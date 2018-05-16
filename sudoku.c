@@ -72,6 +72,9 @@ int main(int argc, char *argv[]) {
                     break;
                 }
             }
+            printf("Broadcast by thread %d\n", thread_rank);
+            int buf = 0;
+            MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
         }
     } else {
         for (int i = thread_rank; i < n; i += nprocs) {
@@ -85,7 +88,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("Broadcast by thread %d", thread_rank);
+        printf("Broadcast by thread %d\n", thread_rank);
         int buf = 0;
         MPI_Bcast(&buf, 1, MPI_INT, 0, MPI_COMM_WORLD);
     }
