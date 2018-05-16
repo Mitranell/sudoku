@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
             printf("No solution\n");
         }
     }
-    MPI_Abort(MPI_COMM_WORLD);
+    MPI_Abort(MPI_COMM_WORLD, 0);
     MPI_Finalize();
 
     return 0;
