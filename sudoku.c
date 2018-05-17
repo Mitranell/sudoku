@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <math.h>
 
 /* the number of values need to be guessed by backtracking before we listen
  * to the left neighbor to see if it needs search space
@@ -110,7 +111,9 @@ int main(int argc, char *argv[]) {
             MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             printf("%d received \nI: %d J: %d K: %d\nfrom %d\n\n", thread_rank, data[0], data[1], data[2], status.MPI_SOURCE);
             // let the thread know that we have accepted the request
-            buffer = data;
+            buffer[0] = data[0];
+            buffer[1] = data[1];
+            buffer[2] = data[2];
             printf("%d is accepting %d\n\n", thread_rank, status.MPI_SOURCE);
             MPI_Send(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
         }
