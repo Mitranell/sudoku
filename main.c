@@ -143,7 +143,7 @@ void MPI_check(int i, int j, int k){
                 struct cell backtrackCell = findEmptyCell();
                 buffer[0] = backtrackCell.i;
                 buffer[1] = backtrackCell.j;
-                buffer[2] = k;
+                buffer[2] = ceil((1 + n) / 2);
             }
             // split the possible values between the two threads
             else {
@@ -151,6 +151,7 @@ void MPI_check(int i, int j, int k){
                 buffer[1] = j;
                 buffer[2] = ceil((k + n) / 2);
             }
+            printf("Thread %d is sending {%d, %d, %d} to %d\n\n", thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE);
             // let the source know that we have read it
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
