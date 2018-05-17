@@ -140,6 +140,7 @@ void MPI_check(){
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
             stopping_node = data;
+            printf("stopping_node.k =  %d\n", stopping_node.k);
             // TODO: check to quit
             printf("\nThread %d received acceptance of {%d, %d, %d} from %d\n",
                 thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
