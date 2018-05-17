@@ -84,7 +84,7 @@ struct cell findEmptyCell(){
     }
 }
 
-int solve() {
+int solve(int *nodes) {
     //if(solvedByOtherThread)
     //    return 0;
     int rating = INT_MAX;
@@ -103,6 +103,7 @@ int solve() {
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
+        nodes[0] = 99;
         return 0;
     }
 
