@@ -81,8 +81,8 @@ int main(int argc, char *argv[]) {
 
     // nasty calculation for number of nodes
     int *nodes;
-    printf("thread: %d - %d\n", thread_rank, ((int)((n - thread_rank - 1) / nprocs) + 1));
     nodes = (int*)malloc(((int)((n - thread_rank - 1) / nprocs) + 1) * sizeof(int));
+    printf("thread: %d - %d\n", thread_rank, sizeof(nodes)/sizeof(nodes[0]));
     /* fill nodes with nodes to check
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      */
