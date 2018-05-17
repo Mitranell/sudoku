@@ -19,8 +19,8 @@ int grid[4];
 int **sudoku;
 int ***cube;
 struct cell { int i,j; };
-struct FreeCells { int length, cell *arr};
-struct dualCell { int i1,j1,i2,j2; };
+// struct FreeCells { int length, cell *arr};
+// struct dualCell { int i1,j1,i2,j2; };
 clock_t start;
 double duration;
 

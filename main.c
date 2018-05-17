@@ -69,56 +69,7 @@ int** cubeToSudoku() {
     }
 }
 
-struct  findEmpty(){
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            int sum = 0;
-            for (int k = 0; k < n; k++) {
-                sum += cube[i][j][k];
-
-                if (sum == 2) {
-                    return (struct ){i, j};
-                }
-            }
-        }
-    }
-}
-
-// Returns an array of as many empty cells as 'elementsRequired'
-struct  findVariableAmountOfEmptyCells(int elementsRequired){
-    int counter = 0;
-
-    // init array and alloc memory
-    cell *(result[elementsRequired]);
-    for (int i = 0; i < elementsRequired; i++) {
-        result[i] = (cell *)malloc(sizeof(cell));
-    }
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            int sum = 0;
-            for (int k = 0; k < n; k++) {
-                sum += cube[i][j][k];
-
-                if (sum == 2 && counter < elementsRequired) {
-                    result[counter].i = i;
-                    result[counter].j = j;
-
-                    counter++;
-
-                    if (counter == elementsRequired) {
-                        return (struct FreeCells){counter, result};
-                    }
-                }
-            }
-        }
-    }
-
-    return (struct FreeCells){counter, result};
-}
-
-struct dual findEmptyCell(){
-
+struct cell findEmpty(){
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             int sum = 0;
@@ -127,12 +78,61 @@ struct dual findEmptyCell(){
 
                 if (sum == 2) {
                     return (struct cell){i, j};
-                  
                 }
             }
         }
     }
 }
+
+// Returns an array of as many empty cells as 'elementsRequired'
+// struct  findVariableAmountOfEmptyCells(int elementsRequired){
+//     int counter = 0;
+
+//     // init array and alloc memory
+//     cell *(result[elementsRequired]);
+//     for (int i = 0; i < elementsRequired; i++) {
+//         result[i] = (cell *)malloc(sizeof(cell));
+//     }
+
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < n; j++) {
+//             int sum = 0;
+//             for (int k = 0; k < n; k++) {
+//                 sum += cube[i][j][k];
+
+//                 if (sum == 2 && counter < elementsRequired) {
+//                     result[counter].i = i;
+//                     result[counter].j = j;
+
+//                     counter++;
+
+//                     if (counter == elementsRequired) {
+//                         return (struct FreeCells){counter, result};
+//                     }
+//                 }
+//             }
+//         }
+//     }
+
+//     return (struct FreeCells){counter, result};
+// }
+
+// struct dual findEmptyCell(){
+
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < n; j++) {
+//             int sum = 0;
+//             for (int k = 0; k < n; k++) {
+//                 sum += cube[i][j][k];
+
+//                 if (sum == 2) {
+//                     return (struct cell){i, j};
+                  
+//                 }
+//             }
+//         }
+//     }
+// }
 
 /* this function times another given function
  */
