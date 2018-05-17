@@ -121,7 +121,7 @@ int timer(int (*function)()) {
 }
 
 int stop() {
-    if (value(starting_cell.i, starting_cell.j)  >= stopping_node.k){
+    if (value(starting_cell.i, starting_cell.j)  >= stopping_node.k && stopping_node.k != 0){
         return 1;
     } else {
         return 0;
