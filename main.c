@@ -108,18 +108,6 @@ struct dualCell findEmptyCells(){
     }
 }
 
-/* this function times another given function
- */
-int timer(int (*function)()) {
-    start = clock();
-    int result = (*function)();
-    // if (result == 0) {
-    //      printf("Thread %d: No solution\n\n", thread_rank);
-    // }
-    duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-    return result;
-}
-
 void MPI_check(){
     // check for messages
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
@@ -132,22 +120,24 @@ void MPI_check(){
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
             stopping_node = data;
-            //printf("\nThread %d received acceptance of {%d, %d, %d} from %d\n",
-            //    thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
         }
         /* a thread asks for search space and we have search space to give
          * TODO: split search space more than one level below starting cell
-          * value(starting_cell.i, starting_cell.j) == n
+         * value(starting_cell.i, starting_cell.j) == n
          */
         else if (value(starting_cell.i, starting_cell.j) != n) {
             buffer.i = starting_cell.i;
             buffer.j = starting_cell.j;
             buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2);
 
-            //printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
-            //    thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
-            // let the source know that we have read it
-            MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
+            MPI_Type_create_struct(3, {n*n*n, 3, 2}},
+                {starting_cube, stopping_node, starting_cell},
+                {int***, struct node, struct cell}, &mpi_struct);
+            MPI_Type_commit(&mpi_struct);
+
+            // let the source know that we have search space
+            MPI_Isend(mpi_struct, 3, {int***, struct node, struct cell},
+                status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
     }
 }

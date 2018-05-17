@@ -19,6 +19,7 @@ MPI_Status status;
 MPI_Request request;
 int iprobe_flag;
 int tag = 0;
+int ***starting_cube;
 struct node {int i,j,k;};
 struct node stopping_node;
 struct node buffer;
@@ -42,6 +43,21 @@ double duration;
 #include "check.c"
 #include "main.c"
 
+/* TODO
+ * Make a level wherefrom we not split search space anymore
+ *
+ * send sudoku, stopping, node and starting cell
+ *
+ * set sudoku, stopping, node and starting cell and solve again
+ *
+ * find a solution for when no one is responding to the request
+ * Because either it has found a solution or it does not divide anymore
+ * because the serach space is below the level.
+ *
+ * Split search space more than one level below starting cell
+ *
+ * Thread_rank != 0 is temporarely
+ */
 
 int main(int argc, char *argv[]) {
     start = clock();
@@ -87,6 +103,14 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        starting_cube[i][j][k] = cube[i][j][k];
+                    }
+                }
+            }
+
             if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
@@ -99,7 +123,7 @@ int main(int argc, char *argv[]) {
          * solutions there will be a deadlock
          */
         if (!solved && thread_rank != 0) {
-            tag += 1;
+            tag++;
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
                     // asking for search space
@@ -107,20 +131,27 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            //printf("\nThread %d did not solve and is waiting for a response with tag %d\n", thread_rank, tag);
+            MPI_Type_create_struct(3, {n*n*n, 3, 2}},
+                {starting_cube, stopping_node, starting_cell},
+                {int***, struct node, struct cell}, &mpi_struct);
+            MPI_Type_commit(&mpi_struct);
+
             // a thread has responded to the request for search space
-            MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-            printf("\nThread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);
+            MPI_Recv(mpi_struct, 3, {int***, struct node, struct cell},
+                MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
+            printf("received struct");
+            //printf("\nThread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);
             // let the thread know that we have accepted the request
-            buffer = data;
+            //buffer = data;
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD, &request);
 
             // TODO share/set sudoku
 
             // if (solve()) {
-            //     solved = 1;
-            //     possible_root = thread_rank;
-            //     break;
+            //      solved = 1;
+            //      possible_root = thread_rank;
+            //      // break pas nodig als if verandert naar while
+            //      // break;
             // }
         }
     }
