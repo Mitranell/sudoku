@@ -80,8 +80,7 @@ int main(int argc, char *argv[]) {
     }
 
     // nasty calculation for number of nodes
-    int *nodes = (int*)malloc(((int)((n - thread_rank - 1) / nprocs) + 1) * sizeof(int));
-    printf("thread: %d - %d - %d\n", thread_rank, sizeof(&nodes), sizeof(&nodes[0]));
+    int nodes[(int)((n - thread_rank - 1) / nprocs) + 1];
     /* fill nodes with nodes to check
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      */
@@ -95,7 +94,7 @@ int main(int argc, char *argv[]) {
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
-    for(int i = 0; i < (sizeof(&nodes)/sizeof(&nodes[0])); i++) {
+    for(int i = 0; i < (sizeof(nodes)/sizeof(nodes[0])); i++) {
         MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         if (solvedByThread == -1){
             readSudoku();
@@ -103,7 +102,7 @@ int main(int argc, char *argv[]) {
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
             printf("Thread %d with last element %d\n", thread_rank, nodes[sizeof(nodes)/sizeof(nodes[0]) - 1]);
-            nodes = (int *)realloc(nodes, sizeof(nodes) - sizeof(nodes)/sizeof(nodes[0]));
+
 
             if (solve(nodes)) {
                 solved = 1;
