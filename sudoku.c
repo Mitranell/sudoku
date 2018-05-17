@@ -91,7 +91,11 @@ int main(int argc, char *argv[]) {
         }
         printf("Thread %d did %d solve\n\n", thread_rank, solved);
 
-        if (!solved) {
+        /* TODO: thread_rank != 0 is temporarely
+         * If the root asks for search space while other threads have found
+         * solutions there will be a deadlock
+         */
+        if (!solved && thread_rank != 0) {
             tag++;
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
