@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        MPI_Test(request2, &flag, &status));
+        MPI_Test(&request2, &flag, &status);
         if (flag)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
         if (solvedByThread == -1){
