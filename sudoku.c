@@ -97,13 +97,13 @@ int main(int argc, char *argv[]) {
             if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
-                printf("solved: before all reduce, %d\n", thread_rank);
+                //printf("solved: before all reduce, %d\n", thread_rank);
                 if (thread_rank != 0)
                     MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
                 else
                     solvedByThread = 0;
                 //MPI_Allreduce(&possible_root, &solvedByThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-                printf("solved: after all reduce, %d\n", thread_rank);
+                //printf("solved: after all reduce, %d\n", thread_rank);
                 break;
             }
         }
