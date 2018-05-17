@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
             printf("\nThread %d did not solve and is waiting for a response with tag %d\n", thread_rank, tag);
             // a thread has responded to the request for search space
             MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-            printf("\n Thread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);
+            printf("\nThread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);
             // let the thread know that we have accepted the request
             buffer = data;
             MPI_Send(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
