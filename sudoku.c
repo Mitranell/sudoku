@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
          * solutions there will be a deadlock
          */
         if (!solved && thread_rank != 0) {
-            tag++;
+            tag += thread_rank;
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
                     // asking for search space
