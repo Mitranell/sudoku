@@ -62,10 +62,13 @@ void outputSliceCube(int k, int n) {
  */
  int value(int i, int j) {
      int sum = 0;
+     int result = 0;
+
      for (int k = 0; k < n; k++) {
          sum += cube[i][j][k];
          int result = k;
      }
+     
      if (sum == 1) {
          return result + 1;
      } else {

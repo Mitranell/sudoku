@@ -120,7 +120,7 @@ int timer(int (*function)()) {
     return result;
 }
 
-void stop() {
+int stop() {
     if (value(starting_cell.i, starting_cell.j)  >= stopping_node.k){
         return 1;
     } else {
@@ -145,10 +145,11 @@ void MPI_check(){
                 thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
         }
         /* a thread asks for search space and we have search space to give
-         * TODO: split search space more than one level below starting cell (k ==n)
+         * TODO: split search space more than one level below starting cell
+          * value(starting_cell.i, starting_cell.j) == n
          */
-        else if (k != n) {
-                buffer = {starting_cell.i, starting_cell.j, ceil((value(starting_cell.i, starting_cell.j) + n) / 2));
+        else if (value(starting_cell.i, starting_cell.j) != n) {
+                buffer = {starting_cell.i, starting_cell.j, ceil((value(starting_cell.i, starting_cell.j) + n) / 2)};
 
                 printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
                     thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
@@ -205,7 +206,7 @@ int solve() {
             }
 
             updateCell(i, j, k);
-            
+
             MPI_check();
             if (stop()) {
                 return 0;

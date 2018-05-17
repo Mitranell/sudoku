@@ -18,11 +18,11 @@ int solved = 0;
 MPI_Status status;
 MPI_Request request;
 int iprobe_flag;
+int tag = 0;
+struct node {int i,j,k;};
+struct node stopping_node;
 struct node buffer;
 struct node data;
-int tag = 0;
-struct node {int i,j,k};
-struct node stopping_node;
 struct cell starting_cell;
 
 // serial
