@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <math.h>
 
 // mpi
 int once = 1;
@@ -79,14 +80,16 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    int nodes[n];
+    int nodes[floor((n - thread_rank - 1)/(nprocs))];
     int j = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
         printf("thread: %d i: %d j: %d\n", thread_rank, i, j);
         nodes[j] = i;
         j++;
     }
-    printf("%d %d %d ...\n", nodes[0], nodes[1], nodes[2]);
+    for(int i = 0; i < (sizeof(nodes)/sizeof(nodes[0])); i++) {
+        printf("nodes[%d] = %d\n", i, nodes[i]);
+    }
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
