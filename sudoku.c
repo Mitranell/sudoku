@@ -81,9 +81,9 @@ int main(int argc, char *argv[]) {
     }
 
     nodes = (int *)malloc(sizeof(int)*n);
+    printf("%d", sizeof(nodes)/sizeof(int));
     for (int i = 0; i < n; i++){
-        nodes[i+1] = i;
-        printf("%d", nodes[i+1]);
+        nodes[i] = i;
     }
 
     /* try several possible values for the first empty cell
