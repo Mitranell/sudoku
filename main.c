@@ -120,7 +120,15 @@ int timer(int (*function)()) {
     return result;
 }
 
-void MPI_check(int i, int j, int k){
+void stop() {
+    if (value(starting_cell.i, starting_cell.j)  >= stopping_node.k){
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void MPI_check(){
     // check for messages
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
 
@@ -131,31 +139,22 @@ void MPI_check(int i, int j, int k){
 
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
-            //TODO: set quit_node
+            stopping_node = data;
+            // TODO: check to quit
             printf("\nThread %d received acceptance of {%d, %d, %d} from %d\n",
-                thread_rank, data[0],data[1],data[2],status.MPI_SOURCE);
+                thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
         }
-        // a thread asks for search space
-        else {
-            /* there are no values possible anymore
-             * go a level lower by finding a new cell
-             */
-            if (k == n) {
-                struct cell backtrackCell = findEmptyCell();
-                buffer[0] = backtrackCell.i;
-                buffer[1] = backtrackCell.j;
-                buffer[2] = ceil((1 + n) / 2);
+        /* a thread asks for search space and we have search space to give
+         * TODO: split search space more than one level below starting cell (k ==n)
+         */
+        else if (k != n) {
+                buffer = {starting_cell.i, starting_cell.j, ceil((value(starting_cell.i, starting_cell.j) + n) / 2));
+
+                printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
+                    thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
+                // let the source know that we have read it
+                MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
             }
-            // split the possible values between the two threads
-            else {
-                buffer[0] = i;
-                buffer[1] = j;
-                buffer[2] = ceil((k + n) / 2);
-            }
-            printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
-                thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE, status.MPI_TAG);
-            // let the source know that we have read it
-            MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
     }
 }
@@ -183,10 +182,18 @@ int solve() {
     int i = backtrackCell.i;
     int j = backtrackCell.j;
 
+    if (once) {
+        starting_cell = backtrackCell;
+        once = 0;
+    }
+
     /* the sudoku is not solved yet
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
+        if  (stop()) {
+            return 0;
+        }
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {
@@ -198,7 +205,11 @@ int solve() {
             }
 
             updateCell(i, j, k);
-            MPI_check(i, j, k);
+            
+            MPI_check();
+            if (stop()) {
+                return 0;
+            }
 
             if (solve()) {
                 return 1;

@@ -57,3 +57,18 @@ void outputSliceCube(int k, int n) {
         outputRow(x, k);
     }
 }
+
+/* outputs the value of a given cell
+ */
+ int value(int i, int j) {
+     int sum = 0;
+     for (int k = 0; k < n; k++) {
+         sum += cube[i][j][k];
+         int result = k;
+     }
+     if (sum == 1) {
+         return result + 1;
+     } else {
+         return 0;
+     }
+ }
