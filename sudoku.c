@@ -101,8 +101,9 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
-            printf("Thread %d with array size %d\n", thread_rank, sizeof(nodes)/sizeof(nodes[0]));
-            
+            printf("Thread %d with last element %d\n", thread_rank, nodes[sizeof(nodes)/sizeof(nodes[0]) - 1]);
+
+
             if (solve(nodes)) {
                 solved = 1;
                 possible_root = thread_rank;
