@@ -10,11 +10,8 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
-<<<<<<< HEAD
 int number_of_nodes = 0;
-=======
 int not_broadcasting = 1;
->>>>>>> mpi-c-ali2
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -82,8 +79,11 @@ int main(int argc, char *argv[]) {
     }
     /* receiver on thread 0 */
     if (thread_rank == 0){
-        MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
+        MPI_Irecv(&solvedByThread, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
+
+    /* TODO receiver for task asker*/
+    MPI_Irecv(&, , MPI_INT, MPI_ANY_SOURCE, "GIVE_TASK", MPI_COMM_WORLD, &request3 );
 
     // create an array to possibly store every n nodes
     // TODO: change this after Daniel has implemented multiple levels
@@ -101,18 +101,13 @@ int main(int argc, char *argv[]) {
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
-<<<<<<< HEAD
     for(int i = 0; i < number_of_nodes; i++) {
-        MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-=======
-    for (int i = thread_rank; i < n; i += nprocs) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
+        if (i!= 0)
+            MPI_Test(&request2, &not_broadcasting, &status);
         if (not_broadcasting)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
-        MPI_Test(&request2, &not_broadcasting, &status);
 
-
->>>>>>> mpi-c-ali2
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
@@ -130,6 +125,13 @@ int main(int argc, char *argv[]) {
 
                 break;
             }
+        } else {
+            break;
+        }
+        if ( (i -1) == number_of_nodes){
+            /* TODO last iteration, this is called when still no solution is found,
+             * ask other threads, if there is task*/
+            MPI_Isend();
         }
     }
 
