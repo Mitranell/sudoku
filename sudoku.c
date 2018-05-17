@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
             printf("Thread %d with last element %d\n", thread_rank, nodes[sizeof(nodes)/sizeof(nodes[0]) - 1]);
-            nodes = (long unsigned int) realloc(sizeof(nodes) - sizeof(nodes)/sizeof(nodes[0]));
+            nodes = (long unsigned int *) realloc(sizeof(nodes) - sizeof(nodes)/sizeof(nodes[0]));
 
             if (solve(nodes)) {
                 solved = 1;
