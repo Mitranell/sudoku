@@ -101,7 +101,9 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-
+    }
+    if (!solved){
+        MPI_Allreduce(&possible_root, &solvedByThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
     }
     //MPI_Barrier(MPI_COMM_WORLD);
     //MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
