@@ -41,17 +41,14 @@ double duration;
 
 int main(int argc, char *argv[]) {
     start = clock();
-    printf("1\n");
 
     // init MPI
     int nprocs;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 
-    printf("2\n");
     // get rank
     MPI_Comm_rank(MPI_COMM_WORLD, &thread_rank);
-    printf("3\n");
 
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
@@ -59,14 +56,12 @@ int main(int argc, char *argv[]) {
         printf("Initial sudoku:\n");
         outputSudoku();
     }
-    printf("4\n");
 
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
 
     // The grid has more cells then. Adding 2nd level.
     if (nprocs > n) {
-    printf("5\n");
         for (int i = thread_rank; i < n; i += nprocs) {
             for (int j = thread_rank; j < n; j += nprocs) {
                 readSudoku();
@@ -82,9 +77,8 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
-    printf("6\n");
+        printf("Rank: %d\nN: %d\n\n", thread_rank, n);
         for (int i = thread_rank; i < n; i += nprocs) {
-            printf("Nummer: %d", i);
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
@@ -95,7 +89,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-
+        
         tag++;
         for (int i = 0; i < nprocs; i++) {
             if (thread_rank != i) {
