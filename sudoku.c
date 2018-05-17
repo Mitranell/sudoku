@@ -81,13 +81,7 @@ int main(int argc, char *argv[]) {
     }
 
     nodes = (int *)malloc(n*sizeof(int));
-    nodes[0] = 1000;
-    nodes[1] = 1000;
-    nodes[2] = 1000;
-    nodes[3] = 1000;
-    nodes[16] = 1000;
-    nodes[170] = 1000;
-    printf("%d", nodes[170]);
+    printf("%d", sizeof(nodes)/sizeof(int));
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
