@@ -151,7 +151,7 @@ void MPI_check(){
         else if (value(starting_cell.i, starting_cell.j) != n) {
             buffer.i = starting_cell.i;
             buffer.j = starting_cell.j;
-            buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2)};
+            buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2);
 
             printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
                 thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
