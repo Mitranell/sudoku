@@ -80,8 +80,10 @@ int main(int argc, char *argv[]) {
     }
 
     int nodes[n];
-    for (int i = thread_rank, int j = 0; i < n; i += nprocs, j++) {
+    int j = 0
+    for (int i = thread_rank, ; i < n; i += nprocs) {
         nodes[j] = i;
+        j++;
     }
     printf("%d %d %d ...\n", nodes[0], nodes[1], nodes[2]);
     /* try several possible values for the first empty cell
