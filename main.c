@@ -127,7 +127,7 @@ void MPI_check(int i, int j, int k){
     // there is a message
     if (iprobe_flag) {
         // reading message
-        MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+        MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {

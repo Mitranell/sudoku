@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
                 if (thread_rank != i) {
                     // asking for search space
                     printf("%d asks %d for search space\n", thread_rank, i);
-                    MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
+                    MPI_Isend(&buffer, 3, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
                 }
             }
 
