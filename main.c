@@ -103,7 +103,7 @@ int solve(int *nodes) {
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
-        nodes[0] = 99;
+        nodes[0] = 1;
         return 0;
     }
 
