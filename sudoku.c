@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
          * If the root asks for search space while other threads have found
          * solutions there will be a deadlock
          */
-        if (!solved && thread_rank != 0) {
-            tag += thread_rank;
+        while (!solved && thread_rank != 0) {
+            tag += 1;
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
                     // asking for search space
@@ -113,7 +113,15 @@ int main(int argc, char *argv[]) {
             printf("\nThread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);
             // let the thread know that we have accepted the request
             buffer = data;
-            MPI_Send(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
+            MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD, &request);
+
+            // TODO share/set sudoku
+
+            if (solve()) {
+                solved = 1;
+                possible_root = thread_rank;
+                break;
+            }
         }
     }
 
