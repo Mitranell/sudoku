@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
     }
     /* receiver on thread 0 */
     if (thread_rank == 0){
-        MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
+        //MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
+        //MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
@@ -94,14 +94,15 @@ int main(int argc, char *argv[]) {
             if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
-                MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
+                //MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
+                MPI_Allreduce(&possible_root, &solvedByThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
                 break;
             }
         }
 
     }
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
+    //MPI_Barrier(MPI_COMM_WORLD);
+    //MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
 
 
     // only the choosen root outputs the sudoku
