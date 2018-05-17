@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
     int nodes[n];
     int j = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        printf("thread: %d i: %d\n", thread_rank, i);
+        printf("thread: %d i: %d j: %d\n", thread_rank, i, j);
         nodes[j] = i;
         j++;
     }
