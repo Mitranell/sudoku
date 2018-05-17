@@ -120,7 +120,7 @@ int timer(int (*function)()) {
     return result;
 }
 
-void MPI_check(){
+void MPI_check(int i, int j, int k){
     // check for messages
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
 
@@ -135,10 +135,19 @@ void MPI_check(){
         }
         // a thread asks for search space
         else {
+            /* there are no values possible anymore
+             * go a level lower by finding a new cell
+             */
+            if (k == n) {
+                struct cell backtrackCell = findEmptyCell();
+                buffer = {backtrackCell.i, backtrackCell.j, 1};
+            }
+            // split the possible values between the two threads
+            else {
+                buffer = {i, j, ceil((k + n) / 2)};
+            }
             // let the source know that we have read it
-            // TODO: set buffer to sharing node
-            buffer = 0;
-            MPI_Isend(&buffer, 1, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
+            MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
     }
 }
@@ -170,7 +179,6 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        MPI_check();
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {
@@ -182,6 +190,7 @@ int solve() {
             }
 
             updateCell(i, j, k);
+            MPI_check(i, j, k);
 
             if (solve()) {
                 return 1;
