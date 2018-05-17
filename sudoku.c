@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    printf("n- thread - 1: %d\nnprocs: %d\n\n", n - thread_rank -1, nprocs);
+    printf("%d\n%d\n", n - thread_rank - 1, nprocs);
     // int nodes[floor((n - thread_rank - 1)/nprocs)];
     // int j = 0;
     // for (int i = thread_rank; i < n; i += nprocs) {
