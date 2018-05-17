@@ -7,7 +7,6 @@ void outputSudoku() {
         }
         printf("\n");
     }
-    printf("\n");
 }
 
 /* outputs the sudoku
@@ -68,7 +67,7 @@ void outputSliceCube(int k, int n) {
          sum += cube[i][j][k];
          int result = k;
      }
-     
+
      if (sum == 1) {
          return result + 1;
      } else {

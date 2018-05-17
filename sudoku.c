@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     if (thread_rank == root){
         if (solved == 1) {
             duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-            printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
+            printf("\nSolution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
             cubeToSudoku();
             outputSudoku();
         } else {
