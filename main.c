@@ -84,7 +84,7 @@ struct cell findEmptyCell(){
     }
 }
 
-int solve(int *nodes) {
+int solve(int *pointer_nodes) {
     //if(solvedByOtherThread)
     //    return 0;
     int rating = INT_MAX;
@@ -134,7 +134,7 @@ int solve(int *nodes) {
 
             updateCell(i, j, k);
 
-            if (solve(nodes)) {
+            if (solve(pointer_nodes)) {
                 return 1;
             }
 

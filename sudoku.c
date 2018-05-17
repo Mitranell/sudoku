@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
-            printf("rank %d before %d\n",thread_rank,sizeof(nodes[0]));
+            printf("rank %d before %d\n",thread_rank,nodes[0]);
 
             if (solve(nodes)) {
                 solved = 1;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
                 MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
                 break;
             }
-            printf("rank %d after %d\n",thread_rank,sizeof(nodes[0]));
+            printf("rank %d after %d\n",thread_rank,nodes[0]);
         }
     }
     MPI_Barrier(MPI_COMM_WORLD);
