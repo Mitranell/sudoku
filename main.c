@@ -134,7 +134,7 @@ int solve(int *nodes) {
 
             updateCell(i, j, k);
 
-            if (solve()) {
+            if (solve(*nodes)) {
                 return 1;
             }
 
