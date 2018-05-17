@@ -117,9 +117,7 @@ struct  findVariableAmountOfEmptyCells(int elementsRequired){
     return (struct FreeCells){counter, result};
 }
 
-struct dual findEmptys(){
-    int i1, j1;
-    int isSecond = 0;
+struct dual findEmptyCell(){
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -128,13 +126,8 @@ struct dual findEmptys(){
                 sum += cube[i][j][k];
 
                 if (sum == 2) {
-                    if (isSecond) {
-                        return (struct dual){i1, j1, i, j};
-                    } else {
-                        i1 = i;
-                        j1 = j;
-                        isSecond = 1;
-                    }
+                    return (struct cell){i, j};
+                  
                 }
             }
         }
