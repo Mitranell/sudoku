@@ -81,7 +81,8 @@ int main(int argc, char *argv[]) {
     }
 
     nodes = (int *)malloc(n*sizeof(int));
-    printf("Size: %d\nN: %d\n", sizeof(nodes)/sizeof(int), n);
+    nodes[0] = 1000;
+    printf("Size: %d\nN: %d\n", sizeof(nodes)/sizeof(nodes[0]), n);
 
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
