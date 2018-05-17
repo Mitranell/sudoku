@@ -89,22 +89,23 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("Rank: %d\nN: %d\n\n", thread_rank, n);
-
-        tag++;
-        for (int i = 0; i < nprocs; i++) {
-            if (thread_rank != i) {
-                // asking for search space
-                buffer = 0;
-                MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
+        
+        if (!solved) {
+            tag++;
+            for (int i = 0; i < nprocs; i++) {
+                if (thread_rank != i) {
+                    // asking for search space
+                    buffer = 0;
+                    MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
+                }
             }
-        }
 
-        // a thread has responded to the request for search space
-        MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-        // let the thread know that we have accepted the request
-        buffer = data;
-        MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
+            // a thread has responded to the request for search space
+            MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
+            // let the thread know that we have accepted the request
+            buffer = data;
+            MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
+        }
     }
 
     // take the maximal rank of possible roots
