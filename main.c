@@ -194,6 +194,7 @@ int solve() {
      */
     for (int k = 0; k < n; k++) {
         if  (stop()) {
+            printf("%d stops\n", thread_rank);
             return 0;
         }
         if (cube[i][j][k]) {
@@ -210,6 +211,7 @@ int solve() {
 
             MPI_check();
             if (stop()) {
+                printf("%d stops2\n", thread_rank);
                 return 0;
             }
 
