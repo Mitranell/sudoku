@@ -93,7 +93,6 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("\nThread %d did %d solve\n", thread_rank, solved);
 
         /* TODO: thread_rank != 0 is temporarely
          * If the root asks for search space while other threads have found
@@ -109,7 +108,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            printf("\n%d is waiting for a response\n", thread_rank);
+            printf("\nThread %d did not solve and is waiting for a response\n", thread_rank, solved);
             // a thread has responded to the request for search space
             MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             printf("\n%d received \nI: %d J: %d K: %d\nfrom %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE);
