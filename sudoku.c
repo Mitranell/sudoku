@@ -10,6 +10,7 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
+int number_of_nodes = 0;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -79,15 +80,15 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    // nasty calculation for number of nodes
-    int nodes[(int)((n - thread_rank - 1) / nprocs) + 1];
+    // create an array to possibly store every n nodes
+    // TODO: change this after Daniel has implemented multiple levels
+    int nodes[n];
     /* fill nodes with nodes to check
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      */
-    int j = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        nodes[j] = i;
-        j++;
+        nodes[number_of_nodes] = i;
+        number_of_nodes++;
     }
 
     /* loop through nodes
@@ -101,8 +102,7 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
-            printf("Thread %d with last element %d\n", thread_rank, nodes[sizeof(nodes)/sizeof(nodes[0]) - 1]);
-
+            printf("Thread %d with last element %d\n", thread_rank, nodes[number_of_nodes - 1]);
 
             if (solve(nodes)) {
                 solved = 1;
