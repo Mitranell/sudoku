@@ -79,22 +79,23 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
+    // nasty calculation for number of nodes
     int nodes[(int)((n - thread_rank - 1) / nprocs) + 1];
+    /* fill nodes with nodes to check
+     * example thread 2 and 5 processors: 2, 7, 12, 17, ...
+     */
     int j = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
         printf("thread: %d i: %d j: %d\n", thread_rank, i, j);
         nodes[j] = i;
         j++;
     }
-    for(int i = 0; i < (sizeof(nodes)/sizeof(nodes[0])); i++) {
-        printf("nodes[%d] = %d\n", i, nodes[i]);
-    }
-    /* try several possible values for the first empty cell
-     * example thread 2 and 5 processors: 2, 7, 12, 17, ...
+
+    /* loop through nodes
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
-    for (int i = thread_rank; i < n; i += nprocs) {
+    for(int i = 0; i < (sizeof(nodes)/sizeof(nodes[0])); i++) {
         MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         if (solvedByThread == -1){
             readSudoku();
