@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            printf("\nThread %d did not solve and is waiting for a response with tag %d\n", thread_rank, tag);
+            //printf("\nThread %d did not solve and is waiting for a response with tag %d\n", thread_rank, tag);
             // a thread has responded to the request for search space
             MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             printf("\nThread %d accepts {%d, %d, %d} from %d with tag %d\n", thread_rank, data.i, data.j, data.k, status.MPI_SOURCE, tag);

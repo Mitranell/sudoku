@@ -142,7 +142,7 @@ void MPI_check(){
             stopping_node = data;
             // TODO: check to quit
             //printf("\nThread %d received acceptance of {%d, %d, %d} from %d\n",
-                thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
+            //    thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
         }
         /* a thread asks for search space and we have search space to give
          * TODO: split search space more than one level below starting cell
@@ -154,7 +154,7 @@ void MPI_check(){
             buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2);
 
             //printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
-                thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
+            //    thread_rank, buffer.i, buffer.j, buffer.k, status.MPI_SOURCE, status.MPI_TAG);
             // let the source know that we have read it
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
