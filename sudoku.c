@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
         if ( (i -1) == number_of_nodes){
             /* TODO last iteration, this is called when still no solution is found,
              * ask other threads, if there is task*/
-            MPI_Isend();
+            MPI_Isend(&, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD, &request3);
         }
     }
 
