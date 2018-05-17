@@ -151,7 +151,8 @@ void MPI_check(int i, int j, int k){
                 buffer[1] = j;
                 buffer[2] = ceil((k + n) / 2);
             }
-            printf("\nThread %d is sending {%d, %d, %d} to %d\n", thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE);
+            printf("\nThread %d is sending {%d, %d, %d} to %d with tag %d\n",
+                thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE, status.MPI_TAG);
             // let the source know that we have read it
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
