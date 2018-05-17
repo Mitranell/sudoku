@@ -132,6 +132,7 @@ void MPI_check(int i, int j, int k){
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
             //TODO: set quit_node
+            printf("Thread %d received acceptance from %d", thread_rank, status.MPI_SOURCE);
         }
         // a thread asks for search space
         else {
