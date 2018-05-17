@@ -77,19 +77,23 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
-        printf("Rank: %d\nN: %d\n\n", thread_rank, n);
         for (int i = thread_rank; i < n; i += nprocs) {
+            printf("Rank: %d\nN: %d\n\n", thread_rank, n);
             readSudoku();
+            printf("2Rank: %d\nN: %d\n\n", thread_rank, n);
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
+                printf("3Rank: %d\nN: %d\n\n", thread_rank, n);
             if (solve()) {
+                printf("4Rank: %d\nN: %d\n\n", thread_rank, n);
                 solved = 1;
                 possible_root = thread_rank;
                 break;
             }
+                printf("5Rank: %d\nN: %d\n\n", thread_rank, n);
         }
-        
+
         tag++;
         for (int i = 0; i < nprocs; i++) {
             if (thread_rank != i) {
