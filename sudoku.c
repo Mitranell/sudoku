@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
         }
     } else {
         for (int i = thread_rank; i < n; i += nprocs) {
+            printf("Nummer: %d", i);
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
