@@ -117,11 +117,11 @@ int main(int argc, char *argv[]) {
 
             // TODO share/set sudoku
 
-            if (solve()) {
-                solved = 1;
-                possible_root = thread_rank;
-                break;
-            }
+            // if (solve()) {
+            //     solved = 1;
+            //     possible_root = thread_rank;
+            //     break;
+            // }
         }
     }
 

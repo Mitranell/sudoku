@@ -186,6 +186,7 @@ int solve() {
     for (int k = 0; k < n; k++) {
         MPI_check();
 
+        // stop if we are inside the search space we gave to another thread
         if (value(starting_cell.i, starting_cell.j) >= stopping_node.k && stopping_node.k != 0){
             printf("%d stops with starting cell {%d, %d, %d}\n", starting_cell.i, starting_cell.j, value(starting_cell.i, starting_cell.j), thread_rank);
             printf("Stopping node value: %d\n\n", stopping_node.k);
