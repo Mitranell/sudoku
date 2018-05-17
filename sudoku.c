@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("test %d\n", thread_rank);
+        printf("Thread %d did %d solve\n\n", thread_rank, solved);
 
         if (!solved) {
             tag++;
@@ -107,12 +107,11 @@ int main(int argc, char *argv[]) {
             MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             // let the thread know that we have accepted the request
             buffer = data;
-            printf("%d is accepting %d\n", thread_rank, status.MPI_SOURCE);
+            printf("%d is accepting %d\n\n", thread_rank, status.MPI_SOURCE);
             MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
         }
     }
 
-    printf("hoi %d\n", thread_rank);
     // take the maximal rank of possible roots
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
