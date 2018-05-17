@@ -18,7 +18,7 @@ MPI_Status status;
 MPI_Request request;
 int iprobe_flag;
 int buffer[3];
-int data;
+int data[3];
 int tag = 0;
 
 // serial
@@ -107,12 +107,12 @@ int main(int argc, char *argv[]) {
 
             printf("%d is waiting for a response\n", thread_rank);
             // a thread has responded to the request for search space
-            MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
+            MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             printf("%d received \nI: %d J: %d K: %d\nfrom %d\n\n", thread_rank, data[0], data[1], data[2], status.MPI_SOURCE);
             // let the thread know that we have accepted the request
             buffer = data;
             printf("%d is accepting %d\n\n", thread_rank, status.MPI_SOURCE);
-            MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
+            MPI_Send(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
         }
     }
 

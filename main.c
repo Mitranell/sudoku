@@ -140,11 +140,11 @@ void MPI_check(int i, int j, int k){
              */
             if (k == n) {
                 struct cell backtrackCell = findEmptyCell();
-                buffer[3] = {backtrackCell.i, backtrackCell.j, 1};
+                buffer = {backtrackCell.i, backtrackCell.j, 1};
             }
             // split the possible values between the two threads
             else {
-                buffer[3] = {i, j, ceil((k + n) / 2)};
+                buffer = {i, j, ceil((k + n) / 2)};
             }
             // let the source know that we have read it
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
