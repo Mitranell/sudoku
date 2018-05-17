@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
                     // asking for search space
-                    printf("%d asks %d for search space\n", thread_rank, i);
+                    printf("%d asks %d for search space with tag %d\n", thread_rank, i, tag);
                     MPI_Isend(&buffer, 3, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
                 }
             }
