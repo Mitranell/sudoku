@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("test %d", thread_rank);
+        printf("test %d\n", thread_rank);
 
         if (!solved) {
             tag++;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("hoi %d", thread_rank);
+    printf("hoi %d\n", thread_rank);
     // take the maximal rank of possible roots
     MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
