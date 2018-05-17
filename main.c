@@ -120,14 +120,6 @@ int timer(int (*function)()) {
     return result;
 }
 
-int stop() {
-    if (value(starting_cell.i, starting_cell.j)  >= stopping_node.k && stopping_node.k != 0){
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 void MPI_check(){
     // check for messages
     MPI_Iprobe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &iprobe_flag, &status);
@@ -140,7 +132,6 @@ void MPI_check(){
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
             stopping_node = data;
-            // TODO: check to quit
             //printf("\nThread %d received acceptance of {%d, %d, %d} from %d\n",
             //    thread_rank, data.i ,data.j ,data.k ,status.MPI_SOURCE);
         }
@@ -193,11 +184,14 @@ int solve() {
      * we try a value and recursively call the same function
      */
     for (int k = 0; k < n; k++) {
-        if  (stop()) {
+        MPI_check();
+
+        if (value(starting_cell.i, starting_cell.j) >= stopping_node.k && stopping_node.k != 0){
             printf("%d stops with starting cell {%d, %d, %d}\n", starting_cell.i, starting_cell.j, value(starting_cell.i, starting_cell.j), thread_rank);
             printf("Stopping node value: %d\n\n", stopping_node.k);
             return 0;
         }
+
         if (cube[i][j][k]) {
             int temp_cube[n][n][n];
             for (int i = 0; i < n; i++) {
@@ -209,12 +203,6 @@ int solve() {
             }
 
             updateCell(i, j, k);
-
-            MPI_check();
-            if (stop()) {
-                printf("%d stops2\n", thread_rank);
-                return 0;
-            }
 
             if (solve()) {
                 return 1;
