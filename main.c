@@ -130,16 +130,15 @@ void MPI_check(){
             buffer.j = starting_cell.j;
             buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2);
 
-
-            int lengths[3] = {n*n*n, 3, 2};
-            MPI_Type_create_struct(3, lengths,
-                {starting_cube, stopping_node, starting_cell},
-                {int***, struct node, struct cell}, &mpi_struct);
+            MPI_Aint disp[3] = {starting_cube, stopping_node, starting_cell};
+            MPI_Datatype mpi_struct;
+            MPI_Datatype type[3] = {int***, struct node, struct cell};
+            
+            MPI_Type_create_struct(3, lengths, disp, type, &mpi_struct);
             MPI_Type_commit(&mpi_struct);
 
             // let the source know that we have search space
-            MPI_Isend(mpi_struct, 3, {int***, struct node, struct cell},
-                status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
+            MPI_Isend(mpi_struct, 3, type, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
     }
 }
