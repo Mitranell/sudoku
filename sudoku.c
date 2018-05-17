@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        printf("Thread %d did %d solve\n\n", thread_rank, solved);
+        printf("\nThread %d did %d solve\n", thread_rank, solved);
 
         /* TODO: thread_rank != 0 is temporarely
          * If the root asks for search space while other threads have found
