@@ -10,7 +10,7 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
-int flag = 0;
+int flag = 1;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -86,7 +86,8 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        if (MPI_Test(request2, &flag, &status))
+        MPI_Test(request2, &flag, &status));
+        if (flag)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
         if (solvedByThread == -1){
             readSudoku();
