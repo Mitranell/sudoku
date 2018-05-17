@@ -10,7 +10,11 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
+<<<<<<< HEAD
 int number_of_nodes = 0;
+=======
+int not_broadcasting = 1;
+>>>>>>> mpi-c-ali2
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -33,6 +37,7 @@ char *file;
 #include "main.c"
 
 MPI_Request request;
+MPI_Request request2;
 MPI_Status status;
 
 int main(int argc, char *argv[]) {
@@ -96,8 +101,18 @@ int main(int argc, char *argv[]) {
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
+<<<<<<< HEAD
     for(int i = 0; i < number_of_nodes; i++) {
         MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+=======
+    for (int i = thread_rank; i < n; i += nprocs) {
+        /* check if broadcast is ongoing, if no start asynch broadcast */
+        if (not_broadcasting)
+            MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
+        MPI_Test(&request2, &not_broadcasting, &status);
+
+
+>>>>>>> mpi-c-ali2
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
@@ -106,7 +121,13 @@ int main(int argc, char *argv[]) {
             if (solve(nodes)) {
                 solved = 1;
                 possible_root = thread_rank;
-                MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
+                /* if rank 0 problems with sending and receiving on same thread
+                 * therefore set solveByThread manually when on rank 0 */
+                if (thread_rank != 0)
+                    MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
+                else
+                    solvedByThread = 0;
+
                 break;
             }
         }
