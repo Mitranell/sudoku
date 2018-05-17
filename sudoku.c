@@ -2,6 +2,7 @@
 #include <time.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <limits.h>
 #include <mpi.h>
 
 // mpi
@@ -33,6 +34,26 @@ int logx (int x, int base) {
     return floor(log(x) / log(base));
 }
 
+int getSmallestPower(int base, int comp) {
+    for (int i = 0; i < INT_MAX; i++) {
+        if (comp < (int)pow(base, i)) {
+            return comp;
+        }
+    }
+}
+
+int howOftenFits(int small, int big) {
+    int count = 0;
+    int comp = small;
+
+    while (comp <= big) {
+        comp += small;
+        count++;
+    }
+
+    return comp;
+   
+}
 int main(int argc, char *argv[]) {
     start = clock();
     // init MPI
@@ -55,18 +76,29 @@ int main(int argc, char *argv[]) {
 
     // The grid has more cells then. Adding further levels.
     if (nprocs > n) {
+
+        int depth = n * logx(nprocs, n); // IS IT TIMES N???????????????????
+
         for (int i = thread_rank; i < n; i += nprocs) {
-            readSudoku();
-            struct FreeCells res = findEmptyCells();
+            int leftOver = -1;
+            for (int j = 0; j < res.length; j++) {
+                readSudoku();
 
-            if(res.length < depth) {
-                // in case there's not enough empty cells for all the levels:
-                depth = floor(res.length / n);
-            }
+                int smallestPow;
+                if (j == 0) {
+                    smallestPow = getSmallestPower(n, i);
+                } else {
+                    smallestPow = getSmallestPower(n, leftOver);
+                }
 
-            for (int j = thread_rank; j < n; j += nprocs) {
+                int decreasedVal = pow(n, smallestPow - 1);
 
-                updateCell(backtrackCell.i1, backtrackCell.j1, i);
+                int res = howOftenFits(decreasedVal, i);
+
+                int leftOver = i - res;
+
+                struct cell backtrackCell = findEmptyCell();
+                updateCell(backtrackCell.i, backtrackCell.j, res);
 
                 if (solve()) {
                     solved = 1;
@@ -76,29 +108,17 @@ int main(int argc, char *argv[]) {
             }
         }
     } else {
-        int depth = n * logx(nprocs, n); // IS IT TIMES N???????????????????
-
         for (int i = thread_rank; i < n; i += nprocs) {
-                readSudoku();
+            readSudoku();
 
-                cell *emptyCells = findVariableAmountOfEmptyCells(depth * n);
+            struct cell backtrackCell = findEmptyCell();
+            updateCell(backtrackCell.i, backtrackCell.j, i);
 
-                int noOfEmptyCells = 
-                for ()
-
-                for (int j = 0; j < depth; j++) {
-
-                    updateCell(backtrackCell.i, backtrackCell.j, i);
-
-              
-                    
-                    if (solve()) {
-                        solved = 1;
-                        possible_root = thread_rank;
-                        break;
-                    }
-                }
-        }
+            if (solve()) {
+                solved = 1;
+                possible_root = thread_rank;
+                break;
+            }
     }
 
     // take the maximal rank of possible roots
