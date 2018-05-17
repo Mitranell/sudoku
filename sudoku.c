@@ -106,15 +106,15 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            printf("%d is waiting for a response\n", thread_rank);
+            printf("\n%d is waiting for a response\n", thread_rank);
             // a thread has responded to the request for search space
             MPI_Recv(&data, 3, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
-            printf("%d received \nI: %d J: %d K: %d\nfrom %d\n\n", thread_rank, data[0], data[1], data[2], status.MPI_SOURCE);
+            printf("\n%d received \nI: %d J: %d K: %d\nfrom %d\n", thread_rank, data[0], data[1], data[2], status.MPI_SOURCE);
             // let the thread know that we have accepted the request
             buffer[0] = data[0];
             buffer[1] = data[1];
             buffer[2] = data[2];
-            printf("%d is accepting %d\n\n", thread_rank, status.MPI_SOURCE);
+            printf("\n%d is accepting %d\n", thread_rank, status.MPI_SOURCE);
             MPI_Send(&buffer, 3, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
         }
     }

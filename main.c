@@ -132,7 +132,7 @@ void MPI_check(int i, int j, int k){
         // a thread confirms to have received the response
         if (status.MPI_TAG == 0) {
             //TODO: set quit_node
-            printf("Thread %d received acceptance from %d", thread_rank, status.MPI_SOURCE);
+            printf("\nThread %d received acceptance from %d\n", thread_rank, status.MPI_SOURCE);
         }
         // a thread asks for search space
         else {
@@ -151,7 +151,7 @@ void MPI_check(int i, int j, int k){
                 buffer[1] = j;
                 buffer[2] = ceil((k + n) / 2);
             }
-            printf("Thread %d is sending {%d, %d, %d} to %d\n\n", thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE);
+            printf("\nThread %d is sending {%d, %d, %d} to %d\n", thread_rank, buffer[0],buffer[1],buffer[2],status.MPI_SOURCE);
             // let the source know that we have read it
             MPI_Isend(&buffer, 3, MPI_INT, status.MPI_SOURCE, status.MPI_TAG, MPI_COMM_WORLD, &request);
         }
