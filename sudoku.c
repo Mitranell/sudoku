@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
             updateCell(backtrackCell.i, backtrackCell.j, i);
             printf("rank %d before %d\n",thread_rank,nodes[0]);
 
-            if (solve(*nodes)) {
+            if (solve(nodes)) {
                 solved = 1;
                 possible_root = thread_rank;
                 MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
