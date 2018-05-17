@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < n; i++){
         nodes[i] = i;
     }
-    printf("%d", sizeof(nodes)/sizeof(nodes[0]));
+    printf("%d %d\n", sizeof(nodes),sizeof(nodes[0]));
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
