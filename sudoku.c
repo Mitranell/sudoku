@@ -10,7 +10,7 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
-int flag = 1;
+int not_broadcasting = 1;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -86,9 +86,12 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        if (flag)
+        /* check if broadcast is ongoing, if no start asynch broadcast */
+        if (not_broadcasting)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2); 
-        MPI_Test(&request2, &flag, &status);
+        MPI_Test(&request2, &not_broadcasting, &status);
+
+
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
@@ -97,20 +100,18 @@ int main(int argc, char *argv[]) {
             if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
-                //printf("solved: before all reduce, %d\n", thread_rank);
+                /* if rank 0 problems with sending and receiving on same thread
+                 * therefore set solveByThread manually when on rank 0 */
                 if (thread_rank != 0)
                     MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
                 else
                     solvedByThread = 0;
-                //MPI_Allreduce(&possible_root, &solvedByThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-                //printf("solved: after all reduce, %d\n", thread_rank);
+
                 break;
             }
         }
     }
-    /*if (!solved){
-        MPI_Allreduce(&possible_root, &solvedByThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    }*/
+
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
 
