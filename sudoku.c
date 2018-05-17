@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
     nodes[3] = 1000;
     nodes[16] = 1000;
     nodes[17] = 1000;
-
+    printf("%d", nodes[17]);
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
