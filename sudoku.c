@@ -89,21 +89,24 @@ int main(int argc, char *argv[]) {
                 break;
             }
         }
-        
+
         if (!solved) {
             tag++;
             for (int i = 0; i < nprocs; i++) {
                 if (thread_rank != i) {
                     // asking for search space
                     buffer = 0;
+                    printf("%d asks %d for search space\n", thread_rank, i);
                     MPI_Isend(&buffer, 1, MPI_INT, i, tag, MPI_COMM_WORLD, &request);
                 }
             }
 
+            printf("%d is waiting for a response\n", thread_rank);
             // a thread has responded to the request for search space
             MPI_Recv(&data, 1, MPI_INT, MPI_ANY_SOURCE, tag, MPI_COMM_WORLD, &status);
             // let the thread know that we have accepted the request
             buffer = data;
+            printf("%d is accepting %d\n", thread_rank, status.MPI_SOURCE);
             MPI_Send(&buffer, 1, MPI_INT, status.MPI_SOURCE, 0, MPI_COMM_WORLD);
         }
     }
