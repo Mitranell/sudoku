@@ -77,7 +77,6 @@ int main(int argc, char *argv[]) {
     /* receiver on thread 0 */
     if (thread_rank == 0){
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
-        //MPI_Irecv(&solution, 2, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
@@ -94,39 +93,25 @@ int main(int argc, char *argv[]) {
             if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
-                //solution.solvedByOtherThread =1;
-                //solution.thread =thread_rank;
-                //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-                //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
                 MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
-                //MPI_Isend(&solution, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
                 break;
             }
-            //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-            //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
         }
 
     }
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
 
-    //MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    //MPI_Allreduce(&solved, &solvedByOtherThread, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-    // take the maximal rank of possible roots
-   // MPI_Allreduce(&possible_root, &root, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
 
     // only the choosen root outputs the sudoku
-    //if (thread_rank == root){
-        if (solvedByThread == thread_rank) {
-            duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-            printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
-            cubeToSudoku();
-            outputSudoku();
-            //MPI_Abort(MPI_COMM_WORLD,MPI_SUCCESS);
-        } /*else {
-            printf("No solution\n");
-        }*/
-    //}
+
+    if (solvedByThread == thread_rank) {
+        duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+        printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
+        cubeToSudoku();
+        outputSudoku();
+    } 
+
    
     MPI_Finalize();
 
