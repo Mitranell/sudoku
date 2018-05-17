@@ -103,7 +103,6 @@ int solve(int *nodes) {
 
     // the sudoku is not solvable, so trigger backtracking
     if (rating == 0) {
-        printf("Thread %d with array size %d", thread_rank, sizeof(nodes)/sizeof(nodes[0]));
         return 0;
     }
 
