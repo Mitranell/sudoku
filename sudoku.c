@@ -80,8 +80,8 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    nodes = (int *)malloc(n*sizeof(int));
-    printf("%d", sizeof(nodes)/sizeof(int));
+    nodes[n] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+    printf("%d", nodes[15]);
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
