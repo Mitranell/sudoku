@@ -10,6 +10,7 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
+int *nodes;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -78,13 +79,17 @@ int main(int argc, char *argv[]) {
     if (thread_rank == 0){
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
+
+    nodes = (int *)malloc(n*sizeof(int));
+    printf("Size: %d\n", sizeof(nodes));
+
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
     for (int i = thread_rank; i < n; i += nprocs) {
-        MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
+        MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
@@ -100,7 +105,7 @@ int main(int argc, char *argv[]) {
 
     }
     MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD); 
+    MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
 
     // only the choosen root outputs the sudoku
@@ -110,9 +115,9 @@ int main(int argc, char *argv[]) {
         printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
         cubeToSudoku();
         outputSudoku();
-    } 
+    }
 
-   
+
     MPI_Finalize();
 
     return 0;
