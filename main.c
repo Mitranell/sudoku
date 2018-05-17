@@ -130,7 +130,9 @@ void MPI_check(){
             buffer.j = starting_cell.j;
             buffer.k = ceil((value(starting_cell.i, starting_cell.j) + n) / 2);
 
-            MPI_Type_create_struct(3, {n*n*n, 3, 2}},
+
+            int lengths[3] = {n*n*n, 3, 2};
+            MPI_Type_create_struct(3, lengths,
                 {starting_cube, stopping_node, starting_cell},
                 {int***, struct node, struct cell}, &mpi_struct);
             MPI_Type_commit(&mpi_struct);
