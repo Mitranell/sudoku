@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
     // create an array to possibly store every n nodes
     // TODO: change this after Daniel has implemented multiple levels
     int nodes[n];
+
     /* fill nodes with nodes to check
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      */
@@ -95,7 +96,7 @@ int main(int argc, char *argv[]) {
      * set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
-    for(int i = 0; i < (sizeof(nodes)/sizeof(nodes[0])); i++) {
+    for(int i = 0; i < number_of_nodes; i++) {
         MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
         if (solvedByThread == -1){
             readSudoku();
@@ -112,6 +113,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    printf("Thread %d with last element %d\n", thread_rank, nodes[number_of_nodes - 1]);
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
