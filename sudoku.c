@@ -10,7 +10,6 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
-int *nodes;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -80,12 +79,11 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    nodes = (int *)malloc(sizeof(int)*n);
-    printf("%d", sizeof(nodes)/sizeof(int));
-    for (int i = 0; i < n; i++){
-        nodes[i] = i;
+    int nodes[n];
+    for (int i = thread_rank, int j = 0; i < n; i += nprocs, j++) {
+        nodes[j] = i;
     }
-    printf("%d %d %d %d\n", sizeof(nodes),sizeof(nodes[0]), sizeof(int), sizeof(nodes)/sizeof(nodes[0]));
+    printf("%d %d %d ...\n", nodes[0], nodes[1], nodes[2]);
     /* try several possible values for the first empty cell
      * example thread 2 and 5 processors: 2, 7, 12, 17, ...
      * set possible_root to the current rank if the sudoku is solved
