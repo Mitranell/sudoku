@@ -103,11 +103,6 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmptyCell();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
-            printf("Thread %d with last element %d\n", thread_rank, nodes[number_of_nodes - 1]);
-            number_of_nodes--;
-            printf("Thread %d with last element %d\n", thread_rank, nodes[number_of_nodes - 1]);
-
-
             if (solve(nodes)) {
                 solved = 1;
                 possible_root = thread_rank;
@@ -116,7 +111,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    
+
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
