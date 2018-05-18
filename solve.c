@@ -84,7 +84,13 @@ struct cell findEmptyCell(){
     }
 }
 
+int count;
 int solve() {
+    count ++;
+    if (count % 20 == 0) {
+        cubeToSudoku();
+        outputSudoku();
+    }
     int rating = INT_MAX;
     int previous_rating;
 
