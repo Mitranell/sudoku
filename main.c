@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
         if (thread_rank != i)
             MPI_Test(&request2, &not_broadcasting, &status);
         if (not_broadcasting)
-            MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2);
+            MPI_Ibcast(&solvedByThread, 1, MPI_INT, 0, MPI_COMM_WORLD, &request2);
 
         if (solvedByThread == -1){
             readSudoku();
