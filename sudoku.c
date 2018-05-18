@@ -12,6 +12,7 @@ int solved = 0;
 int solvedByThread = -1;
 int number_of_nodes = 0;
 int not_broadcasting = 1;
+int task_receiver = 0;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -35,7 +36,10 @@ char *file;
 
 MPI_Request request;
 MPI_Request request2;
+MPI_Request request3;
 MPI_Status status;
+MPI_Status status2;
+MPI_Status status3;
 
 int main(int argc, char *argv[]) {
     start = clock();
@@ -83,7 +87,7 @@ int main(int argc, char *argv[]) {
     }
 
     /* TODO receiver for task asker*/
-    MPI_Irecv(&, , MPI_INT, MPI_ANY_SOURCE, "GIVE_TASK", MPI_COMM_WORLD, &request3 );
+    MPI_Irecv(&task_receiver, 1, MPI_INT, MPI_ANY_SOURCE, "GIVE_TASK", MPI_COMM_WORLD, &request3 );
 
     // create an array to possibly store every n nodes
     // TODO: change this after Daniel has implemented multiple levels
@@ -111,9 +115,12 @@ int main(int argc, char *argv[]) {
         if (solvedByThread == -1){
             readSudoku();
             struct cell backtrackCell = findEmptyCell();
-            updateCell(backtrackCell.i, backtrackCell.j, i);
+            if (nodes[i] == -1)
+                continue;
+            else
+                updateCell(backtrackCell.i, backtrackCell.j, nodes[i]);
 
-            if (solve(nodes)) {
+            if (solve(nodes, i)) {
                 solved = 1;
                 possible_root = thread_rank;
                 /* if rank 0 problems with sending and receiving on same thread
@@ -131,7 +138,28 @@ int main(int argc, char *argv[]) {
         if ( (i -1) == number_of_nodes){
             /* TODO last iteration, this is called when still no solution is found,
              * ask other threads, if there is task*/
-            MPI_Isend(&, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD, &request3);
+            int buffer = 1;
+            int answer[2] = {0,0};
+            MPI_Send(&buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
+            /* receive an answer from that thread*/
+            MPI_Recv(&answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
+            /* if answer is true, receive task*/
+            if (answer[0]){
+                readSudoku();
+                struct cell backtrackCell = findEmptyCell();
+                updateCell(backtrackCell.i, backtrackCell.j, answer[1]);
+                if (solve(nodes, i)) {
+                    solved = 1;
+                    possible_root = thread_rank;
+                    /* if rank 0 problems with sending and receiving on same thread
+                    * therefore set solveByThread manually when on rank 0 */
+                    if (thread_rank != 0)
+                        MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
+                    else
+                        solvedByThread = 0;
+                    break;
+                }
+            }
         }
     }
 
