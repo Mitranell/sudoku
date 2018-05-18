@@ -115,12 +115,13 @@ int main(int argc, char *argv[]) {
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         readSudoku();
 
+        int m = i;
         for (int j = level; j > 0; j--) {
             struct cell backtrackCell = findEmpty();
 
-            int k = (int)(i / pow(n, j-1));
-            i -= k*pow(n,j - 1);
-            printf("Thread %d with i = %d fills {%d, %d, %d}\n\n", thread_rank, i, backtrackCell.i, backtrackCell.j, k);
+            int k = (int)(m / pow(n, j-1));
+            m -= k*pow(n,j - 1);
+            printf("Thread %d with i = %d fills {%d, %d, %d}\n\n", thread_rank, m, backtrackCell.i, backtrackCell.j, k);
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
 
