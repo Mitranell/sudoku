@@ -17,7 +17,7 @@ void createCubeWithOnes() {
  */
 void readSudoku() {
     FILE *sudoku_file;
-    sudoku_file = fopen("16x16.txt", "r");
+    sudoku_file = fopen("4x4.txt", "r");
 
     fscanf(sudoku_file, "%d", &l);
     n = l*l;
@@ -42,7 +42,7 @@ void readSudoku() {
 }
 
 /* converts the 3d cube to a 2d sudoku
- * fills in 0 when there is more than one possible value for a 
+ * fills in 0 when there is more than one possible value for a
  */
 int** cubeToSudoku() {
     //sum the depths of [i][j][*] whether it is 1
@@ -127,7 +127,7 @@ struct cell findEmpty(){
 
 //                 if (sum == 2) {
 //                     return (struct cell){i, j};
-                  
+
 //                 }
 //             }
 //         }
