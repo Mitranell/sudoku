@@ -108,6 +108,7 @@ int main(int argc, char *argv[]) {
 
                 int k = (int)(m / pow(n, j-1));
                 m -= k*pow(n,j - 1);
+                printf("%d {%d, %d, %d}", thread_rank, backtrackCell.i, backtrackCell.j, k);
                 updateCell(backtrackCell.i, backtrackCell.j, k);
             }
 
