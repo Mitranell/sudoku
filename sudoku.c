@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <math.h>
 #include <mpi.h>
 
 // mpi

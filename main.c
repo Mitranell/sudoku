@@ -173,7 +173,7 @@ int solve() {
     //     once = 0;
     // }
 
-    struct  backtrack = findEmpty();
+    struct cell backtrack = findEmpty();
     int i = backtrack.i;
     int j = backtrack.j;
 
