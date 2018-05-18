@@ -88,7 +88,7 @@ int count;
 int solve() {
     count++;
     if (count % 10000 == 0) {
-        printf("Thread %d\nSolved %d\n", thread_rank, %solvedByThread);
+        printf("Thread %d\nSolved %d\n", thread_rank, solvedByThread);
         cubeToSudoku();
         outputSudoku();
     }
