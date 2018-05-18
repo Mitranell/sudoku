@@ -42,18 +42,7 @@ int getSmallestPower(int base, int comp) {
     }
 }
 
-int howOftenFits(int small, int big) {
-    int count = 0;
-    int comp = small;
 
-    while (comp <= big) {
-        comp += small;
-        count++;
-    }
-
-    return comp;
-   
-}
 int main(int argc, char *argv[]) {
     start = clock();
     // init MPI
@@ -81,7 +70,7 @@ int main(int argc, char *argv[]) {
 
         for (int i = thread_rank; i < n; i += nprocs) {
             int leftOver = -1;
-            for (int j = 0; j < res.length; j++) {
+            for (int j = 0; j < depth; j++) {
                 readSudoku();
 
                 int smallestPow;
@@ -93,7 +82,7 @@ int main(int argc, char *argv[]) {
 
                 int decreasedVal = pow(n, smallestPow - 1);
 
-                int res = howOftenFits(decreasedVal, i);
+                int res = floor(i / decreasedVal);
 
                 int leftOver = i - res;
 
