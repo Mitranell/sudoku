@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
         readSudoku();
 
         int level = ceil(log(nprocs)/log(n));
-        printf("level: %d", level);
+        printf("log(nprocs): %d\nlog(n): %d\nlevel: %d\n", log(nprocs), log(n), level);
         for (int i = 0; i < level; i++) {
 
         }
