@@ -111,9 +111,9 @@ int main(int argc, char *argv[]) {
     //         }
     //     }
     // }
-    for (int i = thread_rank; i < n; i += nprocs) {
+    int level = ceil(logf((float)nprocs)/logf((float)n));
+    for (int i = thread_rank; i < n^level; i += nprocs) {
         readSudoku();
-        int level = ceil(logf((float)nprocs)/logf((float)n));
 
         for (int j = level; j > 0; j--) {
             struct cell backtrackCell = findEmpty();
