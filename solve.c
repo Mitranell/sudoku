@@ -87,7 +87,7 @@ struct cell findEmptyCell(){
 int count;
 int solve() {
     count++;
-    if (count % 500 == 0) {
+    if (count % 10000 == 0) {
         printf("Thread %d\n\n", thread_rank);
         cubeToSudoku();
         outputSudoku();
