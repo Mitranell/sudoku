@@ -70,8 +70,8 @@ int main(int argc, char *argv[]) {
     // all threads read the sudoku and only on thread outputs it
     readSudoku();
     if (thread_rank == 0) {
-        printf("Initial sudoku:\n");
-        outputSudoku();
+        //printf("Initial sudoku:\n");
+        //outputSudoku();
     }
     /* receiver on thread 0 */
     if (thread_rank == 0){
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
 
     if (solvedByThread == thread_rank) {
         duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-        printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
+        //printf("Solution:\nThread: %d \nDuration: %f\n\n", thread_rank, duration);
         cubeToSudoku();
         outputSudoku();
     }
