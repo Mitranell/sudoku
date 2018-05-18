@@ -112,6 +112,8 @@ int main(int argc, char *argv[]) {
     //     }
     // }
     int level = ceil(logf((float)nprocs)/logf((float)n));
+    // TODO test if different levels improve the solution time
+    // level += 1;
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         readSudoku();
 
@@ -122,10 +124,6 @@ int main(int argc, char *argv[]) {
             int k = (int)(m / pow(n, j-1));
             m -= k*pow(n,j - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
-
-            printf("Thread: %d\ni: %d\n{%d, %d, %d}\n\n", thread_rank, i, backtrackCell.i, backtrackCell.j, k);
-            cubeToSudoku();
-            outputSudoku();
         }
 
         if (solve()) {
