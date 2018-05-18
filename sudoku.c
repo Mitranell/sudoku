@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
                 possible_root = thread_rank;
                 break;
             }
+        }
     }
 
     // take the maximal rank of possible roots
