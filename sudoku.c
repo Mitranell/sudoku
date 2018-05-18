@@ -35,6 +35,19 @@ int logx (int x, int base) {
     return floor(log(x) / log(base));
 }
 
+int howOftenFits(int small, int big) {
+    int count = 0;
+    int comp = small;
+
+    while (comp <= big) {
+        comp += small;
+        count++;
+    }
+
+    return comp;
+   
+}
+
 int getSmallestPower(int base, int comp) {
     for (int i = 0; i < INT_MAX; i++) {
         if (comp < (int)pow(base, i)) {
@@ -83,7 +96,7 @@ int main(int argc, char *argv[]) {
 
                 int decreasedVal = pow(n, smallestPow - 1);
 
-                int res = floor(i / decreasedVal);
+                int res = howOftenFits(decreasedVal, i);
 
                 int leftOver = i - res;
 
