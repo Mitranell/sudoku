@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     //         }
     //     }
     // }
-
+    printf("thread %d", thread_rank);
     for (int i = thread_rank; i < n; i += nprocs) {
         readSudoku();
         int level = ceil(logf((float)nprocs)/logf((float)n));
@@ -120,7 +120,6 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmpty();
 
             int k = (int)(i / pow(n, j-1));
-            printf("Thread %d with node i=%d filles k=%d at level j=%d\n%d\n%d\n%d\n\n", thread_rank, i, k, j, i, pow(n,j - 1), i / pow(n,j - 1));
             i -= k*pow(n,j - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
