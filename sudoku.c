@@ -140,9 +140,9 @@ int main(int argc, char *argv[]) {
              * ask other threads, if there is task*/
             int buffer = 1;
             int answer[2] = {0,0};
-            MPI_Send(buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
+            MPI_Send(&buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
             /* receive an answer from that thread*/
-            MPI_Recv(answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
+            MPI_Recv(&answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
             /* if answer is true, receive task*/
             if (answer[0]){
                 readSudoku();
