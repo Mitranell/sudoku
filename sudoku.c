@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
         readSudoku();
         int level = ceil(logf((float)nprocs)/logf((float)n));
 
-        for (int j = 0; j < level; j++) {
+        for (int j = level; j > 0; j--) {
             struct cell backtrackCell = findEmpty();
 
             int k = ceil(i / n^(j - 1));
