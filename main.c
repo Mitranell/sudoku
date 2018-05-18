@@ -6,20 +6,12 @@
 #include <math.h>
 
 // mpi
-int once = 1;
 int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
 int not_broadcasting = 1;
-int task_receiver = 0;
 
-int const GIVE_TASK = 100;
-int const GIVE_TASK_ANSWER = 101;
-/*struct Solution {
-    int solvedByOtherThread;
-    int thread;
-} solution={0,0};*/
 // serial
 int l;
 int n;
