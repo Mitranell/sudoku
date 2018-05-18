@@ -13,6 +13,9 @@ int solvedByThread = -1;
 int number_of_nodes = 0;
 int not_broadcasting = 1;
 int task_receiver = 0;
+
+int const GIVE_TASK = 100;
+int const GIVE_TASK_ANSWER = 101;
 /*struct Solution {
     int solvedByOtherThread;
     int thread;
@@ -87,7 +90,7 @@ int main(int argc, char *argv[]) {
     }
 
     /* TODO receiver for task asker*/
-    MPI_Irecv(&task_receiver, 1, MPI_INT, MPI_ANY_SOURCE, "GIVE_TASK", MPI_COMM_WORLD, &request3 );
+    MPI_Irecv(&task_receiver, 1, MPI_INT, MPI_ANY_SOURCE, GIVE_TASK, MPI_COMM_WORLD, &request3 );
 
     // create an array to possibly store every n nodes
     // TODO: change this after Daniel has implemented multiple levels
@@ -140,9 +143,9 @@ int main(int argc, char *argv[]) {
              * ask other threads, if there is task*/
             int buffer = 1;
             int answer[2] = {0,0};
-            MPI_Send(&buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
+            MPI_Send(&buffer, 1, MPI_INT, 0, GIVE_TASK, MPI_COMM_WORLD);
             /* receive an answer from that thread*/
-            MPI_Recv(&answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
+            MPI_Recv(&answer, 2, MPI_INT, 0, GIVE_TASK_ANSWER, MPI_COMM_WORLD);
             /* if answer is true, receive task*/
             if (answer[0]){
                 readSudoku();
