@@ -77,40 +77,40 @@ int main(int argc, char *argv[]) {
     // set possible_root to the current rank if the sudoku is solved
     int possible_root = 0;
 
-    // The grid has more cells then. Adding further levels.
-    if (nprocs > n) {
-
-        int depth = n * logx(nprocs, n); // IS IT TIMES N???????????????????
-
-        for (int i = thread_rank; i < n; i += nprocs) {
-            int leftOver = -1;
-            for (int j = 0; j < depth; j++) {
-                readSudoku();
-
-                int smallestPow;
-                if (j == 0) {
-                    smallestPow = getSmallestPower(n, i);
-                } else {
-                    smallestPow = getSmallestPower(n, leftOver);
-                }
-
-                int decreasedVal = pow(n, smallestPow - 1);
-
-                int res = howOftenFits(decreasedVal, i);
-
-                int leftOver = i - res;
-
-                struct cell backtrackCell = findEmpty();
-                updateCell(backtrackCell.i, backtrackCell.j, res);
-
-                if (solve()) {
-                    solved = 1;
-                    possible_root = thread_rank;
-                    break;
-                }
-            }
-        }
-    }
+    // // The grid has more cells then. Adding further levels.
+    // if (nprocs > n) {
+    //
+    //     int depth = n * logx(nprocs, n); // IS IT TIMES N???????????????????
+    //
+    //     for (int i = thread_rank; i < n; i += nprocs) {
+    //         int leftOver = -1;
+    //         for (int j = 0; j < depth; j++) {
+    //             readSudoku();
+    //
+    //             int smallestPow;
+    //             if (j == 0) {
+    //                 smallestPow = getSmallestPower(n, i);
+    //             } else {
+    //                 smallestPow = getSmallestPower(n, leftOver);
+    //             }
+    //
+    //             int decreasedVal = pow(n, smallestPow - 1);
+    //
+    //             int res = howOftenFits(decreasedVal, i);
+    //
+    //             int leftOver = i - res;
+    //
+    //             struct cell backtrackCell = findEmpty();
+    //             updateCell(backtrackCell.i, backtrackCell.j, res);
+    //
+    //             if (solve()) {
+    //                 solved = 1;
+    //                 possible_root = thread_rank;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 
     for (int i = thread_rank; i < n; i += nprocs) {
         readSudoku();
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
         int level = ceil(log(nprocs)/log(n));
         printf("level: %d", level);
         for (int i = 0; i < level; i++) {
-            
+
         }
 
         struct cell backtrackCell = findEmpty();
