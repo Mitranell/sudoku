@@ -124,6 +124,7 @@ int main(int argc, char *argv[]) {
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
         printf("Thread: %d\nI: %d\n\n", thread_rank, i);
+        cubeToSudoku();
         outputSudoku();
 
         if (solve()) {
