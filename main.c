@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
             MPI_Ibcast(&solvedByThread, 1, MPI_INT, 0, MPI_COMM_WORLD, &request2);
 
         if (solvedByThread == -1){
+            printf("i am in main at node %d, rank: %d \n", i, thread_rank);
             readSudoku();
 
             int m = i;
