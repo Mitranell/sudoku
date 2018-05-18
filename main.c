@@ -84,7 +84,6 @@ int main(int argc, char *argv[]) {
     int level = ceil(logf((float)nprocs)/logf((float)n));
     // TODO test if different levels improve the solution time
     // level += 1;
-    printf("Thread %d level %d\n\n", thread_rank, level);
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
         if (thread_rank != i)
@@ -103,8 +102,6 @@ int main(int argc, char *argv[]) {
                 m -= k*pow(n,j - 1);
                 updateCell(backtrackCell.i, backtrackCell.j, k);
             }
-
-            printf("Thread %d node %d\n\n", thread_rank, i);
 
             if (solve()) {
                 solved = 1;
