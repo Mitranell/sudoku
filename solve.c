@@ -86,6 +86,7 @@ struct cell findEmptyCell(){
 
 int count;
 int solve() {
+    if (solvedByThread != -1) return 0;
     count++;
     if (count % 10000 == 0) {
         printf("Thread %d\n\n", thread_rank);
