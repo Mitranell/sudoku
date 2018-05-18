@@ -86,11 +86,11 @@ struct cell findEmptyCell(){
 
 int count;
 int solve() {
-    if(thread_rank == 0 && solvedByThread != -1){
+    /*if(thread_rank == 0 && solvedByThread != -1){
         for (int i = 1; i< nprocs; i++){
             MPI_Isend(&solvedByThread, 1, MPI_INT, i, 0, MPI_COMM_WORLD,&request2);
         }
-    }
+    }*/
     if (solvedByThread != -1){
         return 0;
     }

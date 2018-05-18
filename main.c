@@ -86,10 +86,10 @@ int main(int argc, char *argv[]) {
     // level += 1;
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
-        //if (thread_rank != i )
-        //    MPI_Test(&request2, &not_broadcasting, &status);
-        //if (not_broadcasting)
-        //MPI_Ibcast(&solvedByThread, 1, MPI_INT, 0, MPI_COMM_WORLD, &request2);
+        if (thread_rank != i )
+            MPI_Test(&request2, &not_broadcasting, &status);
+        if (not_broadcasting)
+            MPI_Ibcast(&solvedByThread, 1, MPI_INT, 0, MPI_COMM_WORLD, &request2);
 
         if (solvedByThread == -1){
             printf("i am in main at node %d, rank: %d \n", i, thread_rank);
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
             }
         } else break;
     }
-    printf("i am at barrier, rank: %d \n", thread_rank);
+    //printf("i am at barrier, rank: %d \n", thread_rank);
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
