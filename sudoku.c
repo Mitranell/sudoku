@@ -112,7 +112,9 @@ int main(int argc, char *argv[]) {
     //     }
     // }
     int level = ceil(logf((float)nprocs)/logf((float)n));
+    printf("Level: %d\n\n", level);
     for (int i = thread_rank; i < n^level; i += nprocs) {
+        printf("i: %d\nn^level: %d", i, n^level);
         readSudoku();
 
         for (int j = level; j > 0; j--) {
@@ -120,7 +122,6 @@ int main(int argc, char *argv[]) {
 
             int k = (int)(i / pow(n, j-1));
             i -= k*pow(n,j - 1);
-            printf("t: %dI: %d J: %d K: %d\n", thread_rank, backtrackCell.i, backtrackCell.j, k);
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
 
