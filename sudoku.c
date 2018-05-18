@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 
                 int leftOver = i - res;
 
-                struct cell backtrackCell = findEmptyCell();
+                struct cell backtrackCell = findEmpty();
                 updateCell(backtrackCell.i, backtrackCell.j, res);
 
                 if (solve()) {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
         for (int i = thread_rank; i < n; i += nprocs) {
             readSudoku();
 
-            struct cell backtrackCell = findEmptyCell();
+            struct cell backtrackCell = findEmpty();
             updateCell(backtrackCell.i, backtrackCell.j, i);
 
             if (solve()) {
