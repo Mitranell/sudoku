@@ -21,7 +21,7 @@ int checkRow() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
-                //updateCell(p, j, k);
+                updateCell(p, j, k);
             }
 
             total_sum += sum;
@@ -54,7 +54,7 @@ int checkColumn() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
-                //updateCell(i, p, k);
+                updateCell(i, p, k);
             }
 
             total_sum += sum;
@@ -87,7 +87,7 @@ int checkCell() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
-                //updateCell(i,j,p);
+                updateCell(i,j,p);
             }
 
             total_sum += sum;
@@ -128,7 +128,7 @@ int checkGrid() {
 
                 // if the sum equals 1, then it was the only one
                 if (sum == 1) {
-                    //updateCell(p,q,k);
+                    updateCell(p,q,k);
                 }
 
                 total_sum += sum;
