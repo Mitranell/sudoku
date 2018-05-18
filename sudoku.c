@@ -99,9 +99,22 @@ int main(int argc, char *argv[]) {
                 int res = howOftenFits(decreasedVal, i);
 
                 int leftOver = i - res;
+                
+                if(nprocs >= 17) {
+                    printf("here1");
+                }
 
                 struct cell backtrackCell = findEmpty();
+                 if(nprocs >= 17) {
+                    printf("here2");
+                }
+
                 updateCell(backtrackCell.i, backtrackCell.j, res);
+
+                 if(nprocs >= 17) {
+                    printf("here3");
+                }
+
 
                 if (solve()) {
                     solved = 1;
