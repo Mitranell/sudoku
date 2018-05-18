@@ -10,7 +10,6 @@ int root;
 int thread_rank;
 int solved = 0;
 int solvedByThread = -1;
-int number_of_nodes = 0;
 int not_broadcasting = 1;
 int task_receiver = 0;
 
@@ -86,24 +85,13 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-
-    // create an array to possibly store every n nodes
-    // TODO: change this after Daniel has implemented multiple levels
-    int nodes[n];
-
-    /* fill nodes with nodes to check
-     * example thread 2 and 5 processors: 2, 7, 12, 17, ...
-     */
-    for (int i = thread_rank; i < n; i += nprocs) {
-        nodes[number_of_nodes] = i;
-        number_of_nodes++;
-    }
-
-    /* loop through nodes
-     * set possible_root to the current rank if the sudoku is solved
+    /* set possible_root to the current rank if the sudoku is solved
      */
     int possible_root = 0;
-    for(int i = 0; i < number_of_nodes; i++) {
+    int level = ceil(logf((float)nprocs)/logf((float)n));
+    // TODO test if different levels improve the solution time
+    // level += 1;
+    for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
         if (i!= 0)
             MPI_Test(&request2, &not_broadcasting, &status);
@@ -112,13 +100,17 @@ int main(int argc, char *argv[]) {
 
         if (solvedByThread == -1){
             readSudoku();
-            struct cell backtrackCell = findEmptyCell();
-            if (nodes[i] == -1)
-                continue;
-            else
-                updateCell(backtrackCell.i, backtrackCell.j, nodes[i]);
+            
+            int m = i;
+            for (int j = level; j > 0; j--) {
+                struct cell backtrackCell = findEmpty();
 
-            if (solve(nodes, i)) {
+                int k = (int)(m / pow(n, j-1));
+                m -= k*pow(n,j - 1);
+                updateCell(backtrackCell.i, backtrackCell.j, k);
+            }
+
+            if (solve()) {
                 solved = 1;
                 possible_root = thread_rank;
                 /* if rank 0 problems with sending and receiving on same thread
