@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 
             int m = i;
             for (int j = level; j > 0; j--) {
-                struct cell backtrackCell = findEmpty();
+                struct cell backtrackCell = findEmptyCell();
 
                 int k = (int)(m / pow(n, j-1));
                 m -= k*pow(n,j - 1);
