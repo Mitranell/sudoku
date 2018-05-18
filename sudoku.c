@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
         for (int j = level; j > 0; j--) {
             struct cell backtrackCell = findEmpty();
 
-            int k = ceil(i / pow(n, j-1));
+            int k = (int)(i / pow(n, j-1));
             printf("Thread %d with node i=%d filles k=%d at level j=%d\n%d\n%d\n%d\n\n", thread_rank, i, k, j, i, pow(n,j - 1), i / pow(n,j - 1));
             i -= k*pow(n,j - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
