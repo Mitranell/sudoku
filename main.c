@@ -93,9 +93,10 @@ int main(int argc, char *argv[]) {
     printf("%d\n", thread_rank);
     // TODO test if different levels improve the solution time
     // level += 1;
-    for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
+    for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {        
+        printf("%d\n", thread_rank);
         /* check if broadcast is ongoing, if no start asynch broadcast */
-        if (i!= 0)
+        if (i != 0)
             MPI_Test(&request2, &not_broadcasting, &status);
         if (not_broadcasting)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2);
