@@ -31,30 +31,30 @@ double duration;
 #include "main.c"
 
 
-int logx (int x, int base) {
-    return floor(log(x) / log(base));
-}
-
-int howOftenFits(int small, int big) {
-    int count = 0;
-    int comp = small;
-
-    while (comp <= big) {
-        comp += small;
-        count++;
-    }
-
-    return comp;
-   
-}
-
-int getSmallestPower(int base, int comp) {
-    for (int i = 0; i < INT_MAX; i++) {
-        if (comp < (int)pow(base, i)) {
-            return comp;
-        }
-    }
-}
+// int logx (int x, int base) {
+//     return floor(log(x) / log(base));
+// }
+//
+// int howOftenFits(int small, int big) {
+//     int count = 0;
+//     int comp = small;
+//
+//     while (comp <= big) {
+//         comp += small;
+//         count++;
+//     }
+//
+//     return comp;
+//
+// }
+//
+// int getSmallestPower(int base, int comp) {
+//     for (int i = 0; i < INT_MAX; i++) {
+//         if (comp < (int)pow(base, i)) {
+//             return comp;
+//         }
+//     }
+// }
 
 
 int main(int argc, char *argv[]) {
@@ -110,18 +110,24 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
-    } else {
-        for (int i = thread_rank; i < n; i += nprocs) {
-            readSudoku();
+    }
 
-            struct cell backtrackCell = findEmpty();
-            updateCell(backtrackCell.i, backtrackCell.j, i);
+    for (int i = thread_rank; i < n; i += nprocs) {
+        readSudoku();
 
-            if (solve()) {
-                solved = 1;
-                possible_root = thread_rank;
-                break;
-            }
+        int level = ceil(log(nprocs)/log(n));
+        printf("level: %d", level);
+        for (int i = 0; i < level; i++) {
+            
+        }
+
+        struct cell backtrackCell = findEmpty();
+        updateCell(backtrackCell.i, backtrackCell.j, i);
+
+        if (solve()) {
+            solved = 1;
+            possible_root = thread_rank;
+            break;
         }
     }
 
