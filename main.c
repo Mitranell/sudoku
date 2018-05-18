@@ -33,7 +33,7 @@ void readSudoku() {
             fscanf(sudoku_file, "%d", &sudoku[i][j]);
 
             if(sudoku[i][j] != 0) {
-                update(i, j, sudoku[i][j] - 1);
+                updateCell(i, j, sudoku[i][j] - 1);
             }
         }
     }
@@ -191,7 +191,7 @@ int solve() {
                 }
             }
 
-            update(i, j, k);
+            updateCell(i, j, k);
 
             if (solve()) {
                 return 1;
