@@ -84,7 +84,14 @@ struct cell findEmptyCell(){
     }
 }
 
+int count;
 int solve() {
+    count++;
+    if (count % 500 == 0) {
+        printf("Thread %d\n\n", thread_rank);
+        cubeToSudoku();
+        outputSudoku();
+    }
     int rating = INT_MAX;
     int previous_rating;
 
