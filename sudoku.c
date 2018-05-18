@@ -115,8 +115,8 @@ int main(int argc, char *argv[]) {
     for (int i = thread_rank; i < n; i += nprocs) {
         readSudoku();
 
-        int level = ceil(logf(nprocs)/logf(n));
-        printf("nprocs %d\nn %d\nlog(nprocs): %d\nlog(n): %d\nlevel: %d\n", nprocs, n, logf(nprocs), logf(n), level);
+        int level = ceil(logf((float)nprocs)/logf((float)n));
+        printf("nprocs %f\nn %f\nlog(nprocs): %f\nlog(n): %f\nlevel: %d\n", (float)nprocs, (float)n, logf((float)nprocs), logf((float)n), level);
         for (int i = 0; i < level; i++) {
 
         }
