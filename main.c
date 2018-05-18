@@ -90,13 +90,11 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     int level = ceil(logf((float)nprocs)/logf((float)n));
-    printf("%d\n", thread_rank);
     // TODO test if different levels improve the solution time
     // level += 1;
-    for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {        
-        printf("%d\n", thread_rank);
+    for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
-        if (i != 0)
+        if (thread_rank != 0)
             MPI_Test(&request2, &not_broadcasting, &status);
         if (not_broadcasting)
             MPI_Ibcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD, &request2);
@@ -106,10 +104,10 @@ int main(int argc, char *argv[]) {
 
             int m = i;
             for (int j = level; j > 0; j--) {
-                struct cell backtrackCell = findEmptyCell();
-
-                int k = (int)(m / pow(n, j-1));
-                m -= k*pow(n,j - 1);
+                // struct cell backtrackCell = findEmptyCell();
+                //
+                // int k = (int)(m / pow(n, j-1));
+                // m -= k*pow(n,j - 1);
                 updateCell(backtrackCell.i, backtrackCell.j, k);
             }
 
