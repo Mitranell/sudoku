@@ -84,20 +84,7 @@ struct cell findEmptyCell(){
     }
 }
 
-int solve(int *nodes, int i_sudoku) {
-    int flag = 0;
-    /* check if GIVE_TASK was asked */
-    MPI_Request_get_status(request3, &flag, &status3);
-    if (flag){
-        /* check if there is a task to give, if yes, send task*/
-        int answer[2] = {0,0};
-        if (i_sudoku < number_of_nodes - 1) {
-            answer[0] = 1;
-            answer[1] = nodes[i_sudoku + 1];
-            nodes[i_sudoku + 1] = -1;
-        }
-        MPI_Send(&answer, 2, MPI_INT, 0, GIVE_TASK_ANSWER, MPI_COMM_WORLD);
-    }
+int solve() {
 
     int rating = INT_MAX;
     int previous_rating;
@@ -145,7 +132,7 @@ int solve(int *nodes, int i_sudoku) {
 
             updateCell(i, j, k);
 
-            if (solve(nodes, i_sudoku)) {
+            if (solve()) {
                 return 1;
             }
 

@@ -34,10 +34,7 @@ char *file;
 
 MPI_Request request;
 MPI_Request request2;
-MPI_Request request3;
 MPI_Status status;
-MPI_Status status2;
-MPI_Status status3;
 
 #include "update.c"
 #include "output.c"
@@ -89,8 +86,6 @@ int main(int argc, char *argv[]) {
         MPI_Irecv(&solvedByThread, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
     }
 
-    /* TODO receiver for task asker*/
-    MPI_Irecv(&task_receiver, 1, MPI_INT, MPI_ANY_SOURCE, GIVE_TASK, MPI_COMM_WORLD, &request3 );
 
     // create an array to possibly store every n nodes
     // TODO: change this after Daniel has implemented multiple levels
@@ -136,37 +131,7 @@ int main(int argc, char *argv[]) {
 
                 break;
             }
-        } else {
-            break;
-        }
-        /*if ( (i +1) == number_of_nodes){
-            // TODO last iteration, this is called when still no solution is found,
-            // ask other threads, if there is task
-            printf("%d is asking %d for new task." ,thread_rank , 0);
-            int buffer = 1;
-            int answer[2] = {0,0};
-            MPI_Send(&buffer, 1, MPI_INT, 0, GIVE_TASK, MPI_COMM_WORLD);
-            // receive an answer from that thread
-            MPI_Recv(&answer, 2, MPI_INT, 0, GIVE_TASK_ANSWER, MPI_COMM_WORLD, &status3);
-            printf("%d: Received new task from %d. Node: %d." ,thread_rank , 0, answer[1]);
-            // if answer is true, receive task
-            if (answer[0]){
-                readSudoku();
-                struct cell backtrackCell = findEmptyCell();
-                updateCell(backtrackCell.i, backtrackCell.j, answer[1]);
-                if (solve(nodes, i)) {
-                    solved = 1;
-                    possible_root = thread_rank;
-                    // if rank 0 problems with sending and receiving on same thread
-                    // therefore set solveByThread manually when on rank 0 
-                    if (thread_rank != 0)
-                        MPI_Isend(&possible_root, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,&request);
-                    else
-                        solvedByThread = 0;
-                    break;
-                }
-            }
-        }*/
+        } else break;
     }
 
     MPI_Barrier(MPI_COMM_WORLD);
