@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
             struct cell backtrackCell = findEmpty();
 
             int k = ceil(i / n^(j - 1));
-            printf("Thread %d with node %d filles %d at level %d\n", thread_rank, i, k, j);
+            printf("Thread %d with node i=%d filles k=%d at level j=%d\n", thread_rank, i, k, j);
             i -= (k - 1)*n^(j - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
