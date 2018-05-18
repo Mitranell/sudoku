@@ -54,7 +54,7 @@ int checkColumn() {
 
             // if the sum equals 1, then it was the only one
             if (sum == 1) {
-                updateCell(i, p, k);
+                //updateCell(i, p, k);
             }
 
             total_sum += sum;
