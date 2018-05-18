@@ -69,7 +69,7 @@ int** cubeToSudoku() {
     }
 }
 
-struct cell findEmpty(){
+struct cell findEmptyCell(){
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             int sum = 0;
