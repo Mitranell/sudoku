@@ -141,11 +141,13 @@ int main(int argc, char *argv[]) {
         if ( (i -1) == number_of_nodes){
             /* TODO last iteration, this is called when still no solution is found,
              * ask other threads, if there is task*/
+            printf("%d is asking %d for new task." ,thread_rank , 0);
             int buffer = 1;
             int answer[2] = {0,0};
             MPI_Send(&buffer, 1, MPI_INT, 0, GIVE_TASK, MPI_COMM_WORLD);
             /* receive an answer from that thread*/
             MPI_Recv(&answer, 2, MPI_INT, 0, GIVE_TASK_ANSWER, MPI_COMM_WORLD, &status3);
+            printf("%d: Received new task from %d. Node: %d." ,thread_rank , 0, answer[1]);
             /* if answer is true, receive task*/
             if (answer[0]){
                 readSudoku();
