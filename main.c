@@ -85,6 +85,7 @@ int main(int argc, char *argv[]) {
     // TODO test if different levels improve the solution time
     // level += 1;
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
+        printf("Thread %d node %d\n\n", thread_rank, i);
         /* check if broadcast is ongoing, if no start asynch broadcast */
         if (thread_rank != i)
             MPI_Test(&request2, &not_broadcasting, &status);
@@ -104,7 +105,6 @@ int main(int argc, char *argv[]) {
             }
 
             if (solve()) {
-                printf("Thread %d node %d\n\n", thread_rank, i);
                 solved = 1;
                 possible_root = thread_rank;
                 /* if rank 0 problems with sending and receiving on same thread
