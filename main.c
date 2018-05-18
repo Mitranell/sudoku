@@ -104,6 +104,7 @@ int main(int argc, char *argv[]) {
             }
 
             if (solve()) {
+                printf("Thread %d node %d\n\n", thread_rank, i);
                 solved = 1;
                 possible_root = thread_rank;
                 /* if rank 0 problems with sending and receiving on same thread
