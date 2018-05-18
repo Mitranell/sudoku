@@ -122,10 +122,11 @@ int main(int argc, char *argv[]) {
             int k = (int)(m / pow(n, j-1));
             m -= k*pow(n,j - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
+
+            printf("Thread: %d\ni: %d\n{%d, %d, %d}\n\n", thread_rank, i, backtrackCell.i, backtrackCell.j, k);
+            cubeToSudoku();
+            outputSudoku();
         }
-        printf("Thread: %d\nI: %d\n\n", thread_rank, i);
-        cubeToSudoku();
-        outputSudoku();
 
         if (solve()) {
             solved = 1;
