@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
 
             int k = ceil(i / n^(level - 1));
             printf("Thread %d with node %d filles %d at level %d\n", thread_rank, i, k, level);
-            i -= k*n^(level-1);
+            i -= (k - 1)*n^(level - 1);
             updateCell(backtrackCell.i, backtrackCell.j, k);
         }
 
