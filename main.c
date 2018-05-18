@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
         /* check if broadcast is ongoing, if no start asynch broadcast */
         //if (thread_rank != i )
         //    MPI_Test(&request2, &not_broadcasting, &status);
-        if (not_broadcasting)
+        //if (not_broadcasting)
             MPI_Ibcast(&solvedByThread, 1, MPI_INT, 0, MPI_COMM_WORLD, &request2);
 
         if (solvedByThread == -1){
