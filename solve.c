@@ -85,7 +85,7 @@ struct cell findEmptyCell(){
 }
 
 int solve() {
-    if (solvedbythread != -1) return 0;
+    if (solvedByThread != -1) return 0;
     int rating = INT_MAX;
     int previous_rating;
 
