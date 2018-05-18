@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
         } else {
             break;
         }
-        if ( (i -1) == number_of_nodes){
+        if ( (i +1) == number_of_nodes){
             /* TODO last iteration, this is called when still no solution is found,
              * ask other threads, if there is task*/
             printf("%d is asking %d for new task." ,thread_rank , 0);
