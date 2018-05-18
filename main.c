@@ -139,6 +139,7 @@ int main(int argc, char *argv[]) {
         } else {
             break;
         }
+        print("test %d", thread_rank);
         if ( (i +1) == number_of_nodes){
             /* TODO last iteration, this is called when still no solution is found,
              * ask other threads, if there is task*/
