@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
             }
         } else break;
     }
-
+    printf("i am at barrier, rank: %d \n", thread_rank);
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Bcast(&solvedByThread, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
