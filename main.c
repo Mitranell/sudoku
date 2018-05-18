@@ -74,9 +74,9 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
     /* receiver on thread 0 */
-    //if (thread_rank == 0){
+    if (thread_rank == 0){
         MPI_Irecv(&solvedByThread, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &request);
-    //}
+    }
 
     /* set possible_root to the current rank if the sudoku is solved
      */
