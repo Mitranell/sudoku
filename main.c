@@ -109,6 +109,7 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     for(int i = 0; i < number_of_nodes; i++) {
+        printf("thread: %d, iteration: %d, node: %d\n", thread_rank, i, nodes[i]);
         /* check if broadcast is ongoing, if no start asynch broadcast */
         if (i!= 0)
             MPI_Test(&request2, &not_broadcasting, &status);
