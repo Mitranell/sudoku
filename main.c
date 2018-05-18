@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
      */
     int possible_root = 0;
     int level = ceil(logf((float)nprocs)/logf((float)n));
+    printf("%d\n", thread_rank);
     // TODO test if different levels improve the solution time
     // level += 1;
     for (int i = thread_rank; i < (int)pow((double)n, (double)level); i += nprocs) {
@@ -108,7 +109,6 @@ int main(int argc, char *argv[]) {
 
                 int k = (int)(m / pow(n, j-1));
                 m -= k*pow(n,j - 1);
-                printf("%d {%d, %d, %d}", thread_rank, backtrackCell.i, backtrackCell.j, k);
                 updateCell(backtrackCell.i, backtrackCell.j, k);
             }
 
