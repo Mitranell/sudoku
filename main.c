@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <mpi.h>
+#include <math.h>
 
 // mpi
 int once = 1;
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]) {
 
         if (solvedByThread == -1){
             readSudoku();
-            
+
             int m = i;
             for (int j = level; j > 0; j--) {
                 struct cell backtrackCell = findEmpty();
