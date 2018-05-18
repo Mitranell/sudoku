@@ -96,7 +96,7 @@ int solve(int *nodes, int i_sudoku) {
             answer[1] = nodes[i_sudoku + 1];
             nodes[i_sudoku + 1] = -1;
         }
-        MPI_Send(&answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
+        MPI_Send(answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
     }
 
     int rating = INT_MAX;

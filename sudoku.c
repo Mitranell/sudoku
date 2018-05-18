@@ -29,17 +29,17 @@ clock_t start;
 double duration;
 char *file;
 
-#include "update.c"
-#include "output.c"
-#include "check.c"
-#include "main.c"
-
 MPI_Request request;
 MPI_Request request2;
 MPI_Request request3;
 MPI_Status status;
 MPI_Status status2;
 MPI_Status status3;
+
+#include "update.c"
+#include "output.c"
+#include "check.c"
+#include "main.c"
 
 int main(int argc, char *argv[]) {
     start = clock();
@@ -140,9 +140,9 @@ int main(int argc, char *argv[]) {
              * ask other threads, if there is task*/
             int buffer = 1;
             int answer[2] = {0,0};
-            MPI_Send(&buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
+            MPI_Send(buffer, 1, MPI_INT, 0, "GIVE_TASK", MPI_COMM_WORLD);
             /* receive an answer from that thread*/
-            MPI_Recv(&answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
+            MPI_Recv(answer, 2, MPI_INT, 0, "GIVE_TASK_ANSWER", MPI_COMM_WORLD);
             /* if answer is true, receive task*/
             if (answer[0]){
                 readSudoku();
