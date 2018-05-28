@@ -130,6 +130,10 @@ int main(int argc, char *argv[]) {
         outputSudoku();
     }
 
+    if (thread_rank == 0 && solveByThread == -1) {
+        printf("No solution");
+    }
+
 
     MPI_Finalize();
 
